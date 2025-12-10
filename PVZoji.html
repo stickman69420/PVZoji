@@ -399,7 +399,7 @@
 					WaveHealthO += ZombHealth[e]
 					zombInWave.push(Zid-1)
 				})
-				if (Array.isArray(ambushes)) {
+				if (Array.isArray(ambush)) {
 					if (ambushes.length > 0) {
 						ambush.forEach((e,ee) => {
 							SpawnZombie(e,ambushes[ee%ambushes.length].col,ambushes[ee%ambushes.length].row)
