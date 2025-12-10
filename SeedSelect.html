@@ -1,0 +1,170 @@
+<!doctype HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Select your seeds</title>
+		<style id="css-output">
+			button.seed {
+				position: absolute;
+				background-color: #CAF9E8;
+				border-color: #8EBB9A;
+				border-width: 5px;
+				border-top-width: 20px;
+				height: 110px;
+				width: 98.75px;
+			}
+			div {
+				position: relative;
+				background-color:#62320F;
+				border-color:#9E4122;
+				border-style:solid;
+				border-width:5px;
+				width:790px;
+			}
+			.packLabel {
+				font-size: 15px;
+				position: absolute;
+				left: 0px;
+				top: -20px;
+			}
+			body {
+				background-color: #777777;
+				margin: 0px;
+				padding: 0px;
+				font-size: 20px;
+			}
+		</style>
+	</head>
+	<body id="body">
+		<div id="confDiv" style="width:98.75px;height:110px;position:absolute;left:800px;"><button id="conf" style="color:#FEFF00;border-width:0px;border-width:5px;border-color:#5C2C15;border-top-color:#C06737;width:100%;height:100%;background-color:#8F431C;" onclick="Confirm()">Confirm</button></div>
+		<!-- shadow for button that I don't think I will be adding again: box-shadow:inset 5px -5px 5px black, inset -5px -5px 5px black; -->
+		<div style="height:110px;" id="seedSeled"></div>
+		<div style="height:110px;" id="seedSel"></div>
+		<e id="debug"></e>
+	<script src="Definitions.js"></script>
+	<script>
+			if (Level == -1) {
+				alert("You need to select a level")
+				window.location = "./LevelSelect.html"
+			}
+			document.title = "Select your seeds for PVZ "+(Math.floor(Level/10)+1)+"-"+((Level+1)%10)
+		
+			let SSCount = 0
+			let SSs = []
+		
+			const e = document.createElement("e")
+			e.id = "SSed"+SeedC
+			body.appendChild(e)
+			
+			const stylesheet = document.getElementById("css-output").sheet
+			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+			stylesheet.cssRules[2].style.fontSize = 15*sizePerc+"px"
+			stylesheet.cssRules[2].style.top = -20*sizePerc+"px"
+			Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
+				e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+			})
+			stylesheet.cssRules[1].style.width = 790*sizePerc+"px"
+			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+			stylesheet.cssRules[0].style.width = 98.75*sizePerc+"px"
+			stylesheet.cssRules[0].style.height = 110*sizePerc+"px"
+			stylesheet.cssRules[0].style.borderWidth = 5*sizePerc+"px"
+			stylesheet.cssRules[0].style.borderTopWidth = 20*sizePerc+"px"
+			stylesheet.cssRules[3].style.fontSize = 20*sizePerc+"px"
+			seedSeled.style.height = 110*sizePerc+"px"
+			seedSel.style.height = Math.ceil(unlocked.length/8)*110*sizePerc+"px"
+			confDiv.style.width = 98.75*sizePerc+"px"
+			confDiv.style.height = 110*sizePerc+"px"
+			confDiv.style.left = 800*sizePerc+"px"
+			conf.style.borderWidth = 10*sizePerc+"px"
+			conf.style.fontSize = 17*sizePerc+"px"
+			//conf.style.boxShadow = "inset "+(5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black, inset "+(-5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black"
+			
+			addEventListener("resize", (e) => {
+				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+				stylesheet.cssRules[2].style.fontSize = 15*sizePerc+"px"
+				stylesheet.cssRules[2].style.top = -20*sizePerc+"px"
+				Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
+					e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
+					e.style.left = 98.75*(ee%8)*sizePerc+"px"
+					e.style.top = 110*Math.max(Math.floor(ee/8)-1,0)*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
+					e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+					e.style.top = e.dataset.originalTop*sizePerc+"px"
+					e.style.left = e.dataset.originalLeft*sizePerc+"px"
+				})
+				stylesheet.cssRules[1].style.width = 790*sizePerc+"px"
+				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+				stylesheet.cssRules[0].style.width = 98.75*sizePerc+"px"
+				stylesheet.cssRules[0].style.height = 110*sizePerc+"px"
+				stylesheet.cssRules[0].style.borderWidth = 5*sizePerc+"px"
+				stylesheet.cssRules[0].style.borderTopWidth = 20*sizePerc+"px"
+				stylesheet.cssRules[3].style.fontSize = 20*sizePerc+"px"
+				seedSeled.style.height = 110*sizePerc+"px"
+				seedSel.style.height = Math.ceil(unlocked.length/8)*110*sizePerc+"px"
+				confDiv.style.width = 98.75*sizePerc+"px"
+				confDiv.style.height = 110*sizePerc+"px"
+				confDiv.style.left = 800*sizePerc+"px"
+				conf.style.borderWidth = 10*sizePerc+"px"
+				conf.style.fontSize = 17*sizePerc+"px"
+				//conf.style.boxShadow = "inset "+(5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black, inset "+(-5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black"
+			})
+		
+			for (let e=0;e<SeedC;e++) {
+				seedSeled.innerHTML += '<button class="seed" style="left:'+98.75*e+'px;" id="SSed'+e+'" onClick="Deselect('+e+')"></button>'
+			}
+		
+			unlocked.forEach((e) => {
+				seedSel.innerHTML += '<button class="seed" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
+			})
+		
+			function Deselect(ind) {
+				if (ind < SSCount) {
+					document.getElementById("SSed"+ind).innerHTML = ""
+					document.getElementById("SS"+SSs[ind]).style.backgroundColor = "#CAF9E8"
+					document.getElementById("SS"+SSs[ind]).style.borderColor = "#8EBB9A"
+					SSs.splice(ind,1)
+					for (let e=ind;e<SeedC;e++) {
+						document.getElementById("SSed"+e).innerHTML = (document.getElementById("SSed"+(e+1)).innerHTML) ?? ""
+					}
+					SSCount--
+				}
+			}
+			function Select(e) {
+				if (!SSs.includes(e) && SSCount < SeedC) {
+					document.getElementById("SSed"+SSCount).innerHTML = CreatePacket(e)
+					document.getElementById("SS"+e).style.backgroundColor = "#85A493"
+					document.getElementById("SS"+e).style.borderColor = "#396645"
+					SSCount++
+					SSs.push(e)
+				}
+			}
+			function CreatePacket(e) {
+				let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[e][0]))+" data-original-left="+(75*0.7*(1-plantSize[e][0]))+" data-original-size="+75*plantSize[e][0]+" style='top:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
+				for (let i=1;i<plants[e].length;i++) {
+					btn += "<e class='seedDisp' data-original-size="+75*plantSize[e][i]+" data-original-top="+(75*0.7*(1-plantSize[e][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10*sizePerc)+"px;opacity:"+opacity[e][i]+";top:"+(sizePerc*75*0.7*(1-plantSize[e][i]))+"px;font-size:"+75*plantSize[e][i]*sizePerc+"px;'>"+plants[e][i]+"</e>"
+				}
+				btn += "<e style='color:black;' class='packLabel'>☀️"+cost[e]+(special[e].extra ? ("/"+(special[e].extra+cost[e])) : "")+"</e>"
+				return btn
+			}
+			function Confirm() {
+				if (SSCount == SeedC) {
+					localStorage.setItem("Selected",JSON.stringify(SSs))
+					localStorage.setItem("SelId",localStorage.getItem("PreSelId"))
+					window.location = "./PVZoji.html"
+				}
+			}
+			Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
+				e.style.left = 98.75*(ee%8)*sizePerc+"px"
+				e.style.top = 110*Math.max(Math.floor(ee/8)-1,0)*sizePerc+"px"
+			})
+			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
+				e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+				e.style.top = e.dataset.originalTop*sizePerc+"px"
+				e.style.left = e.dataset.originalLeft*sizePerc+"px"
+			})
+		</script>
+	</body>
+<html>

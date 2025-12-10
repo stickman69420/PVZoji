@@ -1,0 +1,982 @@
+<!doctype HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style id="css-output">
+			body {
+				line-height:1px;
+				font-family:arial;
+				background-color: #777777;
+				margin: 0px;
+				padding: 0px;
+				font-size: 20px;
+			}
+			button.seed {
+				position: absolute;
+				top: 0px;
+				height: 110px;
+				width: 98.75px;
+				background-color: #CAF9E8;
+				border-color: #8EBB9A;
+				border-width: 5px;
+				border-top-width: 20px;
+			}
+			div {
+				background-color:#62320F;
+				border-color:#9E4122;
+				border-style:solid;
+				border-width:5px;
+				width: 891px;
+			}
+			.packLabel {
+				font-size: 15px;
+				position: absolute;
+				left: 0px;
+				top: -20px;
+			}
+			button {
+				margin: 0px;
+				padding: 0px;
+				display: inline-block;
+			}
+			.Recharge {
+				background-color: #00000078;
+				position: absolute;
+				left: -5px;
+				top: -20px;
+				height: 110px;
+				width: 98.75px;
+			}
+			progress {
+				background-color: #00000000;
+			}
+			progress::-webkit-progress-bar {
+  				background-color: grey;
+  				border-radius: 10px;
+				border-style: solid;
+				border-width: 2px;
+				border-color: black;
+			}
+			progress::-webkit-progress-value {
+  				background-color: red;
+  				border-radius: 10px;
+				border-style: solid;
+				border-width: 2px;
+				border-color: black;
+			}
+		</style>
+	</head>
+	<body id="body">
+		<div id="bartool" style="position: relative;height:75px;align-content:center;"><e id="sunL" style="font-size:50px;">☀️</e><e id="sunC" style="color:white;">50</e><progress style="margin-left:20px" id="LevelProg"></progress><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:655px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:840px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;">🪏</button></div>
+		<canvas id="canvas" width="900" height="500"></canvas>
+		<div style="position: relative;height: 110px;" id="seeds"></div>
+		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
+		<e id="Debug"></e><br>
+		<!--<button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">(Gulbre)</button>
+		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">[Gronk]</button>-->
+		<script src="Definitions.js"></script>
+		<script>
+			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+((Level+1)%10)
+			addEventListener("error", (e) => {
+				alert(e.lineno+": "+e.message)
+			});
+			if (Level == -1) {
+				alert("You need to select a level")
+				window.location = "./LevelSelect.html"
+			} else {
+			
+			function clearEverything() {
+				localStorage.clear()
+				location.reload()
+			}
+			function modify() {
+				localStorage.setItem("Levs",prompt("Levels Unlocked",JSON.stringify(LevsUnlocked)))
+				localStorage.setItem("Unlocked",prompt("Unlocked Plants",JSON.stringify(unlocked)))
+				window.location = "./LevelSelect.html"
+			}
+			
+			function Menu() {
+				if (confirm("Do you want to  and exit?")) {
+					window.location = "./index.html"
+				}
+			}
+			if (unlocked.length <= SeedC) {
+				selected = unlocked
+			} else if (selected.length < SeedC) {
+				localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
+				window.location = "./SeedSelect.html"
+			} else {
+				localStorage.setItem("PreSelId",0)
+			}
+			
+			canvas.context = canvas.getContext("2d")
+			
+			selected.forEach((e,ee) => {
+				recharge[ee] = InitCharge[e]
+			})
+			let valid = []
+			for (let i=6;i<9;i++) {
+				for (let ii=0;ii<5;ii++) {
+					valid.push([i,ii])
+				}
+			}
+			for (let i=0;i<AmbushCount[Level][0];i++) {
+				let loc = Math.floor(Math.random()*valid.length)
+				ambushes.push({"col":valid[loc][0],"row":valid[loc][1],"id":Aid})
+				valid.splice(loc,1)
+				Aid++
+			}
+			
+			//Resize initially
+			const stylesheet = document.getElementById("css-output").sheet
+			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+			stylesheet.cssRules[3].style.fontSize = 15*sizePerc+"px"
+			stylesheet.cssRules[3].style.top = -20*sizePerc+"px"
+			Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
+				e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+			})
+			Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
+				e.style.height = (recharge[ee]/Recharges[selected[ee]])*110*sizePerc+"px"
+			})
+			stylesheet.cssRules[2].style.width = 891*sizePerc+"px"
+			stylesheet.cssRules[2].style.borderWidth = 5*sizePerc+"px"
+			stylesheet.cssRules[1].style.width = 98.75*sizePerc+"px"
+			stylesheet.cssRules[5].style.width = 98.75*sizePerc+"px"
+			stylesheet.cssRules[5].style.left = -5*sizePerc+"px"
+			stylesheet.cssRules[5].style.top = -20*sizePerc+"px"
+			stylesheet.cssRules[1].style.height = 110*sizePerc+"px"
+			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+			stylesheet.cssRules[1].style.borderTopWidth = 20*sizePerc+"px"
+			stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
+			
+			stylesheet.cssRules[7].style.borderRadius = 10*sizePerc+"px"
+			stylesheet.cssRules[7].style.borderWidth = 2*sizePerc+"px"
+			
+			stylesheet.cssRules[8].style.borderRadius = 10*sizePerc+"px"
+			stylesheet.cssRules[8].style.borderWidth = 2*sizePerc+"px"
+			
+			canvas.style.width = 900*sizePerc+"px"
+			seeds.style.height = 110*sizePerc+"px"
+			Shov.style.left = 817*sizePerc+"px"
+			Shov.style.borderWidth = 5*sizePerc+"px"
+			Shov.style.fontSize = 75*sizePerc+"px"
+			Shov.style.width = 75*sizePerc+"px"
+			Shov.style.borderRadius = 75*sizePerc+"px"
+			bartool.style.height = 75*sizePerc+"px"
+			Shov.style.height = 75*sizePerc+"px"
+			sunL.style.fontSize = 50*sizePerc+"px"
+			sunC.style.fontSize = 20*sizePerc+"px"
+			LevelProg.style.marginLeft = 20*sizePerc+"px"
+			MenBut.style.left = 655*sizePerc+"px"
+			MenBut.style.height = 75*sizePerc+"px"
+			MenBut.style.width = 160*sizePerc+"px"
+			MenBut.style.fontSize = 50*sizePerc+"px"
+			MenBut.style.borderWidth = 5*sizePerc+"px"
+			if (!alarm.innerHTML.includes("FINAL")) {
+				alarm.style.fontSize = 35*sizePerc+"px"
+				alarm.style.left = 15*sizePerc+"px"
+				alarm.style.top = 300*sizePerc+"px"
+			} else {
+				alarm.style.fontSize = 70*sizePerc+"px"
+				alarm.style.left = 193*sizePerc+"px"
+				alarm.style.top = 287*sizePerc+"px"
+			}
+			
+			//Main
+			selected.forEach((e,ee) => {
+				//let btn = "<e class='seedDisp' data-original-size="+75*plantSize[e][0]+" style='opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
+				let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[e][0]))+" data-original-left="+(75*0.7*(1-plantSize[e][0]))+" data-original-size="+75*plantSize[e][0]+" style='top:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
+				for (let i=1;i<plants[e].length;i++) {
+					btn += "<e class='seedDisp' data-original-size="+75*plantSize[e][i]+" data-original-top="+(75*0.7*(1-plantSize[e][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10)+"px;opacity:"+opacity[e][i]+";top:"+(75*0.7*(1-plantSize[e][i]))+"px;font-size:"+75*plantSize[e][i]*sizePerc+"px;'>"+plants[e][i]+"</e>"
+				}
+				btn += "<e style='color:black;' class='packLabel'>☀️"+cost[e]+(special[e].extra ? "/"+(special[e].extra+cost[e]) : "")+"</e>"
+				seeds.innerHTML += '<button style="left:'+98.75*sizePerc*ee+'px;" class="seed" id="B'+ee+'" onClick="Select('+ee+')">'+btn+'<e class="Recharge" id="Re'+ee+'"></e></button>'
+			})
+			Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
+				e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+			})
+			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
+				e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+				e.style.top = e.dataset.originalTop*sizePerc+"px"
+				e.style.left = e.dataset.originalLeft*sizePerc+"px"
+			})
+			
+			addEventListener("resize", (e) => {
+				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+				stylesheet.cssRules[3].style.fontSize = 15*sizePerc+"px"
+				stylesheet.cssRules[3].style.top = -20*sizePerc+"px"
+				Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
+					e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
+					e.style.left = 98.75*ee*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
+					e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+					e.style.top = e.dataset.originalTop*sizePerc+"px"
+					e.style.left = e.dataset.originalLeft*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
+					e.style.height = (recharge[ee]/Recharges[selected[ee]])*110*sizePerc+"px"
+				})
+				stylesheet.cssRules[2].style.width = 891*sizePerc+"px"
+				stylesheet.cssRules[2].style.borderWidth = 5*sizePerc+"px"
+				stylesheet.cssRules[1].style.width = 98.75*sizePerc+"px"
+				stylesheet.cssRules[5].style.width = 98.75*sizePerc+"px"
+				stylesheet.cssRules[5].style.left = -5*sizePerc+"px"
+				stylesheet.cssRules[5].style.top = -20*sizePerc+"px"
+				stylesheet.cssRules[1].style.height = 110*sizePerc+"px"
+				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+				stylesheet.cssRules[1].style.borderTopWidth = 20*sizePerc+"px"
+				stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
+				
+				bartool.style.height = 75*sizePerc+"px"
+				
+				stylesheet.cssRules[7].style.borderRadius = 10*sizePerc+"px"
+				stylesheet.cssRules[7].style.borderWidth = 2*sizePerc+"px"
+				
+				stylesheet.cssRules[8].style.borderRadius = 10*sizePerc+"px"
+				stylesheet.cssRules[8].style.borderWidth = 2*sizePerc+"px"
+				
+				canvas.style.width = 900*sizePerc+"px"
+				seeds.style.height = 110*sizePerc+"px"
+				Shov.style.left = 817*sizePerc+"px"
+				Shov.style.borderWidth = 5*sizePerc+"px"
+				Shov.style.fontSize = 50*sizePerc+"px"
+				Shov.style.width = 75*sizePerc+"px"
+				Shov.style.borderRadius = 75*sizePerc+"px"
+				Shov.style.height = 75*sizePerc+"px"
+				sunL.style.fontSize = 50*sizePerc+"px"
+				sunC.style.fontSize = 20*sizePerc+"px"
+				LevelProg.style.marginLeft = 20*sizePerc+"px"
+				MenBut.style.left = 655*sizePerc+"px"
+				MenBut.style.height = 75*sizePerc+"px"
+				MenBut.style.width = 160*sizePerc+"px"
+				MenBut.style.fontSize = 50*sizePerc+"px"
+				MenBut.style.borderWidth = 5*sizePerc+"px"
+				if (!alarm.innerHTML.includes("FINAL")) {
+					alarm.style.fontSize = 35*sizePerc+"px"
+					alarm.style.left = 15*sizePerc+"px"
+					alarm.style.top = 300*sizePerc+"px"
+				} else {
+					alarm.style.fontSize = 70*sizePerc+"px"
+					alarm.style.left = 193*sizePerc+"px"
+					alarm.style.top = 287*sizePerc+"px"
+				}
+			})
+			canvas.addEventListener("click",(e) => {
+				if (select2 != -1) {
+					let valid
+					if (select2 >= 0 && special[selected[select2]].upgrade == 2) {
+						valid = false
+					} else if (selected[select2] > 0) {
+						valid = !(special[selected[select2]].grave)
+					} else {
+						valid = true
+					}
+					const mouseLoc = [Math.floor(e.offsetX/(100*sizePerc)),Math.floor(e.offsetY/(100*sizePerc))]
+					ambushes.forEach((ee) => {
+						if (ee.col == mouseLoc[0] && ee.row == mouseLoc[1] && AmbushImg[Math.floor(Level/10)] == "🪦") {
+							if (special[selected[select2]].grave) {
+								valid = true
+							}
+						}
+					})
+					Obstacles.forEach((ee) => {
+						if (ee.col == mouseLoc[0] && ee.row == mouseLoc[1]) {
+							valid = false
+						}
+					})
+					Lawn.forEach((ee,eee) => {
+						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0]) {
+							if (select2 == -2) {
+								if (!Dead.includes(["Lawn",ee.id])) {
+									Dead.push(["Lawn",ee.id])
+									select2 = -1
+									document.getElementById("Shov").style.backgroundColor = "#421803"
+									document.getElementById("Shov").style.borderColor = "#93441D"
+								}
+							} else if (special[selected[select2]].upgrade > 0) {
+								valid = false
+								if (ee.spec.UpgType == special[selected[select2]].UpgradeType && special[selected[select2]].extra+cost[selected[select2]] <= sun) {
+									recharge[select2] = special[selected[select2]].UpgradeRecharge
+									sun -= cost[selected[select2]]+special[selected[select2]].extra
+									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
+										ee.spec[key] = value
+									}
+									for (const [key, value] of Object.entries((special[selected[select2]].upgradeApp) ?? {})) {
+										ee[key] += value
+									}
+									for (const [key, value] of Object.entries((special[selected[select2]].upgradePush) ?? {})) {
+										ee[key].push(value)
+									}
+								} else if (ee.spec.UpgType == special[selected[select2]].UpgradeType) {
+									for (let i=0;i<5;i++) {
+										setTimeout(() => {
+											sunC.style.color = "red"
+										},200*i)
+										setTimeout(() => {
+											sunC.style.color = "white"
+										},200*i+100)
+									}
+								}
+							} else {
+								valid = false
+							}
+						}
+					})
+					if (valid && select2 >= 0) {
+						recharge[select2] = Recharges[selected[select2]]
+						Lawn.push({"id":Lid,"img":[...plants[selected[select2]]],"opacity":[...opacity[selected[select2]]],"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+						sun -= cost[selected[select2]]
+						Lid++
+					}
+					if (select2 >= 0) {
+						document.getElementById("B"+select2).style.backgroundColor = "#CAF9E8"
+						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
+					}
+					select2 = -1
+				}
+				Proj.forEach((ee,eee) => {
+					if(Math.sqrt((ee.x-e.offsetX/sizePerc)**2+(ee.y-e.offsetY/sizePerc)**2) <= ee.size) {
+						if(ee.spec.sun) {
+							if (!Dead.includes(["Proj",ee.id])) {
+								sun += ee.value
+								Dead.push(["Proj",ee.id])
+							}
+						}
+					}
+				})
+			})
+			function SpawnZombie(type,col,row) {
+				Zombies.push({"id":Zid,"x":col*100+50,"y":row*100,"type":type,"health":ZombHealth[type],"ovx":-SpdRng[type][0]+Math.random()*(SpdRng[type][1]-SpdRng[type][0]),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[type]))})
+				Zid++
+			}
+			function SpawnWave(points, guaranteed, ambush) {
+				zombInWave = []
+				WaveHealth = 0
+				WaveHealthO = 0
+				let WaveDist = []			
+				let Premain = points
+				//alert(String(Wave)+","+String((Waves[+Hard][Level].length)-1))
+				const final = (Wave == (Waves[+Hard][Level].length)-1)
+				if (guaranteed.includes(1)) {
+					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
+					alarm.style.fontSize = 35*sizePerc+"px"
+					alarm.style.left = 15*sizePerc+"px"
+					alarm.style.top = 300*sizePerc+"px"
+					setTimeout((e) => {
+						alarm.innerHTML = e ? "FINAL WAVE" : ""
+						if (!alarm.innerHTML.includes("FINAL")) {
+							alarm.style.fontSize = 35*sizePerc+"px"
+							alarm.style.left = 15*sizePerc+"px"
+							alarm.style.top = 300*sizePerc+"px"
+						} else {
+							alarm.style.fontSize = 70*sizePerc+"px"
+							alarm.style.left = 193*sizePerc+"px"
+							alarm.style.top = 287*sizePerc+"px"
+						}
+					},2000,final)
+					if (final) {
+						setTimeout(() => {
+							alarm.innerHTML = ""
+						},4000)
+					}
+				} else {
+					if (final) {
+						alarm.innerHTML = "FINAL WAVE"
+						alarm.style.fontSize = 70*sizePerc+"px"
+						alarm.style.left = 193*sizePerc+"px"
+						alarm.style.top = 287*sizePerc+"px"
+						setTimeout(() => {
+							alarm.innerHTML = ""
+						},2000)
+					}
+				}
+				guaranteed.forEach((e) => {
+					SpawnZombie(e,9,Math.floor(Math.random()*5))
+					WaveHealth += ZombHealth[e]
+					WaveHealthO += ZombHealth[e]
+					zombInWave.push(Zid-1)
+				})
+				if (ambushes.length > 0) {
+					ambush.forEach((e,ee) => {
+						SpawnZombie(e,ambushes[ee%ambushes.length].col,ambushes[ee%ambushes.length].row)
+						WaveHealth += ZombHealth[e]
+						WaveHealthO += ZombHealth[e]
+						zombInWave.push(Zid-1)
+					})
+				}
+				//alert(JSON.stringify(ZombsAllowed)+","+JSON.stringify(ZombsAllowed[Level])+","+Level)
+				while (Premain > 0) {
+					WaveDist = []
+					Points.forEach((e,ee) => {
+						if (e<=Premain && ZombsAllowed[+Hard][Level].includes(ee)) {
+							for (let i=0;i<Weight[ee];i++) {
+								WaveDist.push(ee)
+							}
+						}
+					})
+					if (WaveDist.length != 0) {
+						const ind = Math.floor(Math.random()*WaveDist.length)
+						WaveHealth += ZombHealth[WaveDist[ind]]
+						WaveHealthO += ZombHealth[WaveDist[ind]]
+						SpawnZombie(WaveDist[ind],9,Math.floor(Math.random()*5))
+						zombInWave.push(Zid-1)
+						Premain -= Points[WaveDist[ind]]
+					}
+				}
+			}
+			//SpawnWave(25,[])
+			//SpawnWave(10,[1])
+			//SpawnWave(1,[])
+			/*for (let i=0;i<144;i++) {
+				SpawnZombie(i%4,Math.floor(i/5+7),Math.floor(Math.random()*5))
+			}*/
+			/*SpawnZombie(2,8,0)
+			SpawnZombie(2,8,1)
+			SpawnZombie(2,8,2)
+			SpawnZombie(2,8,3)
+			SpawnZombie(2,8,4)*/
+			//SpawnZombie(5,7,2)
+			
+			function Select(plt) {
+				if (select2 != -1) {
+					if (select2 == -2) {
+						document.getElementById("Shov").style.backgroundColor = "#421803"
+						document.getElementById("Shov").style.borderColor = "#93441D"
+					} else {
+						document.getElementById("B"+select2).style.backgroundColor = "#CAF9E8"
+						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
+					}
+				}
+				if (select2 == plt) {
+					select2 = -1
+				} else if (plt == -2) {
+					select2 = plt
+					document.getElementById("Shov").style.backgroundColor = "#310702"
+					document.getElementById("Shov").style.borderColor = "#81730C"
+				} else if (cost[selected[plt]] <= sun) {
+					if (recharge[plt] <= 0) {
+						select2 = plt
+						document.getElementById("B"+select2).style.backgroundColor = "#B9E8D7"
+						document.getElementById("B"+select2).style.borderColor = "#7DAA89"
+					}
+				} else {
+					for (let i=0;i<5;i++) {
+						setTimeout(() => {
+							sunC.style.color = "red"
+						},200*i)
+						setTimeout(() => {
+							sunC.style.color = "white"
+						},200*i+100)
+					}
+				}
+			}
+			setInterval(() => {
+				canvas.context.clearRect(0,0,800,500)
+				for (let i=0;i<5;i++) {
+					for (let j=0;j<9;j++) {
+						if ((i+j)%2==0) {
+							canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][0]
+							canvas.context.strokeStyle = AreaBg[Math.floor(Level/10)][1]
+						} else {
+							canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][2]
+							canvas.context.strokeStyle = AreaBg[Math.floor(Level/10)][3]
+						}
+						canvas.context.lineWidth = 4
+						canvas.context.fillRect(j*100,i*100,100,100)
+						canvas.context.strokeRect(j*100+2,i*100+2,96,96)
+					}
+				}
+				canvas.context.fillStyle = "#000000"
+				canvas.context.textBaseline = "middle"
+				canvas.context.font = "100px Arial"
+				ambushes.forEach((e) => {
+					canvas.context.fillText(AmbushImg[Math.floor(Level/10)],e.col*100,e.row*100+50)
+				})
+				Obstacles.forEach((e) => {
+					canvas.context.font = (100-(e.time/e.max)*100)+"px Arial"
+					canvas.context.fillText(e.img,e.col*100,e.row*100+50)
+					e.time++
+					if (e.time == e.max) {
+						Dead.push("Obstacles",e.id)
+					}
+				})
+				Lawn.forEach((e,ind) => {
+					/*canvas.context.strokeStyle = "#000000"
+					canvas.context.lineWidth = 1
+					canvas.context.font = "15px Arial"*/
+					//canvas.context.strokeText(JSON.stringify(e),e.col*100,e.row*100)
+					if (e.spec.shrinkOff != undefined) {
+						e.size.forEach((ee,eee) => {
+							e.size[eee] = e.Osize[eee]*(e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff
+						})
+					}
+					if(e.health > 0) {
+						for (let i=0;i<e.img.length;i++) {
+							canvas.context.font = 100*e.size[i]+"px Arial";
+							canvas.context.globalAlpha = e.opacity[i]
+							if (i == 0) {
+								canvas.context.fillText(e.img[i],e.col*100+(75*0.7*(1-e.size[0]))+i*10,e.row*100+50)
+							} else {
+								canvas.context.fillText(e.img[i],e.col*100+i*10,e.row*100+50)
+							}
+						}
+					}
+					if (!e.spec.night || (Level%20 > 9)) {
+					if(e.health <= 0) {
+						if (!Dead.includes(["Lawn",e.id])) {
+							Dead.push(["Lawn",e.id])
+						}
+					} else {
+						if (e.spec.hide == undefined) {
+							e.cool-=0.016
+						} else {
+							let h = true
+							const bounds = [e.col-Math.floor(e.spec.hide.size[0]/2),e.row-Math.floor(e.spec.hide.size[1]/2)]
+							Zombies.forEach((ee) => {
+								const dist = [Math.floor(ee.x/100)-(bounds[0]),Math.floor(ee.y/100)-(bounds[1])]
+								if (dist[0] < e.spec.hide.size[0] && dist[1] < e.spec.hide.size[1] && dist[0] >= 0 && dist[1] >= 0) {
+									h = false
+								}
+							})
+							if (h) {
+								e.cool-=0.016
+								for (const [key,value] of Object.entries(e.spec.hide.reset ?? {})) {
+									e[key] = value
+								}
+							} else {
+								for (const [key,value] of Object.entries(e.spec.hide.transform ?? {})) {
+									e[key] = value
+								}
+							}
+						}
+						if (e.cool <= 0) {
+							if (e.spec.transform != undefined) {
+								if ((e.spec.transform.count ?? 0) == 0) {
+									for (const [key, value] of Object.entries(e.spec.transform)) {
+										if (key != "count") {
+											e[key] = value
+										}
+									}
+								} else {
+									e.spec.transform.count -= 1
+								}
+							}
+							if ((e.spec.proj || e.spec.sun) && e.spec.range == -1) {
+								e.cool = fireRate[e.plant]
+								e.health -= e.spec.selfD ?? 0
+								for (let i=0;i<(e.spec.count ?? 1);i++) {
+									setTimeout((ee) => {
+										Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50)+projOff[ee.plant][0],"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":Lspeed[ee.plant],"vy":Vspeed[ee.plant],"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":ProjImg[ee.plant],"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+										Pid++
+										if (e.plant == 15) {
+											Obstacles.push({"img":"🕳️","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
+											Oid++
+										}
+									},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e)
+								}
+							} else if (e.spec.proj || e.spec.sun) {
+								let fire = false
+								Zombies.forEach((ee) => {
+									if (Math.ceil((ee.x-e.col*100)/100) <= e.spec.range+1 && Math.ceil((ee.x-e.col*100)/100) > 0 && Math.floor(ee.y/100) == e.row) {
+										fire = true
+									}
+								})
+								if (fire) {
+									e.cool = fireRate[e.plant]
+									e.health -= e.spec.selfD ?? 0
+									for (let i=0;i<(e.spec.count ?? 1);i++) {
+										setTimeout((ee) => {
+											Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50)+projOff[ee.plant][0],"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":Lspeed[ee.plant],"vy":Vspeed[ee.plant],"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":ProjImg[ee.plant],"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+											Pid++
+											if (e.plant == 15) {
+											Obstacles.push({"img":"🕳️","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
+												Oid++
+											}
+										},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e)
+									}
+								}
+							} else if (e.spec.destroy) {
+								if (!Dead.includes(["Lawn",e.id])) {
+									Dead.push(["Lawn",e.id])
+									ambushes.forEach((ee,eee) => {
+										if (ee.col == e.col && ee.row == e.row) {
+											ambushes.splice(eee,1)
+										}
+									})
+								}
+							}
+						}
+					}
+					}
+				})
+				canvas.context.globalAlpha = 1
+				Proj.forEach((e,eee) => {
+					e.x += e.vx/60*100
+					e.y += e.vy/60*100
+					canvas.context.font = e.size+"px Arial";
+					canvas.context.fillText(e.img,e.x-e.size/2,e.y)
+					/*canvas.context.fillStyle = "#FF0000"
+					//canvas.context.fillRect(e.x-5,e.y-CollBox[e.type][1]/2,10,CollBox[e.type][1])
+					canvas.context.fillRect(e.x-e.size/2, e.y-CollBox[e.type][1]/2,CollBox[e.type][0],CollBox[e.type][1])*/
+					if (e.x > 900) {
+						if (!Dead.includes(["Proj",e.id])) {
+							Dead.push(["Proj",e.id])
+						}
+					} else {
+						if(e.spec.proj) {
+							Zombies.forEach((ee) => {
+								if (!Dead.includes(["Zombies",ee])) {
+									if(e.x-e.size/2 < ee.x+50 && e.x-e.size/2+CollBox[e.type][0] > ee.x) {
+										if (Math.abs(ee.y+50-e.y) <= CollBox[e.type][1]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
+										//Debug.innerHTML += ","+Math.abs(ee.y-e.y)+"/"+CollBox[e.type][1]/2
+											if (!Dead.includes(["Proj",e.id])) {
+												if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
+												if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = e.spec.ice.dur
+												let he = true
+												if (Math.abs(e.vx) > Math.abs(e.vy) && e.vx > 0 && (ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
+													if (e.spec.pen != undefined && e.spec.pen != 0) {
+														he = true
+														if (e.spec.pen != undefined) {
+															e.spec.pen--
+															if(e.spec.pen == 0) {
+																if (!Dead.includes(["Proj",e.id])) {
+																	Dead.push(["Proj",e.id])
+																	he = false
+																}
+															}
+														}
+													} else {
+														he = false
+													}
+													if (!e.spec.damageOnce || !e.damaged.includes(ee.id)) {
+														ee.spec.shields.front -= e.value
+														e.damaged.push(ee.id)
+													}
+													if (ee.spec.shields.front <= 0) {
+														for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
+															if (key == "speed") {
+																ee.ovx = -(Math.random()*(value[1]-value[0])+value[0])
+															} else {
+																ee[key] = value
+															}
+														}
+													}
+												}
+												if (he) {
+													if (!e.spec.damageOnce || !e.damaged.includes(ee.id)) {
+														if (zombInWave.includes(ee.id)) {
+															WaveHealth -= Math.min(ee.health,e.value)
+														}
+														ee.health -= e.value
+														e.damaged.push(ee.id)
+													}
+												}
+												if (e.spec.pen == undefined) {
+													if (!Dead.includes(["Proj",e.id])) {
+														Dead.push(["Proj",e.id])
+													}
+												} else {
+													e.spec.pen--
+													if(e.spec.pen == 0) {
+														if (!Dead.includes(["Proj",e.id])) {
+															Dead.push(["Proj",e.id])
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							})
+						}
+					}
+					if(e.spec.lifespan != undefined) {
+						e.spec.lifespan--
+						if (e.spec.lifespan == 0 && e.spec.sky) {
+							e.vy=0
+						}
+						if (e.spec.lifespan <= e.spec.Threshold) {
+							if (!Dead.includes(["Proj",e.id])) {
+								Dead.push(["Proj",e.id])
+							}
+						}
+					}
+				})
+				sunC.innerHTML = sun
+				canvas.context.font = "50px Arial";
+				Zombies.forEach((e,ee) => {
+					if (e.health > 0) {
+						e.x += e.vx*100/60
+						if (e.x <= 0) {
+							if (Mowers[Math.floor(e.y/100)]) {
+								Mowers[Math.floor(e.y/100)] = false
+								Zombies.forEach((eee) => {
+									if (Math.floor(e.y/100)==Math.floor(eee.y/100)) {
+										if (!Dead.includes(["Zombies",eee.id])) {
+											Dead.push(["Zombies",eee.id])
+										}
+									}
+								})
+							}
+						}
+						canvas.context.fillText(Zombs[e.type].base,e.x,e.y+70)
+						if (e.spec.snow > 0) {
+							canvas.context.fillStyle = "#0000FF33"
+							canvas.context.fillRect(e.x,e.y+45,50,50)
+							canvas.context.fillStyle = "#000000FF"
+						}
+						if (e.spec.ice > 0) {
+							canvas.context.fillText("❄️",e.x,e.y+70)
+						}
+						//canvas.context.fillRect(e.x-5,e.y+65,10,10)
+						let going = true
+						Zombs[e.type].stages.forEach((eee) => {
+							if (e.health > eee.health && e.spec.action == eee.action) {
+								if (going) {
+									//head
+									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
+									canvas.context.rotate(eee.headRot*Math.PI/180)
+									canvas.context.fillText(eee.head ?? "",-25,0)
+									canvas.context.rotate(-eee.headRot*Math.PI/180)
+									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
+									
+									//arm
+									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
+									canvas.context.rotate(eee.armRot*Math.PI/180)
+									canvas.context.fillText(eee.arm ?? "",-25,0)
+									canvas.context.rotate(-eee.armRot*Math.PI/180)
+									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
+									
+									going = false
+								}
+							}
+						})
+						if (Zombs[e.type].shields != undefined) {
+						for (const [key, value] of Object.entries(Zombs[e.type].shields)) {
+							if (e.spec.shields[key] > 0) {
+								canvas.context.translate(e.x+0+(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
+								canvas.context.rotate(value.Rot*Math.PI/180)
+								canvas.context.fillText(value.img ?? "",-25,0)
+								canvas.context.rotate(-value.Rot*Math.PI/180)
+								canvas.context.translate(-e.x-0-(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
+							}
+						}
+						}
+					} else {
+						if (!Dead.includes(["Zombies",e.id])) {
+							Dead.push(["Zombies",e.id])
+						}
+					}
+				})
+				Hypnos.forEach((e,ee) => {
+					/*canvas.context.strokeStyle = "#000000"
+					canvas.context.lineWidth = 1
+					canvas.context.font = "10px Arial"
+					canvas.context.strokeText(JSON.stringify(e),e.x,e.y)
+					canvas.context.font = "50px Arial"*/
+					if (e.health > 0) {
+						e.x += e.vx*100/60
+						if (e.x > 800) {
+							if (!Dead.includes(["Hypnos",e.id])) {
+								Dead.push(["Hypnos",e.id])
+							}
+						}
+						canvas.context.fillText(Zombs[e.type].base,e.x,e.y+70)
+						let going = true
+						Zombs[e.type].stages.forEach((eee) => {
+							if (e.health > eee.health && e.spec.action == eee.action) {
+								if (going) {
+									//head
+									canvas.context.translate(e.x+25-(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
+									canvas.context.rotate(eee.headRot*Math.PI/180)
+									canvas.context.fillText(eee.head ?? "",-25,0)
+									canvas.context.rotate(-eee.headRot*Math.PI/180)
+									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
+									
+									//arm
+									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
+									canvas.context.rotate(eee.armRot*Math.PI/180)
+									canvas.context.fillText(eee.arm ?? "",-25,0)
+									canvas.context.rotate(-eee.armRot*Math.PI/180)
+									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
+									
+									going = false
+								}
+							}
+						})
+						if (Zombs[e.type].shields != undefined) {
+						for (const [key, value] of Object.entries(Zombs[e.type].shields)) {
+							if (e.spec.shields[key] > 0) {
+								canvas.context.translate(e.x+0-(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
+								canvas.context.rotate(value.Rot*Math.PI/180)
+								canvas.context.fillText(value.img ?? "",-25,0)
+								canvas.context.rotate(-value.Rot*Math.PI/180)
+								canvas.context.translate(-e.x-0+(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
+							}
+						}
+						}
+						canvas.context.fillStyle = "#FF00FF33"
+						canvas.context.fillRect(e.x,e.y+45,50,50)
+						canvas.context.fillStyle = "#000000FF"
+					} else {
+						if (!Dead.includes(["Hypnos",e.id])) {
+							Dead.push(["Hypnos",e.id])
+						}
+					}
+				})
+				recharge.forEach((e,ee) => {
+					recharge[ee] = Math.max(e-0.016,0)
+				})
+				Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
+					e.style.height = (recharge[ee]/Recharges[selected[ee]])*110*sizePerc+"px"
+				})
+				Dead.forEach((e) => {
+					const arr = eval(e[0])
+					const ind = arr.findIndex((ee) => ee.id == e[1])
+					if (ind != -1) arr.splice(ind,1)
+				})
+				Dead = []
+				LevelProg.max = Waves[+Hard][Level].length
+				LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
+				//Debug.innerHTML = 1-WaveHealth/WaveHealthO
+				//Debug.innerHTML = WaveTime+","+WaveHealth+","+WaveHealthO
+				//Debug.innerHTML = JSON.stringify(ambushes)
+			},16)
+			
+			setInterval(() => {
+				Zombies.forEach((e) => {
+					if (e.spec.ice > 0) {
+						e.vx = 0
+						e.spec.ice -= 100
+					} else if (e.stun > 0) {
+						e.vx = 0
+						e.stun -= 0.1
+					} else if (e.spec.snow > 0) {
+						e.vx = e.ovx/2
+						e.spec.snow -= 100
+					} else {
+						e.vx = e.ovx
+					}
+					if ((e.spec.ice ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
+						Lawn.forEach((ee) => {
+							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row) {
+								//const g = ee.health
+								if (e.spec.jump) {
+									e.x = Math.floor(e.x/100)*100
+									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
+									e.spec.jump = false
+									e.spec.action = false
+								} else {
+									ee.health -= e.spec.snow > 0 ? 5 : 10
+									if (ee.health <= 0) {
+										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
+											if (zombInWave.includes(e.id)) {
+												WaveHealth -= e.health
+											}
+											Dead.push(["Zombies",e.id])
+											e.ovx *= -1
+											Hypnos.push(e)
+										}
+									}
+									e.vx = 0
+								}
+							}
+						})
+						Hypnos.forEach((ee) => {
+							if(Math.floor(e.x/100)==Math.floor(ee.x/100) && Math.floor(e.y/100)==Math.floor(ee.y/100)) {
+								if (e.spec.jump) {
+									e.x = Math.floor(e.x/100)*100
+									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
+									e.spec.jump = false
+									e.spec.action = false
+								} else {
+								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
+									ee.spec.shields.front -= 10
+									if (ee.spec.shields.front <= 0) {
+										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
+											if (key == "speed") {
+												ee.ovx = Math.random()*(value[1]-value[0])+value[0]
+											} else {
+												ee[key] = value
+											}
+										}
+									}  
+								} else {
+									ee.health -= 10
+								}
+								e.vx = 0
+							}
+						}
+					})
+					}
+				})
+				Hypnos.forEach((e) => {
+					e.vx = e.ovx
+					Zombies.forEach((ee) => {
+						if(Math.floor(e.x/100)==Math.floor(ee.x/100) && Math.floor(e.y/100)==Math.floor(ee.y/100)) {
+							if (e.spec.jump) {
+								e.x = Math.ceil(e.x/100)*100
+								e.ovx = Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0]
+								e.spec.jump = false
+								e.spec.action = false
+							} else {
+								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
+									ee.spec.shields.front -= 10
+									if (ee.spec.shields.front <= 0) {
+										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
+											if (key == "speed") {
+												ee.ovx = -(Math.random()*(value[1]-value[0])+value[0])
+											} else {
+												ee[key] = value
+											}
+										}
+									}
+								} else {
+									if (zombInWave.includes(ee.id)) {
+										WaveHealth -= Math.min(ee.health, 10)
+									}
+									ee.health -= 10
+								}
+								e.vx = 0
+							}
+						}
+					})
+				})
+				WaveTime -= 0.1
+				if (WaveHealth <= WaveHealthO/2 && WaveTime > 2) {
+					WaveTime = 2
+				}
+				if (WaveTime <= 0) {
+					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1))) {
+						//alert(Wave+","+Waves[+Hard][Level].length)
+						if (Wave == Waves[+Hard][Level].length) {
+							//Win
+							Wave++
+							WaveTime = 1000
+							alert("🏆")
+							LevsUnlocked.push(Number(Level)+1)
+							localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
+							unlocked.push(Unlocks[Level+1])
+							localStorage.setItem("Unlocked",JSON.stringify(unlocked))
+							window.location= "./LevelSelect.html"
+						} else {
+							WaveTime = 27
+							//alert(JSON.stringify(Waves[+Hard][Level][Wave]))
+							SpawnWave(Waves[+Hard][Level][Wave].points,Waves[+Hard][Level][Wave].guaranteed,(Waves[+Hard][Level][Wave].ambush ?? []))
+							Wave++
+						}
+					}
+				}
+			},100)
+			
+			if (Level%20 < 10) setInterval(() => {
+				Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":"☀️","spec":{"sun":true,"sky":true,"lifespan":Math.round(Math.random()*500),"Threshold":-900},"value":25})
+				Pid++
+			},10000)
+			}
+		</script>
+	</body>
+</html>

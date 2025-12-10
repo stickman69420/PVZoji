@@ -1,0 +1,89 @@
+<!doctype HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Level select for PVZ</title>
+		<style id="css-output">
+			body {
+				font-family:arial;
+				background-color: #777777;
+				margin: 0px;
+				padding: 0px;
+				font-size: 20px;
+			}
+			button {
+				margin: 0px;
+				padding: 0px;
+				width: 108px;
+				height: 150px;
+				position: absolute;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				font-size:50px;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="line-height:160px;width:1080px;height:2240px;" id="levels"></div>
+		<script src="./Definitions.js"></script>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+": "+e.message)
+			});
+			
+			const stylesheet = document.getElementById("css-output").sheet
+			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+			stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
+			stylesheet.cssRules[1].style.fontSize = 50*sizePerc+"px"
+			stylesheet.cssRules[1].style.width = 108*sizePerc+"px"
+			stylesheet.cssRules[1].style.height = 150*sizePerc+"px"
+			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+			
+			addEventListener("resize", (e) => {
+				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+				stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
+				stylesheet.cssRules[1].style.fontSize = 50*sizePerc+"px"
+				stylesheet.cssRules[1].style.width = 108*sizePerc+"px"
+				stylesheet.cssRules[1].style.height = 150*sizePerc+"px"
+				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+				Array.from(document.getElementsByClassName("seed")).forEach((eee,ee) => {
+					eee.style.left = 108*(ee%10)*sizePerc+"px"
+					eee.style.top = 150*Math.floor(ee/10)*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("seedDisp")).forEach((ee) => {
+					ee.style.fontSize = ee.dataset.originalSize*sizePerc+"px"
+					ee.style.top = ee.dataset.originalTop*sizePerc+"px"
+					ee.style.left = ee.dataset.originalLeft*sizePerc+"px"
+				})
+			})
+			
+			for (let j=0;j<Waves.length;j++) {
+				for (let e=0;e<Waves[j].length;e++) {
+					if (Unlocks[e] != -1) {
+						let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[Unlocks[e]][0]))+" data-original-left="+(75*0.7*(1-plantSize[Unlocks[e]][0]))+" data-original-size="+75*plantSize[Unlocks[e]][0]+" style='top:"+(75*0.7*(1-plantSize[Unlocks[e]][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[Unlocks[e]][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[Unlocks[e]][0]+";font-size:"+75*plantSize[Unlocks[e]][0]*sizePerc+"px;'>"+plants[Unlocks[e]][0]+"</e>"
+						for (let i=1;i<plants[Unlocks[e]].length;i++) {
+							btn += "<e class='seedDisp' data-original-size="+75*plantSize[Unlocks[e]][i]+" data-original-top="+(75*0.7*(1-plantSize[Unlocks[e]][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10)+"px;opacity:"+opacity[Unlocks[e]][i]+";top:"+(75*0.7*(1-plantSize[Unlocks[e]][i]))+"px;font-size:"+75*plantSize[Unlocks[e]][i]*sizePerc+"px;'>"+plants[Unlocks[e]][i]+"</e>"
+						}
+						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'>"+btn+"<e style='position:relative;'>"+(LevsUnlocked.includes(e) ? "" : "❌")+"</e></button>"
+					} else if (LevsUnlocked.includes(e)) {
+						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'>📝</button>"
+					} else {
+						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'><e style='position:absolute;'>📝</e><e style='position:relative;'>❌</e></button>"
+					}
+				}
+			}
+			function Enter(e) {
+				if (LevsUnlocked.includes(e)) {
+					sessionStorage.setItem("Level",e)
+					window.location = "./PVZoji.html"
+				}
+			}
+		</script>
+	</body>
+</html>
