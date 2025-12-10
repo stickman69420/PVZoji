@@ -969,7 +969,7 @@
 							alert("🏆")
 							LevsUnlocked.push(Number(Level)+1)
 							localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
-							unlocked.push(Unlocks[Number(Level)+1])
+							if (Unlocks[Number(Level)+1] != -1) unlocked.push(Unlocks[Number(Level)+1])
 							localStorage.setItem("Unlocked",JSON.stringify(unlocked))
 							window.location= "./LevelSelect.html"
 						} else {
