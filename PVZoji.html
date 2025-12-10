@@ -72,8 +72,8 @@
 		<div style="position: relative;height: 110px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
 		<e id="Debug"></e><br>
-		<button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">(Gulbre)</button>
-		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">[Gronk]</button>
+		<!--<button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">(Gulbre)</button>
+		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">[Gronk]</button>-->
 		<script src="Definitions.js"></script>
 		<script>
 			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+((Level+1)%10)
@@ -399,7 +399,7 @@
 					WaveHealthO += ZombHealth[e]
 					zombInWave.push(Zid-1)
 				})
-				if (ambushes.isArray()) {
+				if (Array.isArray(ambushes)) {
 					if (ambushes.length > 0) {
 						ambush.forEach((e,ee) => {
 							SpawnZombie(e,ambushes[ee%ambushes.length].col,ambushes[ee%ambushes.length].row)
