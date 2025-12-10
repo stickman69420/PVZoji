@@ -399,13 +399,23 @@
 					WaveHealthO += ZombHealth[e]
 					zombInWave.push(Zid-1)
 				})
-				if (ambushes.length > 0) {
-					ambush.forEach((e,ee) => {
-						SpawnZombie(e,ambushes[ee%ambushes.length].col,ambushes[ee%ambushes.length].row)
-						WaveHealth += ZombHealth[e]
-						WaveHealthO += ZombHealth[e]
+				if (ambushes.isArray()) {
+					if (ambushes.length > 0) {
+						ambush.forEach((e,ee) => {
+							SpawnZombie(e,ambushes[ee%ambushes.length].col,ambushes[ee%ambushes.length].row)
+							WaveHealth += ZombHealth[e]
+							WaveHealthO += ZombHealth[e]
+							zombInWave.push(Zid-1)
+						})
+					}
+				} else {
+					for (let i=0;i<ambushes;i++) {
+						const type = Math.floor(Math.random()*3)*2
+						SpawnZombie(type,ambushes[i%ambushes.length].col,ambushes[i%ambushes.length].row)
+						WaveHealth += ZombHealth[type]
+						WaveHealthO += ZombHealth[type]
 						zombInWave.push(Zid-1)
-					})
+					}
 				}
 				//alert(JSON.stringify(ZombsAllowed)+","+JSON.stringify(ZombsAllowed[Level])+","+Level)
 				while (Premain > 0) {

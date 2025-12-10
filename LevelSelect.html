@@ -84,6 +84,15 @@
 					window.location = "./PVZoji.html"
 				}
 			}
+			Array.from(document.getElementsByClassName("seed")).forEach((eee,ee) => {
+				eee.style.left = 108*(ee%10)*sizePerc+"px"
+				eee.style.top = 150*Math.floor(ee/10)*sizePerc+"px"
+			})
+			Array.from(document.getElementsByClassName("seedDisp")).forEach((ee) => {
+				ee.style.fontSize = ee.dataset.originalSize*sizePerc+"px"
+				ee.style.top = ee.dataset.originalTop*sizePerc+"px"
+				ee.style.left = ee.dataset.originalLeft*sizePerc+"px"
+			})
 		</script>
 	</body>
 </html>
