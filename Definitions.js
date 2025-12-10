@@ -44,7 +44,7 @@
 			let zombInWave = []
 			let ambushes = []
 			if (Level <= 1) {
-				sun = 150
+				sun = 250
 			}
 			
 			//Consts
