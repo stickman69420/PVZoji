@@ -96,7 +96,10 @@
 			}
 			
 			function Menu() {
-				if (confirm("Do you want to  and exit?")) {
+				if (confirm("(The game is paused)\nDo you want to save and exit?")) {
+					savedVars.forEach((e) => {
+						localStorage.setItem(e,JSON.stringify(eval(e)))
+					})
 					window.location = "./index.html"
 				}
 			}
@@ -159,7 +162,7 @@
 			seeds.style.height = 110*sizePerc+"px"
 			Shov.style.left = 817*sizePerc+"px"
 			Shov.style.borderWidth = 5*sizePerc+"px"
-			Shov.style.fontSize = 75*sizePerc+"px"
+			Shov.style.fontSize = 50*sizePerc+"px"
 			Shov.style.width = 75*sizePerc+"px"
 			Shov.style.borderRadius = 75*sizePerc+"px"
 			bartool.style.height = 75*sizePerc+"px"
@@ -409,12 +412,14 @@
 						})
 					}
 				} else {
-					for (let i=0;i<ambushes;i++) {
-						const type = Math.floor(Math.random()*3)*2
-						SpawnZombie(type,ambushes[i%ambushes.length].col,ambushes[i%ambushes.length].row)
-						WaveHealth += ZombHealth[type]
-						WaveHealthO += ZombHealth[type]
-						zombInWave.push(Zid-1)
+					if (ambushes.length > 0) {
+						for (let i=0;i<ambush;i++) {
+							const type = Math.floor(Math.random()*3)*2
+							SpawnZombie(type,ambushes[i%ambushes.length].col,ambushes[i%ambushes.length].row)
+							WaveHealth += ZombHealth[type]
+							WaveHealthO += ZombHealth[type]
+							zombInWave.push(Zid-1)
+						}
 					}
 				}
 				//alert(JSON.stringify(ZombsAllowed)+","+JSON.stringify(ZombsAllowed[Level])+","+Level)
@@ -967,10 +972,15 @@
 							Wave++
 							WaveTime = 1000
 							alert("🏆")
-							LevsUnlocked.push(Number(Level)+1)
-							localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
-							if (Unlocks[Number(Level)+1] != -1) unlocked.push(Unlocks[Number(Level)+1])
-							localStorage.setItem("Unlocked",JSON.stringify(unlocked))
+							if (!LevsUnlocked.includes(Number(Level)+1)) {
+								LevsUnlocked.push(Number(Level)+1)
+								localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
+								if (Unlocks[Number(Level)+1] != -1) unlocked.push(Unlocks[Number(Level)+1])
+								localStorage.setItem("Unlocked",JSON.stringify(unlocked))
+							}
+							savedVars.forEach((e) => {
+								localStorage.removeItem(e)
+							})
 							window.location= "./LevelSelect.html"
 						} else {
 							WaveTime = 27

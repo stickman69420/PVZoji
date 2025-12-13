@@ -93,6 +93,21 @@
 				ee.style.top = ee.dataset.originalTop*sizePerc+"px"
 				ee.style.left = ee.dataset.originalLeft*sizePerc+"px"
 			})
+			if (localStorage.getItem("sun") != undefined) {
+				const lvl = JSON.parse(localStorage.getItem("Level"))
+				if (confirm("You have data saved for level "+(1+Math.floor(lvl/10))+"-"+(lvl%10)+".\nWould you like to resume?")) {
+					sessionStorage.setItem("load", true)
+					window.location = "./PVZoji.html"
+				} else {
+					if(confirm("Delete data for level "+(1+Math.floor(lvl/10))+"-"+(lvl%10)+"?")) {
+						savedVars.forEach((e) => {
+							localStorage.removeItem(e)
+						})
+					} else {
+						window.location = "./Index.html"
+					}
+				}
+			}
 		</script>
 	</body>
 </html>
