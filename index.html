@@ -3,5 +3,19 @@
 	<body>
 		<p>This page is very WI<s style="color:grey;">P</s></p>
 		<a href="./LevelSelect.html">Start</a>
+		<!----><button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">(Gulbre)</button>
+		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">[Gronk]</button>-->
+		<script src="Definitions.js"></script>
+		<script>
+			function clearEverything() {
+				localStorage.clear()
+				location.reload()
+			}
+			function modify() {
+				localStorage.setItem("Levs",prompt("Levels Unlocked",JSON.stringify(LevsUnlocked)))
+				localStorage.setItem("Unlocked",prompt("Unlocked Plants",JSON.stringify(unlocked)))
+				window.location = "./LevelSelect.html"
+			}
+		</script>
 	</body>
 </html>

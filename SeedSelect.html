@@ -1,6 +1,11 @@
 <!doctype HTML>
 <html>
 	<head>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+": "+e.message)
+			});
+		</script>
 		<meta charset="utf-8">
 		<title>Select your seeds</title>
 		<style id="css-output">
@@ -40,7 +45,7 @@
 		<!-- shadow for button that I don't think I will be adding again: box-shadow:inset 5px -5px 5px black, inset -5px -5px 5px black; -->
 		<div style="height:110px;" id="seedSeled"></div>
 		<div style="height:110px;" id="seedSel"></div>
-		<e id="debug"></e>
+		<e id="Debug"></e>
 	<script src="Definitions.js"></script>
 	<script>
 			if (Level == -1) {
@@ -87,8 +92,8 @@
 					e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-					e.style.left = 98.75*(ee%8)*sizePerc+"px"
-					e.style.top = 110*Math.max(Math.floor(ee/8)-1,0)*sizePerc+"px"
+					e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%8)*sizePerc+"px"
+					e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
 					e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
@@ -117,7 +122,7 @@
 			}
 		
 			unlocked.forEach((e) => {
-				seedSel.innerHTML += '<button class="seed" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
+				seedSel.innerHTML += '<button class="seed" data-index="'+98.75*e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
 			})
 		
 			function Deselect(ind) {
@@ -157,8 +162,8 @@
 				}
 			}
 			Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-				e.style.left = 98.75*(ee%8)*sizePerc+"px"
-				e.style.top = 110*Math.max(Math.floor(ee/8)-1,0)*sizePerc+"px"
+				e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%8)*sizePerc+"px"
+				e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
 				e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
