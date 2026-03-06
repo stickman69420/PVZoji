@@ -3,7 +3,7 @@
 	<head>
 		<script>
 			addEventListener("error", (e) => {
-				alert(e.lineno+": "+e.message)
+				alert(e.lineno+": "+e.message)+"\nMain"
 			});
 		</script>
 		<meta charset="utf-8">
@@ -20,7 +20,7 @@
 				position: absolute;
 				top: 0px;
 				height: 110px;
-				width: 89.1px;
+				width: 74.1px;
 				background-color: #CAF9E8;
 				border-color: #8EBB9A;
 				border-width: 5px;
@@ -31,7 +31,7 @@
 				border-color:#9E4122;
 				border-style:solid;
 				border-width:5px;
-				width: 891px;
+				width: 741px;
 			}
 			.packLabel {
 				font-size: 15px;
@@ -69,17 +69,21 @@
 				border-width: 2px;
 				border-color: black;
 			}
+			.sunLabel {
+				height: 15px
+			}
 		</style>
 	</head>
 	<body id="body">
-		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><e id="sunL" style="font-size:50px;">☀️</e><e id="sunC" style="color:white;">50</e><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:655px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:840px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;">🪏</button></div>
-		<canvas id="canvas" width="900" height="500"></canvas>
-		<div style="position: relative;height: 110px;" id="seeds"></div>
+		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:505px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;">🪏</button></div>
+		<canvas style="background-color:#976B42;" id="canvas" width="900" height="600"></canvas>
+		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
 		<e style="line-height:20px;" id="Debug"></e><br>
+		<img id="debug"></ing>
 		<script src="Definitions.js"></script>
 		<script>
-			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+((Level+1)%10)
+			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+(Level%10)+1
 			if (Level == -1) {
 				alert("You need to select a level")
 				window.location = "./LevelSelect.html"
@@ -110,24 +114,30 @@
 				localStorage.setItem("PreSelId",0)
 			}
 			
+			const ispool = Math.abs(29.5-Level) <= 9.5
+			
 			canvas.context = canvas.getContext("2d")
 			
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
 			
-			selected.forEach((e,ee) => {
-				recharge[ee] = InitCharge[e]
-			})
-			let valid = []
-			for (let i=6;i<9;i++) {
-				for (let ii=0;ii<5;ii++) {
-					valid.push([i,ii])
+			if (!saveloaded) {
+				selected.forEach((e,ee) => {
+					recharge[ee] = InitCharge[e]
+				})
+				if (AmbushArea[Math.floor(Level/10)] == true) {
+					let valid = []
+					for (let i=6;i<9;i++) {
+						for (let ii=0;ii<rows;ii++) {
+							valid.push([i,ii])
+						}
+					}
+					for (let i=0;i<AmbushCount[Level][0];i++) {
+						let loc = Math.floor(Math.random()*valid.length)
+						ambushes.push({"col":valid[loc][0],"row":valid[loc][1],"id":Aid})
+						valid.splice(loc,1)
+						Aid++
+					}
 				}
-			}
-			for (let i=0;i<AmbushCount[Level][0];i++) {
-				let loc = Math.floor(Math.random()*valid.length)
-				ambushes.push({"col":valid[loc][0],"row":valid[loc][1],"id":Aid})
-				valid.splice(loc,1)
-				Aid++
 			}
 			
 			//Resize initially
@@ -135,19 +145,20 @@
 			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
 			stylesheet.cssRules[3].style.fontSize = 15*sizePerc+"px"
 			stylesheet.cssRules[3].style.top = -20*sizePerc+"px"
+			stylesheet.cssRules[9].style.height = 15*sizePerc+"px"
 			Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
-				e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+				e.style.left = /*49.375*/37.05-e.length*e.style.fontSize*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
-				e.style.height = (recharge[ee]/Recharges[selected[ee]])*110*sizePerc+"px"
+				e.style.height = (recharge[ee]/Recharges[selected[ee]])*/*110*/83*sizePerc+"px"
 			})
-			stylesheet.cssRules[2].style.width = 891*sizePerc+"px"
+			stylesheet.cssRules[2].style.width = 741*sizePerc+"px"
 			stylesheet.cssRules[2].style.borderWidth = 5*sizePerc+"px"
-			stylesheet.cssRules[1].style.width = 98.75*sizePerc+"px"
-			stylesheet.cssRules[5].style.width = 98.75*sizePerc+"px"
+			stylesheet.cssRules[1].style.width = /*98.75*/74.1*sizePerc+"px"
+			stylesheet.cssRules[5].style.width = /*98.75*/74.1*sizePerc+"px"
 			stylesheet.cssRules[5].style.left = -5*sizePerc+"px"
 			stylesheet.cssRules[5].style.top = -20*sizePerc+"px"
-			stylesheet.cssRules[1].style.height = 110*sizePerc+"px"
+			stylesheet.cssRules[1].style.height = /*110*/89.1*sizePerc+"px"
 			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
 			stylesheet.cssRules[1].style.borderTopWidth = 20*sizePerc+"px"
 			stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
@@ -158,19 +169,19 @@
 			stylesheet.cssRules[8].style.borderRadius = 10*sizePerc+"px"
 			stylesheet.cssRules[8].style.borderWidth = 2*sizePerc+"px"
 			
-			canvas.style.width = 900*sizePerc+"px"
-			seeds.style.height = 110*sizePerc+"px"
-			Shov.style.left = 817*sizePerc+"px"
+			canvas.style.width = 750*sizePerc+"px"
+			seeds.style.height = 83*sizePerc+"px"
+			Shov.style.left = 667*sizePerc+"px"
 			Shov.style.borderWidth = 5*sizePerc+"px"
 			Shov.style.fontSize = 50*sizePerc+"px"
 			Shov.style.width = 75*sizePerc+"px"
 			Shov.style.borderRadius = 75*sizePerc+"px"
 			bartool.style.height = 75*sizePerc+"px"
 			Shov.style.height = 75*sizePerc+"px"
-			sunL.style.fontSize = 50*sizePerc+"px"
+			sunL.style.height = 50*sizePerc+"px"
 			sunC.style.fontSize = 20*sizePerc+"px"
 			LevelProg.style.left = 100*sizePerc+"px"
-			MenBut.style.left = 655*sizePerc+"px"
+			MenBut.style.left = 505*sizePerc+"px"
 			MenBut.style.height = 75*sizePerc+"px"
 			MenBut.style.width = 160*sizePerc+"px"
 			MenBut.style.fontSize = 50*sizePerc+"px"
@@ -189,49 +200,55 @@
 			reloadSeed()
 			function reloadSeed() {
 			selected.forEach((e,ee) => {
-				//let btn = "<e class='seedDisp' data-original-size="+75*plantSize[e][0]+" style='opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
-				let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[e][0]))+" data-original-left="+(75*0.7*(1-plantSize[e][0]))+" data-original-size="+75*plantSize[e][0]+" style='top:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
+				//let btn = "<e class='seedDisp' data-original-size="+57*plantSize[e][0]+" style='opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
+				/*let btn = "<e class='seedDisp' data-original-top="+(57*0.7*(1-plantSize[e][0]))+" data-original-left="+(57*0.7*(1-plantSize[e][0]))+" data-original-size="+57*plantSize[e][0]+" style='top:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
 				for (let i=1;i<plants[e].length;i++) {
-					btn += "<e class='seedDisp' data-original-size="+75*plantSize[e][i]+" data-original-top="+(75*0.7*(1-plantSize[e][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10)+"px;opacity:"+opacity[e][i]+";top:"+(75*0.7*(1-plantSize[e][i]))+"px;font-size:"+75*plantSize[e][i]*sizePerc+"px;'>"+plants[e][i]+"</e>"
-				}
-				btn += "<e style='color:black;' class='packLabel'>☀️"+cost[e]+(special[e].extra ? "/"+(special[e].extra+cost[e]) : "")+"</e>"
-				seeds.innerHTML += '<button style="left:'+98.75*sizePerc*ee+'px;" class="seed" id="B'+ee+'" onClick="Select('+ee+')">'+btn+'<e class="Recharge" id="Re'+ee+'"></e></button>'
+					btn += "<e class='seedDisp' data-original-size="+57*plantSize[e][i]+" data-original-top="+(57*0.7*(1-plantSize[e][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10)+"px;opacity:"+opacity[e][i]+";top:"+(75*0.7*(1-plantSize[e][i]))+"px;font-size:"+75*plantSize[e][i]*sizePerc+"px;'>"+plants[e][i]+"</e>"
+				}*/
+				let btn = '<img class="seedDisp" style="width:83px;height:83px" src="./images/plants/'+plants[e]+'.png" >'
+				btn += "<e style='color:black;' class='packLabel'><img class='sunLabel' src='./images/ui/sun.png'>"+cost[e]+(special[e].extra ? "/"+(special[e].extra+cost[e]) : "")+"</e>"
+				seeds.innerHTML += '<button style="left:'+/*98.75*/74.1*sizePerc*ee+'px;" class="seed" id="B'+ee+'" onClick="Select('+ee+')">'+btn+'<e class="Recharge" id="Re'+ee+'"></e></button>'
 			})
 			Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
-				e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+				e.style.left = /*49.375*/37.05-e.length*e.style.fontSize*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
-				e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+				/*e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
 				e.style.top = e.dataset.originalTop*sizePerc+"px"
-				e.style.left = e.dataset.originalLeft*sizePerc+"px"
+				e.style.left = e.dataset.originalLeft*sizePerc+"px"*/
+				e.style.width=64.1*sizePerc+"px"
+				e.style.height=64.1*sizePerc+"px"
 			})
 			}
 			
-			addEventListener("resize", (e) => {
+			addEventListener("resize", (ee) => {
 				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
 				stylesheet.cssRules[3].style.fontSize = 15*sizePerc+"px"
 				stylesheet.cssRules[3].style.top = -20*sizePerc+"px"
+				stylesheet.cssRules[9].style.height = 15*sizePerc+"px"
 				Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
-					e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
+					e.style.left = 37.05-e.length*e.style.fontSize*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-					e.style.left = 98.75*ee*sizePerc+"px"
+					e.style.left = 74.1*ee*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
-					e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+					/*e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
 					e.style.top = e.dataset.originalTop*sizePerc+"px"
-					e.style.left = e.dataset.originalLeft*sizePerc+"px"
+					e.style.left = e.dataset.originalLeft*sizePerc+"px"*/
+					e.style.width=64.1*sizePerc+"px"
+					e.style.height=64.1*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
-					e.style.height = (recharge[ee]/Recharges[selected[ee]])*110*sizePerc+"px"
+					e.style.height = (recharge[ee]/Recharges[selected[ee]])*83*sizePerc+"px"
 				})
-				stylesheet.cssRules[2].style.width = 891*sizePerc+"px"
+				stylesheet.cssRules[2].style.width = 741*sizePerc+"px"
 				stylesheet.cssRules[2].style.borderWidth = 5*sizePerc+"px"
-				stylesheet.cssRules[1].style.width = 98.75*sizePerc+"px"
-				stylesheet.cssRules[5].style.width = 98.75*sizePerc+"px"
+				stylesheet.cssRules[1].style.width = 74.1*sizePerc+"px"
+				stylesheet.cssRules[5].style.width = 74.1*sizePerc+"px"
 				stylesheet.cssRules[5].style.left = -5*sizePerc+"px"
 				stylesheet.cssRules[5].style.top = -20*sizePerc+"px"
-				stylesheet.cssRules[1].style.height = 110*sizePerc+"px"
+				stylesheet.cssRules[1].style.height = 89.1*sizePerc+"px"
 				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
 				stylesheet.cssRules[1].style.borderTopWidth = 20*sizePerc+"px"
 				stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
@@ -244,18 +261,18 @@
 				stylesheet.cssRules[8].style.borderRadius = 10*sizePerc+"px"
 				stylesheet.cssRules[8].style.borderWidth = 2*sizePerc+"px"
 				
-				canvas.style.width = 900*sizePerc+"px"
-				seeds.style.height = 110*sizePerc+"px"
-				Shov.style.left = 817*sizePerc+"px"
+				canvas.style.width = 750*sizePerc+"px"
+				seeds.style.height = 83*sizePerc+"px"
+				Shov.style.left = 667*sizePerc+"px"
 				Shov.style.borderWidth = 5*sizePerc+"px"
 				Shov.style.fontSize = 50*sizePerc+"px"
 				Shov.style.width = 75*sizePerc+"px"
 				Shov.style.borderRadius = 75*sizePerc+"px"
 				Shov.style.height = 75*sizePerc+"px"
-				sunL.style.fontSize = 50*sizePerc+"px"
+				sunL.style.height = 50*sizePerc+"px"
 				sunC.style.fontSize = 20*sizePerc+"px"
 				LevelProg.style.left = 100*sizePerc+"px"
-				MenBut.style.left = 655*sizePerc+"px"
+				MenBut.style.left = 505*sizePerc+"px"
 				MenBut.style.height = 75*sizePerc+"px"
 				MenBut.style.width = 160*sizePerc+"px"
 				MenBut.style.fontSize = 50*sizePerc+"px"
@@ -273,7 +290,7 @@
 			canvas.addEventListener("click",(e) => {
 				if (select2 == -1) {
 					if (Level==14) {
-						Proj.push({"id":Pid,"damaged":[],"x":e.offsetX,"y":e.offsetY,"type":-1,"vx":0,"vy":0,"size":50,"img":"💥","spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
+						Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2,"y":e.offsetY*1.2,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
 						Pid++
 					}
 				} else {
@@ -285,11 +302,14 @@
 					} else {
 						valid = true
 					}
-					const mouseLoc = [Math.floor(e.offsetX/(100*sizePerc)),Math.floor(e.offsetY/(100*sizePerc))]
+					const mouseLoc = [Math.floor(e.offsetX*1.2/(100*sizePerc)),Math.floor(e.offsetY*1.2/(100*sizePerc))]
+					if (mouseLoc[1] < rows) {
 					ambushes.forEach((ee) => {
-						if (ee.col == mouseLoc[0] && ee.row == mouseLoc[1] && AmbushImg[Math.floor(Level/10)] == "🪦") {
+						if (ee.col == mouseLoc[0] && ee.row == mouseLoc[1] && AmbushArea[Math.floor(Level/10)] == true) {
 							if (special[selected[select2]].grave) {
 								valid = true
+							} else {
+								valid = false
 							}
 						}
 					})
@@ -344,11 +364,11 @@
 					})
 					if (valid && select2 >= 0) {
 						if (Level != 4) {
-							Lawn.push({"id":Lid,"img":[...plants[selected[select2]]],"opacity":[...opacity[selected[select2]]],"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+							Lawn.push({"id":Lid,"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
 							Lid++
 						} else {
-							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":"🍒","spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800]},"value":0})
-							else Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":"🌰","spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":187})
+							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800]},"value":0})
+							else Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
 							Pid++
 						}
 						if (Object.keys(conveyors).includes(Level)) {
@@ -365,9 +385,10 @@
 						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
 					}
 					select2 = -1
+					}
 				}
 				Proj.forEach((ee,eee) => {
-					if(Math.sqrt((ee.x-e.offsetX/sizePerc)**2+(ee.y-e.offsetY/sizePerc)**2) <= ee.size) {
+					if(Math.sqrt((ee.x-e.offsetX*1.2/sizePerc)**2+(ee.y-e.offsetY*1.2/sizePerc)**2) <= ee.size) {
 						if(ee.spec.sun) {
 							if (!Dead.includes(["Proj",ee.id])) {
 								sun += ee.value
@@ -379,12 +400,12 @@
 			})
 			function lanePick() {
 				let vlid = []
-				for (let i=0;i<5;i++) {
+				for (let i=0;i<rows;i++) {
 					if (Mowers[i] || MowerTrigger[i]+3 < Wave) {
 						vlid.push(i)
 					}
 				}
-				return (vlid == 0 ? Math.floor(Math.random()*5) : vlid[Math.floor(Math.random()*vlid.length)])
+				return (vlid == 0 ? Math.floor(Math.random()*rows) : vlid[Math.floor(Math.random()*vlid.length)])
 			}
 			function SpawnZombie(type,col,row) {
 				Zombies.push({"id":Zid,"x":col*100+50,"y":row*100,"type":type,"health":ZombHealth[type],"ovx":-SpdRng[type][0]+Math.random()*(SpdRng[type][1]-SpdRng[type][0]),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[type]))})
@@ -398,6 +419,20 @@
 				let Premain = points
 				//alert(String(Wave)+","+String((Waves[+Hard][Level].length)-1))
 				const final = (Wave == (Waves[+Hard][Level].length)-1)
+				let valid2 = []
+				for (let i=6;i<9;i++) {
+					for (let ii=0;ii<rows;ii++) {
+						valid2.push([i,ii])
+					}
+				}
+				if (AmbushArea[Math.floor(Level/10)] == true) {
+					for (let i=0;i<(AmbushCount[Level][1]-ambushes.length);i++) {
+						let loc = Math.floor(Math.random()*valid2.length)
+						ambushes.push({"col":valid2[loc][0],"row":valid2[loc][1],"id":Aid})
+						valid2.splice(loc,1)
+						Aid++
+					}
+				}
 				if (guaranteed.includes(1)) {
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
@@ -437,13 +472,30 @@
 					WaveHealthO += ZombHealth[e]
 					zombInWave.push(Zid-1)
 				})
-				ambushesRand = []
-				ambushesTemp = [...ambushes]
-				ambushes.forEach((e) => {
-					let ind = Math.floor(Math.random()*ambushesTemp.length)
-					ambushesRand.push(ambushesTemp[ind])
-					ambushesTemp.splice(ind,1)
-				})
+				const amb = AmbushArea[Math.floor(Level/10)]
+				let ambushesRand = []
+				if (amb == true) {
+					ambushesRand = []
+					ambushesTemp = [...ambushes]
+					ambushes.forEach((e) => {
+						let ind = Math.floor(Math.random()*ambushesTemp.length)
+						ambushesRand.push(ambushesTemp[ind])
+						ambushesTemp.splice(ind,1)
+					})
+				} else if (Array.isArray(amb)) {
+					ambushesRand = []
+					ambushesTemp = []
+					for (let i=amb[0];i<amb[2];i++) {
+						for (let j=amb[1];j<amb[3];j++) {
+							ambushesTemp.push([i,j])
+						}
+					}
+					ambushes.forEach((e) => {
+						let ind = Math.floor(Math.random()*ambushesTemp.length)
+						ambushesRand.push(ambushesTemp[ind])
+						ambushesTemp.splice(ind,1)
+					})
+				}
 				if (Array.isArray(ambush)) {
 					if (ambushesRand.length > 0) {
 						ambush.forEach((e,ee) => {
@@ -523,7 +575,7 @@
 				} else if (plt == -2) {
 					select2 = plt
 					document.getElementById("Shov").style.backgroundColor = "#310702"
-					document.getElementById("Shov").style.borderColor = "#81730C"
+					document.getElementById("Shov").style.borderColor = "#82330C"
 				} else if (cost[selected[plt]] <= sun) {
 					if (recharge[plt] <= 0) {
 						select2 = plt
@@ -542,8 +594,8 @@
 				}
 			}
 			setInterval(() => {
-				canvas.context.clearRect(0,0,800,500)
-				for (let i=0;i<5;i++) {
+				canvas.context.clearRect(0,0,900,600)
+				for (let i=0;i<rows;i++) {
 					for (let j=0;j<9;j++) {
 						if ((i+j)%2==0) {
 							canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][0]
@@ -557,18 +609,25 @@
 						canvas.context.strokeRect(j*100+2,i*100+2,96,96)
 					}
 				}
+				if (ispool) {
+					canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][4]
+					canvas.context.fillRect(0,200,900,200)
+				}
 				canvas.context.fillStyle = "#000000"
 				canvas.context.textBaseline = "middle"
 				canvas.context.font = "100px Arial"
 				ambushes.forEach((e) => {
-					canvas.context.fillText(AmbushImg[Math.floor(Level/10)],e.col*100,e.row*100+50)
+					canvas.context.drawImage(preloadedImg[5],e.col*100,e.row*100,100,100)
 				})
 				Obstacles.forEach((e) => {
-					canvas.context.font = (100-(e.time/e.max)*100)+"px Arial"
-					canvas.context.fillText(e.img,e.col*100,e.row*100+50)
-					e.time++
-					if (e.time == e.max) {
-						Dead.push("Obstacles",e.id)
+					//canvas.context.font = (100-(e.time/e.max)*100)+"px Arial"
+					const size = e.time != undefined ? (100-(e.time/e.max)*100) : 100
+					canvas.context.drawImage(preloadedImg[6],e.col*100+(100-size)/2,e.row*100,size,size)
+					if (e.time != undefined) {
+						e.time++
+						if (e.time == e.max) {
+							Dead.push("Obstacles",e.id)
+						}
 					}
 				})
 				Lawn.forEach((e,ind) => {
@@ -576,28 +635,29 @@
 					canvas.context.lineWidth = 1
 					canvas.context.font = "15px Arial"*/
 					//canvas.context.strokeText(JSON.stringify(e),e.col*100,e.row*100)
+					e.size = 100
 					if (e.spec.shrinkOff != undefined) {
-						e.size.forEach((ee,eee) => {
-							e.size[eee] = e.Osize[eee]*(e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff
-						})
+						e.size = 100*((e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
 					}
 					if(e.health > 0) {
-						for (let i=0;i<e.img.length;i++) {
-							canvas.context.font = 100*e.size[i]+"px Arial";
-							canvas.context.globalAlpha = e.opacity[i]
-							if (i == 0) {
-								canvas.context.fillText(e.img[i],e.col*100+(75*0.7*(1-e.size[0]))+i*10,e.row*100+50)
-							} else {
-								canvas.context.fillText(e.img[i],e.col*100+i*10,e.row*100+50)
-							}
+						if (!e.Img || typeof e.Img == "object" || e.previmg != e.img) {
+							let img = new Image()
+							img.src = "./images/plants/"+e.img+".png"
+							e.Img = img
+							e.previmg = e.img
 						}
+						canvas.context.drawImage(e.Img,e.col*100+(100-e.size)/2,e.row*100+(100-e.size)/2,e.size,e.size)
+						/*canvas.context.strokeStyle = "#000000"
+						canvas.context.lineWidth = 1
+						canvas.context.font = "15px Arial"
+						canvas.context.strokeText(e.img,e.col*100,e.row*100)*/
 					}
-					if (!e.spec.night || (Level%20 > 9)) {
 					if(e.health <= 0) {
 						if (!Dead.includes(["Lawn",e.id])) {
 							Dead.push(["Lawn",e.id])
 						}
 					} else {
+					if (!e.spec.night || (Level%20 > 9)) {
 						if (e.spec.hide == undefined) {
 							e.cool-=0.016
 						} else {
@@ -637,7 +697,9 @@
 								e.health -= e.spec.selfD ?? 0
 								for (let i=0;i<(e.spec.count ?? 1);i++) {
 									setTimeout((ee) => {
-										Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50)+projOff[ee.plant][0],"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":Lspeed[ee.plant],"vy":Vspeed[ee.plant],"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":ProjImg[ee.plant],"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+										let img = new Image()
+										img.src = "./images/proj/"+e.projImg+".png"
+										Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50)+projOff[ee.plant][0],"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":Lspeed[ee.plant],"vy":Vspeed[ee.plant],"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 										Pid++
 										if (e.plant == 15) {
 											Obstacles.push({"img":"🕳️","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
@@ -657,7 +719,9 @@
 									e.health -= e.spec.selfD ?? 0
 									for (let i=0;i<(e.spec.count ?? 1);i++) {
 										setTimeout((ee) => {
-											Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50)+projOff[ee.plant][0],"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":Lspeed[ee.plant],"vy":Vspeed[ee.plant],"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":ProjImg[ee.plant],"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+											let img = new Image()
+											img.src = "./images/proj/"+e.projImg+".png"
+											Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50)+projOff[ee.plant][0],"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":Lspeed[ee.plant],"vy":Vspeed[ee.plant],"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 											Pid++
 											if (e.plant == 15) {
 											Obstacles.push({"img":"🕳️","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
@@ -684,8 +748,16 @@
 				Proj.forEach((e,eee) => {
 					e.x += e.vx/60*100
 					e.y += e.vy/60*100
-					canvas.context.font = e.size+"px Arial";
-					canvas.context.fillText(e.img,e.x-e.size/2,e.y)
+					//canvas.context.font = e.size+"px Arial";
+					//canvas.context.strokeText(e.img,e.x-e.size/2,e.y)
+					if (!e.imgsrc) {
+						e.imgsrc = e.img.src
+					}
+					if (typeof e.img == "object") {
+						e.img = new Image()
+						e.img.src = e.imgsrc
+					}
+					canvas.context.drawImage(e.img,e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2,e.size*(e.img.width/e.img.height),e.size)
 					/*canvas.context.fillStyle = "#FF0000"
 					//canvas.context.fillRect(e.x-5,e.y-CollBox[e.type][1]/2,10,CollBox[e.type][1])
 					canvas.context.fillRect(e.x-e.size/2, e.y-CollBox[e.type][1]/2,CollBox[e.type][0],CollBox[e.type][1])*/
@@ -737,7 +809,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":"💥","spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[2],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
@@ -765,7 +837,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":"💥","spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[2],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
@@ -808,11 +880,16 @@
 				})
 				sunC.innerHTML = sun
 				canvas.context.font = "50px Arial";
-				for (let i=0;i<5;i++) {
+				for (let i=0;i<rows;i++) {
 					if (Mowers[i]) {
-						canvas.context.fillText("🚜",-30,i*100+50)
+						if (ispool && shop.pclean && Math.abs(2.5-i) == 0.5) {
+							canvas.context.drawImage(mowerImg[1],-30,i*100+25,50,50)
+						} else {
+							canvas.context.drawImage(mowerImg[0],-30,i*100+25,50,50)
+						}
 					}
 				}
+				Debug.innerHTML = ""
 				Zombies.forEach((e,ee) => {
 					if (e.health > 0) {
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
@@ -822,7 +899,7 @@
 								e.spec.lastSummon = performance.now()
 								e.spec.pattern.forEach((eee,i) => {
 									if (Zombies.findIndex((eeee) => eeee.id === e.spec.links[i]) == -1) {
-										if (e.x+eee[0]*100 < 900 && e.x+eee[0]*100 > -1 && e.y+eee[1]*100 < 500 && e.y+eee[1]*100 > -1) {
+										if (e.x+eee[0]*100 < 900 && e.x+eee[0]*100 > -1 && e.y+eee[1]*100 < rows*100 && e.y+eee[1]*100 > -1) {
 											e.stun = 1
 											setTimeout((r,rr) => {
 												Zombies.push({"id":Zid,"x":r.x+rr[0]*100,"y":r.y+rr[1]*100,"type":e.spec.spawn,"health":ZombHealth[r.spec.spawn],"ovx":-SpdRng[r.spec.spawn][0]+Math.random()*(SpdRng[r.spec.spawn][1]-SpdRng[r.spec.spawn][0]),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[r.spec.spawn]))})
@@ -840,29 +917,39 @@
 							if (Mowers[Math.floor(e.y/100)]) {
 								Mowers[Math.floor(e.y/100)] = false
 								MowerTrigger[Math.floor(e.y/100)] = Wave
-								Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":"🚜","spec":{"pen":-1,"proj":true,"CollBox":[50,100]},"value":10000000})
+								Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100]},"value":10000000})
 								Pid++
-								/*Zombies.forEach((eee) => {
-									if (Math.floor(e.y/100)==Math.floor(eee.y/100)) {
+								Zombies.forEach((eee) => {
+									if (Math.floor(e.y/100)==Math.floor(eee.y/100) && eee.x < 50) {
 										if (!Dead.includes(["Zombies",eee.id])) {
 											if (Level == 14 && Math.random() < 0.15) {
-											Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":"☀️","spec":{"sun":true},"value":75})
+											Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 												Pid++
 											}
 											Dead.push(["Zombies",eee.id])
 										}
 									}
-								})*/
+								})
+							} else {
+								alert("🧟‍♂️\nYou lost")
+								savedVars.forEach((v) => {
+									eval(localStorage.setItem(v,undefined))
+									window.location = "./LevelSelect.html"
+								})
 							}
 						}
-						canvas.context.fillText(Zombs[e.type].base,e.x,e.y+70)
+						//canvas.context.strokeText(Zombs[e.type].base,e.x,e.y+70)
+						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y+25,75,75)
+						/*canvas.context.strokeStyle = "#000000"
+						canvas.context.font = "20px Arial"
+						canvas.context.strokeText(JSON.stringify(Zombs[e.type]),e.x,e.y)*/
 						if (e.spec.snow > 0) {
 							canvas.context.fillStyle = "#0000FF33"
-							canvas.context.fillRect(e.x,e.y+45,50,50)
+							canvas.context.fillRect(e.x,e.y+25,75,75)
 							canvas.context.fillStyle = "#000000FF"
 						}
 						if (e.spec.ice > 0) {
-							canvas.context.fillText("❄️",e.x,e.y+70)
+							canvas.context.drawImage(preloadedImg[3],e.x,e.y+25,75,75)
 						}
 						//canvas.context.fillRect(e.x-5,e.y+65,10,10)
 						let going = true
@@ -872,14 +959,16 @@
 									//head
 									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.headRot*Math.PI/180)
-									canvas.context.fillText(eee.head ?? "",-25,0)
+									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75,75)
 									canvas.context.rotate(-eee.headRot*Math.PI/180)
 									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
+									//canvas.context.drawImage(img2,0,0,75,75)
 									
 									//arm
 									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.armRot*Math.PI/180)
-									canvas.context.fillText(eee.arm ?? "",-25,0)
+									//canvas.context.strokeText(eee.arm ?? "",-25,0)
+									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75,75)
 									canvas.context.rotate(-eee.armRot*Math.PI/180)
 									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
 									
@@ -892,7 +981,7 @@
 							if (e.spec.shields[key] > 0) {
 								canvas.context.translate(e.x+0+(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
 								canvas.context.rotate(value.Rot*Math.PI/180)
-								canvas.context.fillText(value.img ?? "",-25,0)
+								canvas.context.drawImage(value.Img,-25,0,75,75)
 								canvas.context.rotate(-value.Rot*Math.PI/180)
 								canvas.context.translate(-e.x-0-(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
 							}
@@ -901,7 +990,7 @@
 					} else {
 						if (!Dead.includes(["Zombies",e.id])) {
 							if (Level == 14 && Math.random() < 0.15) {
-								Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":"☀️","spec":{"sun":true},"value":75})
+								Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 								Pid++
 							}
 							Dead.push(["Zombies",e.id])
@@ -938,7 +1027,7 @@
 								Dead.push(["Hypnos",e.id])
 							}
 						}
-						canvas.context.fillText(Zombs[e.type].base,e.x,e.y+70)
+						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y+25,75,75)
 						let going = true
 						Zombs[e.type].stages.forEach((eee) => {
 							if (e.health > eee.health && e.spec.action == eee.action) {
@@ -946,14 +1035,14 @@
 									//head
 									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.headRot*Math.PI/180)
-									canvas.context.fillText(eee.head ?? "",-25,0)
+									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75,75)
 									canvas.context.rotate(-eee.headRot*Math.PI/180)
 									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
 									
 									//arm
 									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.armRot*Math.PI/180)
-									canvas.context.fillText(eee.arm ?? "",-25,0)
+									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75,75)
 									canvas.context.rotate(-eee.armRot*Math.PI/180)
 									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
 									
@@ -966,7 +1055,7 @@
 							if (e.spec.shields[key] > 0) {
 								canvas.context.translate(e.x+0-(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
 								canvas.context.rotate(value.Rot*Math.PI/180)
-								canvas.context.fillText(value.img ?? "",-25,0)
+								canvas.context.drawImage(value.Img,-25,0,75,75)
 								canvas.context.rotate(-value.Rot*Math.PI/180)
 								canvas.context.translate(-e.x-0+(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
 							}
@@ -985,7 +1074,7 @@
 					recharge[ee] = Math.max(e-0.016,0)
 				})
 				Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
-					e.style.height = (recharge[ee]/Recharges[selected[ee]])*110*sizePerc+"px"
+					e.style.height = (recharge[ee]/Recharges[selected[ee]])*/*110*/83*sizePerc+"px"
 				})
 				Dead.forEach((e) => {
 					const arr = eval(e[0])
@@ -1002,7 +1091,7 @@
 				canvas.context.translate(115,0)
 				canvas.context.rotate(Math.PI)
 				Waves[+Hard][Level].forEach((e,ee,eee) => {
-					if (e.guaranteed.includes(1)) canvas.context.fillText("🚩",-ee*(200/eee.length),ee >= Wave ? -10 : 10)
+					if (e.guaranteed.includes(1)) canvas.context.drawImage(preloadedImg[7],-ee*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
 				})
 				canvas.context.rotate(Math.PI)
 				canvas.context.translate(-115,0)
@@ -1073,7 +1162,7 @@
 												WaveHealth -= e.health
 											}
 											if (Level == 14 && Math.random() < 0.15) {
-												Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":"☀️","spec":{"sun":true},"value":75})
+												Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 												Pid++
 											}
 											Dead.push(["Zombies",e.id])
@@ -1178,7 +1267,7 @@
 								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
 									ee.spec.shields.front -= 10
 									if (ee.spec.shields.front <= 0) {
-										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
+										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break] ?? {})) {
 											if (key == "speed") {
 												ee.ovx = -(Math.random()*(value[1]-value[0])+value[0])
 											} else {
@@ -1289,7 +1378,7 @@
 			}
 			
 			if (!Object.keys(conveyors).includes(Level) && Level%20 < 10) setInterval(() => {
-				Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":"☀️","spec":{"sun":true,"sky":true,"lifespan":Math.round(Math.random()*500),"Threshold":-900},"value":25})
+				Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":preloadedImg[4],"spec":{"sun":true,"sky":true,"lifespan":Math.round(Math.random()*500),"Threshold":-900},"value":25})
 				Pid++
 			},10000)
 			}

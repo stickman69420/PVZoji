@@ -38,12 +38,15 @@
 				padding: 0px;
 				font-size: 20px;
 			}
+			.sunLabel {
+				height: 15px
+			}
 		</style>
 	</head>
 	<body id="body">
-		<div id="confDiv" style="width:98.75px;height:110px;position:absolute;left:800px;"><button id="conf" style="color:#FEFF00;border-width:0px;border-width:5px;border-color:#5C2C15;border-top-color:#C06737;width:100%;height:100%;background-color:#8F431C;" onclick="Confirm()">Confirm</button></div>
+		<div id="confDiv" style="width:98.75px;height:110px;position:absolute;left:800px;top:110px;"><button id="conf" style="color:#FEFF00;border-width:0px;border-width:5px;border-color:#5C2C15;border-top-color:#C06737;width:100%;height:100%;background-color:#8F431C;" onclick="Confirm()">Confirm</button></div>
 		<!-- shadow for button that I don't think I will be adding again: box-shadow:inset 5px -5px 5px black, inset -5px -5px 5px black; -->
-		<div style="height:110px;" id="seedSeled"></div>
+		<div style="width:987.5px;height:110px;" id="seedSeled"></div>
 		<div style="height:110px;" id="seedSel"></div>
 		<e id="Debug"></e>
 	<script src="Definitions.js"></script>
@@ -68,6 +71,7 @@
 			Array.from(document.getElementsByClassName("packLabel")).forEach((e,ee) => {
 				e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
 			})
+			stylesheet.cssRules[4].style.height = 15*sizePerc+"px"
 			stylesheet.cssRules[1].style.width = 790*sizePerc+"px"
 			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
 			stylesheet.cssRules[0].style.width = 98.75*sizePerc+"px"
@@ -80,6 +84,8 @@
 			confDiv.style.width = 98.75*sizePerc+"px"
 			confDiv.style.height = 110*sizePerc+"px"
 			confDiv.style.left = 800*sizePerc+"px"
+			confDiv.style.top = 110*sizePerc+"px"
+			seedSeled.style.width = 987.5*sizePerc+"px"
 			conf.style.borderWidth = 10*sizePerc+"px"
 			conf.style.fontSize = 17*sizePerc+"px"
 			//conf.style.boxShadow = "inset "+(5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black, inset "+(-5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black"
@@ -96,10 +102,13 @@
 					e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
-					e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+					/*e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
 					e.style.top = e.dataset.originalTop*sizePerc+"px"
-					e.style.left = e.dataset.originalLeft*sizePerc+"px"
+					e.style.left = e.dataset.originalLeft*sizePerc+"px"*/
+					e.style.height = 85*sizePerc+"px"
+					e.style.width = 85*sizePerc+"px"
 				})
+				stylesheet.cssRules[4].style.height = 15*sizePerc+"px"
 				stylesheet.cssRules[1].style.width = 790*sizePerc+"px"
 				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
 				stylesheet.cssRules[0].style.width = 98.75*sizePerc+"px"
@@ -112,6 +121,8 @@
 				confDiv.style.width = 98.75*sizePerc+"px"
 				confDiv.style.height = 110*sizePerc+"px"
 				confDiv.style.left = 800*sizePerc+"px"
+				confDiv.style.top = 110*sizePerc+"px"
+				seedSeled.style.width = 987.5*sizePerc+"px"
 				conf.style.borderWidth = 10*sizePerc+"px"
 				conf.style.fontSize = 17*sizePerc+"px"
 				//conf.style.boxShadow = "inset "+(5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black, inset "+(-5*sizePerc)+"px "+(-5*sizePerc)+"px "+(5*sizePerc)+"px black"
@@ -147,11 +158,12 @@
 				}
 			}
 			function CreatePacket(e) {
-				let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[e][0]))+" data-original-left="+(75*0.7*(1-plantSize[e][0]))+" data-original-size="+75*plantSize[e][0]+" style='top:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
+				/*let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[e][0]))+" data-original-left="+(75*0.7*(1-plantSize[e][0]))+" data-original-size="+75*plantSize[e][0]+" style='top:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[e][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[e][0]+";font-size:"+75*plantSize[e][0]*sizePerc+"px;'>"+plants[e][0]+"</e>"
 				for (let i=1;i<plants[e].length;i++) {
 					btn += "<e class='seedDisp' data-original-size="+75*plantSize[e][i]+" data-original-top="+(75*0.7*(1-plantSize[e][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10*sizePerc)+"px;opacity:"+opacity[e][i]+";top:"+(sizePerc*75*0.7*(1-plantSize[e][i]))+"px;font-size:"+75*plantSize[e][i]*sizePerc+"px;'>"+plants[e][i]+"</e>"
-				}
-				btn += "<e style='color:black;' class='packLabel'>☀️"+cost[e]+(special[e].extra ? ("/"+(special[e].extra+cost[e])) : "")+"</e>"
+				}*/
+				let btn = '<img class="seedDisp" style="width:85px;height:85px" src="./images/plants/'+plants[e]+'.png" ></img>'
+				btn += "<e style='color:black;' class='packLabel'><img class='sunLabel' src='./images/ui/sun.png'>"+cost[e]+(special[e].extra ? ("/"+(special[e].extra+cost[e])) : "")+"</e>"
 				return btn
 			}
 			function Confirm() {
@@ -166,9 +178,11 @@
 				e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
-				e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
+				/*e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
 				e.style.top = e.dataset.originalTop*sizePerc+"px"
-				e.style.left = e.dataset.originalLeft*sizePerc+"px"
+				e.style.left = e.dataset.originalLeft*sizePerc+"px"*/
+				e.style.height = 85*sizePerc+"px"
+				e.style.width = 85*sizePerc+"px"
 			})
 		</script>
 	</body>
