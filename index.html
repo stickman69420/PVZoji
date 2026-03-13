@@ -3,10 +3,14 @@
 	<body>
 		<p>This page is very WI<s style="color:grey;">P</s></p>
 		<a href="./LevelSelect.html">Start</a><br>
+		<a id="almanac" href="">Almanac</a><br>
+		<a id="shopp" href="">Shop</a><br>
 		<!----><button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">(Gulbre)</button>
 		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">[Gronk]</button>-->
 		<script src="Definitions.js"></script>
 		<script>
+			if (LevsUnlocked.includes(14)) almanac.href = "./almanac.html"
+			if (LevsUnlocked.includes(24)) shopp.href = "./Shop.html"
 			function clearEverything() {
 				localStorage.clear()
 				location.reload()

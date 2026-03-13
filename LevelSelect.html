@@ -31,16 +31,33 @@
 				height: 50px;
 				top: -70px;
 			}
+			a {
+				display: block;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: auto;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
 		</style>
 	</head>
 	<body>
+		<a id="returnn" href="./index.html">Return</a>
 		<div style="line-height:160px;width:1080px;height:2240px;" id="levels"></div>
 		<script src="./Definitions.js"></script>
 		<script>
 			addEventListener("error", (e) => {
 				alert(e.lineno+": "+e.message+"\nLS")
 			});
-			
+		</script>
+		<script>
 			const stylesheet = document.getElementById("css-output").sheet
 			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
 			stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
@@ -50,6 +67,7 @@
 			stylesheet.cssRules[2].style.height = 50*sizePerc+"px"
 			stylesheet.cssRules[2].style.top = -70*sizePerc+"px"
 			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+			//returnn.style.width = 1080*sizePerc+"px"
 			
 			addEventListener("resize", (e) => {
 				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
@@ -60,9 +78,10 @@
 				stylesheet.cssRules[1].style.width = 108*sizePerc+"px"
 				stylesheet.cssRules[1].style.height = 150*sizePerc+"px"
 				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+				//returnn.style.width = 1080*sizePerc+"px"
 				Array.from(document.getElementsByClassName("seed")).forEach((eee,ee) => {
 					eee.style.left = 108*(ee%10)*sizePerc+"px"
-					eee.style.top = 150*Math.floor(ee/10)*sizePerc+"px"
+					eee.style.top = returnn.offsetHeight+150*Math.floor(ee/10)*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seedDisp")).forEach((ee) => {
 					/*ee.style.fontSize = ee.dataset.originalSize*sizePerc+"px"
@@ -72,10 +91,10 @@
 					ee.style.width = 98*sizePerc+"px"
 				})
 			})
-			
+			const levsymb = ["note","shovel","almanac","key"]
 			for (let j=0;j<Waves.length;j++) {
 				for (let e=0;e<Waves[j].length;e++) {
-					if (Unlocks[e] != -1) {
+					if (Unlocks[e] >= 0) {
 						/*let btn = "<e class='seedDisp' data-original-top="+(75*0.7*(1-plantSize[Unlocks[e]][0]))+" data-original-left="+(75*0.7*(1-plantSize[Unlocks[e]][0]))+" data-original-size="+75*plantSize[Unlocks[e]][0]+" style='top:"+(75*0.7*(1-plantSize[Unlocks[e]][0])*sizePerc)+"px;left:"+(75*0.7*(1-plantSize[Unlocks[e]][0])*sizePerc)+"px;position:absolute;opacity:"+opacity[Unlocks[e]][0]+";font-size:"+75*plantSize[Unlocks[e]][0]*sizePerc+"px;'>"+plants[Unlocks[e]][0]+"</e>"
 						for (let i=1;i<plants[Unlocks[e]].length;i++) {
 							btn += "<e class='seedDisp' data-original-size="+75*plantSize[Unlocks[e]][i]+" data-original-top="+(75*0.7*(1-plantSize[Unlocks[e]][i]))+" data-original-left="+(i*10)+" style='position:absolute;left:"+(i*10)+"px;opacity:"+opacity[Unlocks[e]][i]+";top:"+(75*0.7*(1-plantSize[Unlocks[e]][i]))+"px;font-size:"+75*plantSize[Unlocks[e]][i]*sizePerc+"px;'>"+plants[Unlocks[e]][i]+"</e>"
@@ -83,9 +102,9 @@
 						let btn = '<img class="seedDisp" style="width:98px;height:98px" src="./images/plants/'+plants[Unlocks[e]]+'.png" ></img>'
 						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'>"+btn+"<e style='position:relative;'>"+(LevsUnlocked.includes(e) ? "" : "<img class='disp' style='position:relative;' src='./images/ui/x.png'>")+"</e></button>"
 					} else if (LevsUnlocked.includes(e)) {
-						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'><img class='disp' src='./images/ui/note.png'></button>"
+						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'><img class='disp' src='./images/ui/"+levsymb[Math.abs(Unlocks[e])-1]+".png'></button>"
 					} else {
-						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'><e style='position:absolute;'><img class='disp' src='./images/ui/note.png'></e><e style='position:relative;'><img class='disp' src='./images/ui/x.png'></e></button>"
+						levels.innerHTML += "<button class='seed' onclick='Enter("+e+")' style='left:"+108*(e%10)+"px;top:"+150*Math.floor(e/10)+"px;'><e style='position:absolute;'><img class='disp' src='./images/ui/"+levsymb[Math.abs(Unlocks[e])-1]+".png'></e><e style='position:relative;'><img class='disp' src='./images/ui/x.png'></e></button>"
 					}
 				}
 			}
@@ -97,7 +116,7 @@
 			}
 			Array.from(document.getElementsByClassName("seed")).forEach((eee,ee) => {
 				eee.style.left = 108*(ee%10)*sizePerc+"px"
-				eee.style.top = 150*Math.floor(ee/10)*sizePerc+"px"
+				eee.style.top = returnn.offsetHeight+150*Math.floor(ee/10)*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("seedDisp")).forEach((ee) => {
 				/*ee.style.fontSize = ee.dataset.originalSize*sizePerc+"px"
@@ -108,11 +127,11 @@
 			})
 			if (localStorage.getItem("sun") != undefined) {
 				const lvl = JSON.parse(localStorage.getItem("Level"))
-				if (confirm("You have data saved for level "+(1+Math.floor(lvl/10))+"-"+(lvl%10)+1+".\nWould you like to resume?")) {
+				if (confirm("You have data saved for level "+(1+Math.floor(lvl/10))+"-"+((lvl%10)+1)+".\nWould you like to resume?")) {
 					sessionStorage.setItem("load",true)
 					window.location = "./PVZoji.html"
 				} else {
-					if(confirm("Delete data for level "+(1+Math.floor(lvl/10))+"-"+(lvl%10)+1+"?")) {
+					if(confirm("Delete data for level "+(1+Math.floor(lvl/10))+"-"+((lvl%10)+1)+"?")) {
 						savedVars.forEach((e) => {
 							localStorage.removeItem(e)
 						})

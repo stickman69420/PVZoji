@@ -3,7 +3,7 @@
 	<head>
 		<script>
 			addEventListener("error", (e) => {
-				alert(e.lineno+": "+e.message)
+				alert(e.lineno+": "+e.message+"\nSS")
 			});
 		</script>
 		<meta charset="utf-8">
@@ -44,7 +44,7 @@
 		</style>
 	</head>
 	<body id="body">
-		<div id="confDiv" style="width:98.75px;height:110px;position:absolute;left:800px;top:110px;"><button id="conf" style="color:#FEFF00;border-width:0px;border-width:5px;border-color:#5C2C15;border-top-color:#C06737;width:100%;height:100%;background-color:#8F431C;" onclick="Confirm()">Confirm</button></div>
+		<div id="confDiv" style="width:98.75px;height:110px;position:absolute;left:800px;top:110px;"><button id="conf" style="color:#FEFF00;border-width:5px;border-color:#5C2C15;border-top-color:#C06737;width:100%;height:100%;background-color:#8F431C;" onclick="Confirm()">Confirm</button></div>
 		<!-- shadow for button that I don't think I will be adding again: box-shadow:inset 5px -5px 5px black, inset -5px -5px 5px black; -->
 		<div style="width:987.5px;height:110px;" id="seedSeled"></div>
 		<div style="height:110px;" id="seedSel"></div>

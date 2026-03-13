@@ -1,0 +1,180 @@
+<!doctype HTML>
+<html>
+	<head>
+		<title>Allmnachk</title>
+		<style id="css-output">
+			div {
+				border: 5px solid #8F431C;
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				padding: 0px;
+				margin: 0px;
+				font-size: 16px;
+			}
+			.big {
+				display: inline-block;
+				width: 50%;
+				height: 100%;
+			}
+			.med {
+				display: block;
+				width: 100%;
+				background-color: #FDBA75//A84712
+			}
+			img {
+				float: left;
+				height: 100%;
+			}
+			.stats {
+				width: 50%;
+				height: 100%;
+				float: right;
+				columns: 2;
+			}
+			button {
+				disolay: inline-block;
+				width: 26px;
+				height: 100%;
+				color: #FEFF00;
+				border-width: 5px;
+				border-color: #5C2C15;
+				border-top-color: #C06737;
+				background-color: #8F431C;
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				float: left;
+				overflow-wrap; break-word;
+				word-wrap: break-word;
+				line-height: 85%;
+			}
+			img {
+				background-color: #A84712
+			}
+			a {
+				display: block;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: auto;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
+		</style>
+	</head>
+	<body style="width:100%;height:100%;margin:0px;padding:0px;background-color:#F2B67B;">
+		<a id="returnn" href="./index.html">Return</a>
+		<div id="plantsA" class="big" style="float:left;">
+		</div>
+		<div id="zombiesA" class="big" style="float:right;">
+		</div>
+		<e id="panel" style="border:2px solid black;background-color:#FDBA75;position:absolute;width:auto;height:auto;visibility:hidden;left:440px;" data-top="-1"></e>
+		<script src="./Definitions.js"></script>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+": "+e.message+"\nACK")
+			});
+		</script>
+		<script>
+			//Resize initially
+			const stylesheet = document.getElementById("css-output").sheet
+			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+			stylesheet.cssRules[2].style.height = /*Math.ceil*/(100*sizePerc)+"px"
+			stylesheet.cssRules[0].style.borderWidth = /*Math.floor*/(5*sizePerc)+"px"
+			stylesheet.cssRules[0].style.fontSize = /*Math.floor*/(16*sizePerc)+"px"
+			stylesheet.cssRules[0].style.lineHeight = /*Math.floor*/(16*sizePerc)+"px"
+			stylesheet.cssRules[5].style.width = 26*sizePerc+"px"
+			stylesheet.cssRules[5].style.borderWidth = 5*sizePerc+"px"
+			stylesheet.cssRules[5].style.fontSize = 12*sizePerc+"px"
+			//panel.style.height = 100*sizePerc+"px"
+			//panel.style.width = 200*sizePerc+"px"
+			panel.style.left = (540-panel.offsetWidth/2)*sizePerc+"px"
+			panel.style.borderWidth = 2*sizePerc+"px"
+			
+			addEventListener("resize", (ee) => {
+				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+				stylesheet.cssRules[2].style.height = /*Math.ceil*/(100*sizePerc)+"px"
+				stylesheet.cssRules[0].style.borderWidth = /*Math.floor*/(5*sizePerc)+"px"
+				stylesheet.cssRules[0].style.fontSize = /*Math.floor*/(16*sizePerc)+"px"
+				stylesheet.cssRules[0].style.lineHeight = /*Math.floor*/(16*sizePerc)+"px"
+				stylesheet.cssRules[5].style.width = 26*sizePerc+"px"
+				stylesheet.cssRules[5].style.borderWidth = 5*sizePerc+"px"
+				stylesheet.cssRules[5].style.fontSize = 12*sizePerc+"px"
+				//panel.style.height = 100*sizePerc+"px"
+				//panel.style.width = 200*sizePerc+"px"
+				panel.style.left = (540-panel.offsetWidth/2)*sizePerc+"px"
+				panel.style.borderWidth = 2*sizePerc+"px"
+				panel.style.top = (Number(panel.dataset.top)+50-panel.offsetHeight/2)*sizePerc+returnn.offsetHeight+"px"
+				Array.from(document.getElementsByClassName("adjust")).forEach((e) => {
+					e.style.fontSize = /*Math.floor*/(e.dataset.originalSize*sizePerc)+"px"
+				})
+			})
+			const plantsDesc = ["Shoots peas at the zombies","Makes sun","Explodes with a short fuse","Blocks zombies","Takes some time to arm and then blows up when a zombie steps on it","Freezes zombies on its tile and can upgrade some plants to inflict cold and sometimes freeze","Eats small-medium zombies and rapidly bites big zombies","Shoots two peas at the zombies","Same damage as a peashooter but with less range","Makes small sun but can upgrade to normal sun later","Fumes can bypass shields and pierce through crowds","Destroys graves","Turns a zombie to your side","Cheap peashooter that hides when zombies are REALLY close","Freezes all zombies on screen","Blows up a large area and leaves a crater","Allows other plants to be placed on water","Squashes all zombies in one tile","Shoots peas into adjacent lanes as well. Peas on the edge bounce"]
+			const specStats = {6:"Bite damage: 40/1s<br>Chomp damage: 1800/42s"}
+			plantsDesc.forEach((e,ee) => {
+				let stats = "Recharge: "+Recharges[ee]+"s<br>Cost: "+cost[ee]+(special[ee].extra ? "/"+special[ee].extra : "")+"<br>"
+				if (special[ee].proj) {
+					stats += "Damage: "+value[ee]+(value[ee] > 0 ? ("/"+fireRate[ee]+"s<br>") : "<br>")
+					if (special[ee].count) stats += special[ee].count+" shots<br>"
+					if (CollBox[ee][0] >= 100 || CollBox[ee][1] >= 100) {
+						stats += "Size: "+CollBox[ee][0]/100+"x"+CollBox[ee][1]/100+"<br>"
+					}
+				} else if (special[ee].sun) {
+					stats += "Sun: "+value[ee]+"/"+fireRate[ee]+"s<br>"
+				}
+				if (plantHealth[ee]-(special[ee].selfD ?? 0) > 300) stats += "Health: "+plantHealth[ee]+"<br>"
+				if (special[ee].ice) stats += "Freeze time: "+special[ee].ice.dur/1000+"s<br>"
+				if (special[ee].snow) stats += "Cool time: "+special[ee].snow/1000+"s<br>"
+				if (special[ee].range != undefined && special[ee].range < 9 && special[ee].range > 0) stats += "Range: "+(special[ee].negRange != undefined && special[ee].negRange > -9 ? -special[ee].negRange+"/" : "")+special[ee].range+"<br>"
+				if (plantHealth[ee]-(special[ee].selfD ?? 0) === 0) stats += "Single use<br>"
+				stats += specStats[ee] ?? ""
+				let newstats = ""
+				stats.split("<br>").forEach((e) => {
+					newstats += "<e class='adjust' data-original-size='"+Math.min(16,16*(15/e.length))+"' style='font-size:"+Math.min(16*sizePerc,16*sizePerc*(15/e.length))+"px'>"+e+"<br></e>"
+				})
+				plantsA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/plants/"+plants[ee]+".png'><div class='stats'>"+newstats+"</div>"+(special[ee].UpgradeType != undefined ? "<button id='upgrade"+ee+"' onclick='openPanel("+ee+")'>Upgrade</button>" : "")+e+"</div>")
+			})
+			const zombsDesc = ["The most basic zombie","Signals a horde approaching","The cone on his head somehow cannot be bypassed","Leaps over the first plant he encounters","The bucket on his head also can't be  bypassed","Runs really fast after you break his paper","Door, while not screen, has the same health and properties of a screen door. Maybe it's a cardboard cover","The football on his head also cannot be bypassed","Summons backup dancers every 3 seconds. All dancers in the same group move at the same speed","Tiny bit faster and weaker than a basic zombie"]
+			const zombSpecStats	= {}
+			zombsDesc.forEach((e,ee) => {
+				let stats = "Health: "+ZombHealth[ee]+"<br>Speed: "+SpdRng[ee][0]+"-"+SpdRng[ee][1]+"t/s<br>"
+				if (ZombSpecial[ee].pool) stats += "Can swim<br>"
+				if (ZombSpecial[ee].pool === 2) stats += "Can't walk<br>"
+				if (ZombSpecial[ee].jump) stats += "Jumps<br>Speed after jump: "+ZombSpecial[ee].AfterSpd[0]+"-"+ZombSpecial[ee].AfterSpd[1]+"t/s<br>"
+				if (ZombSpecial[ee].shields) for (const [key,value] of Object.entries(ZombSpecial[ee].shields)) {
+					const t = ZombSpecial[ee].transform.break
+					stats += key+" shield: "+value+(t ? "<br>Speed after break: "+t.speed[0]+"-"+t.speed[1]+"t/s" : "")+"<br>"
+				}
+				if (ZombSpecial[ee].spawn) stats += "Summons: "+{9:"backup dancer"}[ZombSpecial[ee].spawn]+" x"+ZombSpecial[ee].pattern.length+"<br>"
+				stats += zombSpecStats[ee] ?? ""
+				let newstats = ""
+				stats.split("<br>").forEach((e) => {
+					newstats += "<e class='adjust' data-original-size='"+Math.min(16,16*(15/e.length))+"' style='font-size:"+Math.min(16*sizePerc,16*sizePerc*(15/e.length))+"px'>"+e+"<br></e>"
+				})
+				zombiesA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/zombies/"+["base","flag","cone","pole","bucket","newspaper","door","football","dancer","backup dancer"][ee]+".png'><div class='stats'>"+newstats+"</div>"+e+"</div>")
+			})
+			
+			Array.from(document.getElementsByClassName("adjust")).forEach((e) => {
+				e.style.fontSize = Math.floor(e.dataset.originalSize*sizePerc)+"px"
+			})
+			function openPanel(p) {
+				if (panel.dataset.top != 100*p || panel.style.visibility == "hidden") {
+					panel.dataset.top = 100*p
+					panel.innerHTML = "Plants: "+{5:"Peashooter, Repeater, Threepeater"}[p]+"<br>Effects: <br>"+((special[p].upgradeSpec.ice ? "Freeze: "+special[p].upgradeSpec.ice.dur/1000+"s/"+special[p].upgradeSpec.ice.chance*100+"%<br>" : "")+(special[p].upgradeSpec.snow ? "Cool: "+special[p].upgradeSpec.snow/1000+"s" : ""))
+					panel.style.visibility = "visible"
+					panel.style.left = (540-panel.offsetWidth/2)*sizePerc+"px"
+					panel.style.top = (Number(panel.dataset.top)+50-panel.offsetHeight/2)*sizePerc+returnn.offsetHeight+"px"
+				} else {
+					panel.style.visibility = "hidden"
+				}
+			}
+		</script>
+	</body>
+</html>
