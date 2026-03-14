@@ -141,7 +141,7 @@
 				})
 				plantsA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/plants/"+plants[ee]+".png'><div class='stats'>"+newstats+"</div>"+(special[ee].UpgradeType != undefined ? "<button id='upgrade"+ee+"' onclick='openPanel("+ee+")'>Upgrade</button>" : "")+e+"</div>")
 			})
-			const zombsDesc = ["The most basic zombie","Signals a horde approaching","The cone on his head somehow cannot be bypassed","Leaps over the first plant he encounters","The bucket on his head also can't be  bypassed","Runs really fast after you break his paper","Door, while not screen, has the same health and properties of a screen door. Maybe it's a cardboard cover","The football on his head also cannot be bypassed","Summons backup dancers every 3 seconds. All dancers in the same group move at the same speed","Tiny bit faster and weaker than a basic zombie"]
+			const zombsDesc = ["The most basic zombie","Signals a horde approaching","The cone on his head somehow cannot be bypassed","Leaps over the first plant he encounters","The bucket on his head also can't be  bypassed","Runs really fast after you break his paper","Door, while not screen, has the same health and properties of a screen door. Maybe it's a cardboard cover","The football on his head also cannot be bypassed","Summons backup dancers every 3 seconds. All dancers in the same group move at the same speed","Tiny bit faster and weaker than a basic zombie","Straight shooting plants can't hit it unless it's eating"]
 			const zombSpecStats	= {}
 			zombsDesc.forEach((e,ee) => {
 				let stats = "Health: "+ZombHealth[ee]+"<br>Speed: "+SpdRng[ee][0]+"-"+SpdRng[ee][1]+"t/s<br>"
@@ -158,7 +158,7 @@
 				stats.split("<br>").forEach((e) => {
 					newstats += "<e class='adjust' data-original-size='"+Math.min(16,16*(15/e.length))+"' style='font-size:"+Math.min(16*sizePerc,16*sizePerc*(15/e.length))+"px'>"+e+"<br></e>"
 				})
-				zombiesA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/zombies/"+["base","flag","cone","pole","bucket","newspaper","door","football","dancer","backup dancer"][ee]+".png'><div class='stats'>"+newstats+"</div>"+e+"</div>")
+				zombiesA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/zombies/"+["base","flag","cone","pole","bucket","newspaper","door","football","dancer","backup dancer","snorkel"][ee]+".png'><div class='stats'>"+newstats+"</div>"+e+"</div>")
 			})
 			
 			Array.from(document.getElementsByClassName("adjust")).forEach((e) => {

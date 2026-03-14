@@ -819,7 +819,7 @@
 								}
 							}
 							Zombies.forEach((ee) => {
-								if (!Dead.includes(["Zombies",ee])) {
+								if (!Dead.includes(["Zombies",ee]) && (!e.hidden || e.hitSnork)) {
 									if(e.x-e.size/2 < ee.x+50 && e.x-e.size/2+(e.spec.CollBox ?? CollBox[e.type])[0] > ee.x) {
 										if (Math.abs(ee.y+50-e.y) <= (e.spec.CollBox ?? CollBox[e.type])[1]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										//Debug.innerHTML += ","+Math.abs(ee.y-e.y)+"/"+(e.spec.CollBox ?? CollBox[e.type])[1]/2
@@ -1123,17 +1123,21 @@
 				Dead.forEach((e) => {
 					const arr = eval(e[0])
 					const ind = arr.findIndex((ee) => ee.id == e[1])
+					//if ((arr[ind] ?? {"spec":{"money":false}}).spec.money) alert(JSON.stringify(arr[ind]))
 					if (LevsUnlocked.includes(10)) {
 						if (e[0] == "Zombies") {
 							if (Math.random() < 0.25) {
 								//silver
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[8],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":10})
-							} else if (Math.random() < 0.175) {
+									Pid++
+							} else if (Math.random() < 0.05) {
 								//gold
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[9],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":50})
-							} else if (Math.random() < 0.1) {
+									Pid++
+							} else if (Math.random() < 0.001) {
 								//diamond
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[10],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":1000})
+									Pid++
 							} else if (/*zen garden unlocked && */false && Math.random()<0.1) {
 								//giftbox
 							}
@@ -1207,10 +1211,12 @@
 						e.vx = e.ovx
 					}
 					if ((e.spec.ice ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
+						if (e.hide) e.hidden = true
 						Lawn.forEach((ee) => {
 							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row) {
 								//const g = ee.health
 								if (e.spec.jump) {
+									e.stun = 1
 									e.x = Math.floor(e.x/100)*100
 									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
 									e.spec.jump = false
@@ -1231,6 +1237,7 @@
 											Hypnos.push(e)
 										}
 									}
+									if (e.hide) e.hidden = false
 									e.vx = 0
 									if (e.spec.linked != undefined) {
 										let z = Zombies.find((ee) => ee.id === e.spec.linked)
