@@ -83,6 +83,7 @@
 		<img id="debug"></ing>
 		<script src="Definitions.js"></script>
 		<script>
+			let lose = true
 			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+((Level%10)+1)
 			if (Level == -1) {
 				alert("You need to select a level")
@@ -322,7 +323,7 @@
 						valid = false
 					} else if (select2 >= 0 && special[selected[select2]].water) {
 						valid = ispool && Math.abs(2.5-mouseLoc[1]) <= 0.5
-					} else if (selected[select2] > 0) {
+					} else if (selected[select2] >= 0) {
 						valid = !(special[selected[select2]].grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5)
 					} else {
 						valid = true
@@ -382,7 +383,7 @@
 									}
 								}
 							} else if (ee.spec.under == true) {
-								if (ee.plant != 4) {
+								if (selected[select2] != 4) {
 									valid = 2
 									under = ee.id
 								}
@@ -454,7 +455,7 @@
 				return (vlid == 0 ? vlidrows[Math.floor(Math.random()*vlidrows.length)] : vlid[Math.floor(Math.random()*vlid.length)])
 			}
 			function SpawnZombie(type,col,row) {
-				Zombies.push({"id":Zid,"x":col*100+50,"y":row*100,"type":type,"health":ZombHealth[type],"ovx":-SpdRng[type][0]+Math.random()*(SpdRng[type][1]-SpdRng[type][0]),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[type]))})
+				Zombies.push({"id":Zid,"x":col*100+50,"y":row*100,"type":type,"health":ZombHealth[type]/(Level == 24 ? 4 : 1),"ovx":(-SpdRng[type][0]+Math.random()*(SpdRng[type][1]-SpdRng[type][0]))*(Level == 24 ? 2 : 1),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[type]))})
 				Zid++
 			}
 			function SpawnWave(points, guaranteed, ambush) {
@@ -514,8 +515,8 @@
 				}
 				guaranteed.forEach((e) => {
 					SpawnZombie(e,9,lanePick(e))
-					WaveHealth += ZombHealth[e]
-					WaveHealthO += ZombHealth[e]
+					WaveHealth += ZombHealth[e]/(Level == 24 ? 4 : 1)
+					WaveHealthO += ZombHealth[e]/(Level == 24 ? 4 : 1)
 					zombInWave.push(Zid-1)
 				})
 				const amb = AmbushArea[Math.floor(Level/10)]
@@ -546,8 +547,8 @@
 					if (ambushesRand.length > 0) {
 						ambush.forEach((e,ee) => {
 							SpawnZombie(e,ambushesRand[ee%ambushesRand.length].col,ambushesRand[ee%ambushesRand.length].row)
-							WaveHealth += ZombHealth[e]
-							WaveHealthO += ZombHealth[e]
+							WaveHealth += ZombHealth[e]/(Level == 24 ? 4 : 1)
+							WaveHealthO += ZombHealth[e]/(Level == 24 ? 4 : 1)
 							zombInWave.push(Zid-1)
 						})
 					}
@@ -556,8 +557,8 @@
 						for (let i=0;i<ambush;i++) {
 							const type = Math.floor(Math.random()*3)*2
 							SpawnZombie(type,ambushesRand[i%ambushesRand.length].col,ambushesRand[i%ambushesRand.length].row)
-							WaveHealth += ZombHealth[type]
-							WaveHealthO += ZombHealth[type]
+							WaveHealth += ZombHealth[type]/(Level == 24 ? 4 : 1)
+							WaveHealthO += ZombHealth[type]/(Level == 24 ? 4 : 1)
 							zombInWave.push(Zid-1)
 						}
 					}
@@ -574,8 +575,8 @@
 					})
 					if (WaveDist.length != 0) {
 						const ind = Math.floor(Math.random()*WaveDist.length)
-						WaveHealth += ZombHealth[WaveDist[ind]]
-						WaveHealthO += ZombHealth[WaveDist[ind]]
+						WaveHealth += ZombHealth[WaveDist[ind]]/(Level == 24 ? 4 : 1)
+						WaveHealthO += ZombHealth[WaveDist[ind]]/(Level == 24 ? 4 : 1)
 						SpawnZombie(WaveDist[ind],9,lanePick(WaveDist[ind]))
 						zombInWave.push(Zid-1)
 						Premain -= Points[WaveDist[ind]]
@@ -819,7 +820,7 @@
 								}
 							}
 							Zombies.forEach((ee) => {
-								if (!Dead.includes(["Zombies",ee]) && (!e.hidden || e.hitSnork)) {
+								if (!Dead.includes(["Zombies",ee]) && (!ee.hidden || e.spec.hitSnork)) {
 									if(e.x-e.size/2 < ee.x+50 && e.x-e.size/2+(e.spec.CollBox ?? CollBox[e.type])[0] > ee.x) {
 										if (Math.abs(ee.y+50-e.y) <= (e.spec.CollBox ?? CollBox[e.type])[1]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										//Debug.innerHTML += ","+Math.abs(ee.y-e.y)+"/"+(e.spec.CollBox ?? CollBox[e.type])[1]/2
@@ -975,15 +976,18 @@
 									}
 								})
 							} else {
-								alert("🧟‍♂️\nYou lost")
-								savedVars.forEach((v) => {
-									eval(localStorage.setItem(v,undefined))
+								if (lose) {
+									lose = false
+									alert("🧟‍♂️\nYou lost")
+									savedVars.forEach((v) => {
+										localStorage.removeItem(v)
+									})
 									window.location = "./LevelSelect.html"
-								})
+								}
 							}
 						}
 						//canvas.context.strokeText(Zombs[e.type].base,e.x,e.y+70)
-						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y+25,75,75)
+						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y+25,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.font = "20px Arial"
 						canvas.context.strokeText(JSON.stringify(Zombs[e.type]),e.x,e.y)*/
@@ -1003,7 +1007,7 @@
 									//head
 									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.headRot*Math.PI/180)
-									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75,75)
+									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 									canvas.context.rotate(-eee.headRot*Math.PI/180)
 									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
 									//canvas.context.drawImage(img2,0,0,75,75)
@@ -1012,7 +1016,7 @@
 									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.armRot*Math.PI/180)
 									//canvas.context.strokeText(eee.arm ?? "",-25,0)
-									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75,75)
+									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 									canvas.context.rotate(-eee.armRot*Math.PI/180)
 									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
 									
@@ -1025,7 +1029,7 @@
 							if (e.spec.shields[key] > 0) {
 								canvas.context.translate(e.x+0+(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
 								canvas.context.rotate(value.Rot*Math.PI/180)
-								canvas.context.drawImage(value.Img,-25,0,75,75)
+								canvas.context.drawImage(value.Img,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 								canvas.context.rotate(-value.Rot*Math.PI/180)
 								canvas.context.translate(-e.x-0-(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
 							}
@@ -1211,7 +1215,7 @@
 						e.vx = e.ovx
 					}
 					if ((e.spec.ice ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
-						if (e.hide) e.hidden = true
+						if (e.spec.hide) e.hidden = true
 						Lawn.forEach((ee) => {
 							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row) {
 								//const g = ee.health
@@ -1222,7 +1226,7 @@
 									e.spec.jump = false
 									e.spec.action = false
 								} else {
-									if (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) ee.health -= e.spec.snow > 0 ? 5 : 10
+									if (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
@@ -1237,7 +1241,7 @@
 											Hypnos.push(e)
 										}
 									}
-									if (e.hide) e.hidden = false
+									if (e.spec.hide) e.hidden = false
 									e.vx = 0
 									if (e.spec.linked != undefined) {
 										let z = Zombies.find((ee) => ee.id === e.spec.linked)
@@ -1260,7 +1264,7 @@
 									e.spec.action = false
 								} else {
 								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
-									ee.spec.shields.front -= 10
+									ee.spec.shields.front -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 									if (ee.spec.shields.front <= 0) {
 										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
 											if (key == "speed") {
@@ -1271,7 +1275,7 @@
 										}
 									}  
 								} else {
-									ee.health -= 10
+									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 								}
 								e.vx = 0
 								if (e.spec.linked != undefined) {
@@ -1427,21 +1431,23 @@
 			if (Object.keys(conveyors).includes(Level)) setTimeout(convey,4000)
 			
 			function convey() {
-				let pool = []
-				conveyors[Level].forEach((e) => {
-					if (selected.filter(ee => ee == e).length >= 4) {
-						pool.push(...Array(36).fill(e))
-					} else if (lastPlant == e) {
-						pool.push(...Array(500).fill(e))
-					} else {
-						pool.push(...Array(1000).fill(e))
-					}
-				})
-				//Debug.innerHTML = pool.filter(e => e==2).length+","+pool.filter(e => e==3).length
-				lastPlant = pool[Math.floor(Math.random()*pool.length)]
-				selected.push(lastPlant)
-				seeds.innerHTML = ""
-				reloadSeed()
+				if (selected.length < SeedC) {
+					let pool = []
+					conveyors[Level].forEach((e) => {
+						if (selected.filter(ee => ee == e).length >= 4) {
+							pool.push(...Array(36).fill(e))
+						} else if (lastPlant == e) {
+							pool.push(...Array(500).fill(e))
+						} else {
+							pool.push(...Array(1000).fill(e))
+						}
+					})
+					//Debug.innerHTML = pool.filter(e => e==2).length+","+pool.filter(e => e==3).length
+					lastPlant = pool[Math.floor(Math.random()*pool.length)]
+					selected.push(lastPlant)
+					seeds.innerHTML = ""
+					reloadSeed()
+				}
 				setTimeout(convey,4000+(selected.length > 2 ? 500 : 0)) //Idk man I searched for an entire day and didn't find an answer. I tried measuring it manually and it was very inconsistent because of human error so I'm guessing half a second which is so inconsequential that I don't even know why I'm adding it
 			}
 			
