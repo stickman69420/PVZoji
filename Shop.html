@@ -31,18 +31,27 @@
 		<div id="shopCont"></div>
 		<e id="money">Temporarily disabled</e>
 		<script>
+			//localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+			//localStorage.removeItem("shop")
+			//alert(shop)
 			money.innerHTML = "$"+(localStorage.getItem("money") ?? 0)
-			purchaseables = [{"valid":true,"cost":750,"change":"SeedC","req":6,"set":7,"name":"Seed slot 7"},{"cost":5000,"change":"SeedC","valid":true,"req":7,"set":8,"name":"Seed slot 8"},{"cost":20000,"change":"SeedC","valid":true,"req":8,"set":9,"name":"Seed slot 9"},{"cost":80000,"change":"SeedC","valid":true,"req":9,"set":10,"name":"Seed slot 10"}]
+			purchaseables = [{"valid":true,"cost":750,"change":"SeedC","req":6,"set":7,"name":"Seed slot 7"},{"cost":5000,"change":"SeedC","valid":true,"req":7,"set":8,"name":"Seed slot 8"},{"cost":20000,"change":"SeedC","valid":true,"req":8,"set":9,"name":"Seed slot 9"},{"cost":80000,"change":"SeedC","valid":true,"req":9,"set":10,"name":"Seed slot 10"},{"cost":1000,"change":"shop","ind":"pclean","valid":true,"req":undefined,"set":true,"name":"Pool Cleaners"}]
 			purchaseables.forEach((e,ee) => { /*if (SeedC < 9) {*/
-				if (e.valid && ((e.set != undefined && eval(e.change) == e.req) || (e.app != undefined && !eval(e.change).includes(e.app)))) shopCont.insertAdjacentHTML("beforeend","<button onclick='buy("+ee+")'>"+e.name+"<br>$"+e.cost+"</button>")
+				if (e.valid && ((e.set != undefined && (e.ind ? eval(e.change)[e.ind] : eval(e.change)) == e.req) || (e.app != undefined && !eval(e.change).includes(e.app)))) shopCont.insertAdjacentHTML("beforeend","<button onclick='buy("+ee+")'>"+e.name+"<br>$"+e.cost+"</button>")
 			})
 			function buy(e) {
 				if (purchaseables[e].cost <= (localStorage.getItem("money") ?? 0)) {
 					localStorage.setItem("money",(localStorage.getItem("money") ?? 0)-purchaseables[e].cost)
-					if (purchaseables[e].set != undefined) localStorage.setItem(purchaseables[e].change,purchaseables[e].set)
-					else {
-						eval(purchaseables[e].change).push(purchaseables[e].app)
-						localStorage.setItem(purchaseables[e].change,eval(purchaseables[e].change))
+					if (purchaseables[e].set != undefined) {
+						if (purchaseables[e].ind) {
+							let t = eval(purchaseables[e].change)
+							t[purchaseables[e].ind] = purchaseables[e].set
+							localStorage.setItem(purchaseables[e].change,JSON.stringify(t))
+						} else localStorage.setItem(purchaseables[e].change,purchaseables[e].set)
+					} else {
+						let t = eval(purchaseables[e].change)
+						t.push(purchaseables[e].app)
+						localStorage.setItem(purchaseables[e].change,t)
 					}
 					location.reload()
 				}

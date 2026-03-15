@@ -213,7 +213,7 @@
 								o.health = 0
 								}
 							})
-							Obstacles.push({"img":"🕳️","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
+							Obstacles.push({"img":"hole","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
 							Oid++
 						}
 					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar) ? tar.x : (e.col*100+50)+projOff[e.plant][0],i)
@@ -672,17 +672,30 @@
 					canvas.context.drawImage(preloadedImg[5],e.col*100,e.row*100,100,100)
 				})
 				Obstacles.forEach((e) => {
+					if (!e.Img || typeof e.Img == "object") {
+						e.Img = new Image()
+						e.Img.src = "./images/ui/"+e.img+".png"
+					}
 					//canvas.context.font = (100-(e.time/e.max)*100)+"px Arial"
 					const size = e.time != undefined ? (100-(e.time/e.max)*100) : 100
-					canvas.context.drawImage(preloadedImg[6],e.col*100+(100-size)/2,e.row*100,size,size)
+					canvas.context.drawImage(e.Img,e.col*100+(100-size)/2,e.row*100+(100-size)/2,size,size)
+					if (e.realTime != undefined) {
+						e.realTime++
+						if (e.type == 1 && e.col == 8) {
+							if (e.realTime >= e.last+780) {
+								e.last += 780
+								SpawnZombie(12,9,e.row)
+							}
+						}
+					}
 					if (e.time != undefined) {
 						e.time++
 						if (e.time == e.max) {
-							Dead.push("Obstacles",e.id)
+							Dead.push(["Obstacles",e.id])
 						}
 					}
 				})
-				Debug.innerHTML = ""
+				//Debug.innerHTML = ""
 				Lawn.forEach((e,ind) => {
 					/*canvas.context.strokeStyle = "#000000"
 					canvas.context.lineWidth = 1
@@ -812,6 +825,18 @@
 						}
 					} else {
 						if(e.spec.proj) {
+							if (e.spec.incend) {
+								if (!e.melt) {
+									e.melt = []
+								}
+								Obstacles.forEach((ee) => {
+									if (ee.type == 1 && (!e.melt.includes(ee.id) || e.value == 1800) && ee.col == Math.floor(e.x/100) && ee.row == Math.floor(e.y/100)) {
+										e.melt.push(ee.id)
+										ee.time += e.value
+										ee.time = Math.min(ee.time,ee.max-1)
+									}
+								})
+							}
 							if (e.spec.bounce) {
 								if (e.y < 0) {
 									e.vy = Math.abs(e.vy)
@@ -937,8 +962,29 @@
 				}
 				Zombies.forEach((e,ee) => {
 					if (e.health > 0) {
+						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
 						e.x += (e.vx ?? 0)*100/60
+						if (e.type == 12) {
+							let vid = false
+							Obstacles.forEach((eee) => {
+								if (eee.type == 1 && eee.col == Math.floor(e.x/100) && eee.row == Math.floor(e.y/100)) {
+									vid = true
+								}
+							})
+							if (!vid) {
+								e.health = 0
+							}
+						}
+						if (e.type == 11 && (e.spec.last == undefined || e.x+0 <= e.spec.last)) {
+							e.spec.last = (e.spec.last ?? 1000)-100
+							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0})
+							//alert(JSON.stringify(Obstacles))
+							Oid++
+						}
+						//if (e.spec.iceImm && e.spec.snowImm) Debug.innerHTML = (e.spec.iceImm+","+e.spec.snowImm)
+						if (e.spec.iceImm) e.spec.ice = 0
+						if (e.spec.snowImm) e.spec.snow = 0
 						if (e.spec.spawn) {
 							if (e.x < 850 && performance.now() > e.spec.lastSummon+3000 && (!e.stun || e.stun<0)) {
 								e.spec.lastSummon = performance.now()
@@ -962,8 +1008,10 @@
 							if (Mowers[Math.floor(e.y/100)]) {
 								Mowers[Math.floor(e.y/100)] = false
 								MowerTrigger[Math.floor(e.y/100)] = Wave
-								Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100]},"value":10000000})
-								Pid++
+								if (!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) {
+									Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100]},"value":10000000})
+									Pid++
+								}
 								Zombies.forEach((eee) => {
 									if (Math.floor(e.y/100)==Math.floor(eee.y/100) && eee.x < 50) {
 										if (!Dead.includes(["Zombies",eee.id])) {
@@ -1128,8 +1176,14 @@
 					const arr = eval(e[0])
 					const ind = arr.findIndex((ee) => ee.id == e[1])
 					//if ((arr[ind] ?? {"spec":{"money":false}}).spec.money) alert(JSON.stringify(arr[ind]))
-					if (LevsUnlocked.includes(10)) {
-						if (e[0] == "Zombies") {
+					if (e[0] == "Zombies") {
+						if (arr[ind].type == 12) {
+							for (let i=0;i<4;i++) {
+								SpawnZombie(13,Math.floor(arr[ind].x/100),Math.floor(arr[ind].y/100))
+								Zombies[Zombies.length-1].x += 25*i
+							}
+						}
+						if (LevsUnlocked.includes(10)) {
 							if (Math.random() < 0.25) {
 								//silver
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[8],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":10})
@@ -1211,6 +1265,9 @@
 								}
 							}
 						}
+					} else if (e.spec.decel != undefined) {
+						//Debug.innerHTML = (JSON.stringify(e))
+						e.vx = -e.spec.decel-(-e.spec.ocel-e.spec.decel)/900*(e.x)
 					} else {
 						e.vx = e.ovx
 					}
@@ -1275,7 +1332,12 @@
 										}
 									}  
 								} else {
-									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									if (e.spec.crush != undefined) {
+										e.stun = e.spec.crush
+										setTimeout((p) => {
+											ee.health -= 300
+										},e.spec.crush,ee)
+									} else ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 								}
 								e.vx = 0
 								if (e.spec.linked != undefined) {
