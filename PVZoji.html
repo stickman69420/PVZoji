@@ -364,6 +364,9 @@
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradePush) ?? {})) {
 										ee[key].push(value)
 									}
+									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSet) ?? {})) {
+										ee[key] = value
+									}
 									if (Object.keys(conveyors).includes(Level)) {
 										selected.splice(select2,1)
 										seeds.innerHTML = ""
@@ -830,7 +833,7 @@
 									e.melt = []
 								}
 								Obstacles.forEach((ee) => {
-									if (ee.type == 1 && (!e.melt.includes(ee.id) || e.value == 1800) && ee.col == Math.floor(e.x/100) && ee.row == Math.floor(e.y/100)) {
+									if (ee.type == 1 && (!e.melt.includes(ee.id) || e.value == 1800) && ee.col-Math.floor(e.x/100) <= (e.spec.CollBox ?? CollBox[e.type])[0]/200 && ee.row == Math.floor(e.y/100)) {
 										e.melt.push(ee.id)
 										ee.time += e.value
 										ee.time = Math.min(ee.time,ee.max-1)
@@ -905,11 +908,15 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[2],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[2],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
 															WaveHealth -= Math.min(ee.health,e.value)
+														}
+														if (e.spec.incend) {
+															ee.spec.snow = 0
+															ee.spec.ice = 0
 														}
 														if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
 														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = e.spec.ice.dur
@@ -1274,16 +1281,28 @@
 					if ((e.spec.ice ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
 						if (e.spec.hide) e.hidden = true
 						Lawn.forEach((ee) => {
-							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row) {
+							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined))) {
 								//const g = ee.health
-								if (e.spec.jump) {
+								if (e.spec.jump && !ee.spec.noColl) {
 									e.stun = 1
-									e.x = Math.floor(e.x/100)*100
+									if (!ee.spec.tall) e.x = Math.floor(e.x/100)*100
 									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
 									e.spec.jump = false
 									e.spec.action = false
 								} else {
-									if (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									if (e.spec.crush != undefined) {
+										e.stun = e.spec.crush
+										if (e.spec.vehicle && ee.spec.popTire) {
+											if (zombInWave.includes(e.id)) {
+												WaveHealth -= e.health
+											}
+											e.health = 0
+										}
+										setTimeout((p) => {
+											ee.health = 0
+										},e.spec.crush,ee)
+									} else if (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) {
+									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
@@ -1310,6 +1329,7 @@
 										}
 									}
 								}
+								}
 							}
 						})
 						Hypnos.forEach((ee) => {
@@ -1335,7 +1355,7 @@
 									if (e.spec.crush != undefined) {
 										e.stun = e.spec.crush
 										setTimeout((p) => {
-											ee.health -= 300
+											ee.health = 0
 										},e.spec.crush,ee)
 									} else ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 								}
