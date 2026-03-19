@@ -117,8 +117,8 @@
 					e.style.fontSize = /*Math.floor*/(e.dataset.originalSize*sizePerc)+"px"
 				})
 			})
-			const plantsDesc = ["Shoots peas at the zombies","Makes sun","Explodes with a short fuse","Blocks zombies","Takes some time to arm and then blows up when a zombie steps on it","Freezes zombies on its tile and can upgrade some plants to inflict cold and sometimes freeze","Eats small-medium zombies and rapidly bites big zombies","Shoots two peas at the zombies","Same damage as a peashooter but with less range","Makes small sun but can upgrade to normal sun later","Fumes can bypass shields and pierce through crowds","Destroys graves","Turns a zombie to your side","Cheap peashooter that hides when zombies are REALLY close","Freezes all zombies on screen","Blows up a large area and leaves a crater","Allows other plants to be placed on water","Squashes all zombies in one tile","Shoots peas into adjacent lanes as well. Peas on the edge bounce","Kills one water zombie","Incinerates the whole lane and melts ice","Deals rapid damage that bypasses shields and can destory vehicles instantly","unleashes 3 circular barrrages of fire. Can upgrade some plants to deal double damage and thaw","Blocks jumping zombies and has high health"]
-			const specStats = {6:"Bite damage: 40/1s<br>Chomp damage: 1800/42s"}
+			const plantsDesc = ["Shoots peas at the zombies","Makes sun","Explodes with a short fuse","Blocks zombies","Takes some time to arm and then blows up when a zombie steps on it","Freezes zombies on its tile and can upgrade some plants to inflict cold and sometimes freeze","Eats small-medium zombies and rapidly bites big zombies","Shoots two peas at the zombies","Same damage as a peashooter but with less range","Makes small sun but can upgrade to normal sun later","Fumes can bypass shields and pierce through crowds","Destroys graves","Turns a zombie to your side","Cheap peashooter that hides when zombies are REALLY close","Freezes all zombies on screen","Blows up a large area and leaves a crater","Allows other plants to be placed on water","Squashes all zombies in one tile","Shoots peas into adjacent lanes as well. Peas on the edge bounce","Kills one water zombie","Incinerates the whole lane and melts ice","Deals rapid damage that bypasses shields and can destory vehicles instantly","Unleashes 3 circular barrrages of fire. Can upgrade some plants to deal double damage and thaw","Blocks jumping zombies and has high health","Puff shroom but wet. Has a longer recharge than puff shroom but shorter than the original game","Clears fog","Pops balloons. Fires slightly faster than the original and can pierce","Kills all flying zombies and clears fog. Disappears after 24 seconds rather than 2 so you can place on top of it","Fires 2 peas backwards and 1 forward","Fires in 5 directions. Fires constantly since line detection are difficult, okay?","Protects plants without taking up extra space","Steals metal objects"]
+			const specStats = {6:"Bite damage: 40/1s<br>Chomp damage: 1800/42s",27:"Lasts 24s<br>Can place on top of",31:"Steals 1/24s"}
 			plantsDesc.forEach((e,ee) => {
 				let stats = "Recharge: "+Recharges[ee]+"s<br>Cost: "+cost[ee]+(special[ee].extra ? "/"+special[ee].extra : "")+"<br>"
 				if (special[ee].proj) {
@@ -130,11 +130,13 @@
 				} else if (special[ee].sun) {
 					stats += "Sun: "+value[ee]+"/"+fireRate[ee]+"s<br>"
 				}
-				if (plantHealth[ee]-(special[ee].selfD ?? 0) > 300) stats += "Health: "+plantHealth[ee]+"<br>"
+				if (plantHealth[ee] != 300 && (special[ee].selfD ?? 0) == 0) stats += "Health: "+plantHealth[ee]+"<br>"
 				if (special[ee].ice) stats += "Freeze time: "+special[ee].ice.dur/1000+"s<br>"
 				if (special[ee].snow) stats += "Cool time: "+special[ee].snow/1000+"s<br>"
 				if (special[ee].range != undefined && special[ee].range < 9 && special[ee].range > 0) stats += "Range: "+(special[ee].negRange != undefined && special[ee].negRange > -9 ? -special[ee].negRange+"/" : "")+special[ee].range+"<br>"
 				if (plantHealth[ee]-(special[ee].selfD ?? 0) === 0) stats += "Single use<br>"
+				else if ((special[ee].selfD ?? 0) != 0) stats += Math.ceil(plantHealth[ee]/(special[ee].selfD ?? 0))+" uses<br>"
+				if (special[ee].light) stats += special[ee].light[0]+"x"+special[ee].light[1]+" fog clearing<br>"
 				stats += specStats[ee] ?? ""
 				let newstats = ""
 				stats.split("<br>").forEach((e) => {
@@ -142,8 +144,8 @@
 				})
 				plantsA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/plants/"+plants[ee]+".png'><div class='stats'>"+newstats+"</div>"+(special[ee].UpgradeType != undefined ? "<button id='upgrade"+ee+"' onclick='openPanel("+ee+")'>Upgrade</button>" : "")+e+"</div>")
 			})
-			const zombsDesc = ["The most basic zombie","Signals a horde approaching","The cone on his head somehow cannot be bypassed","Leaps over the first plant he encounters","The bucket on his head also can't be  bypassed","Runs really fast after you break his paper","Door, while not screen, has the same health and properties of a screen door. Maybe it's a cardboard cover","The football on his head also cannot be bypassed","Summons backup dancers every 3 seconds. All dancers in the same group move at the same speed","Tiny bit faster and weaker than a basic zombie","Straight shooting plants can't hit it unless it's eating","High health, crushes plants, slows down over time, and leaves ice trails behind","Spawns every 13 seconds from ice trails. Releases 4 bobsled zombies when destroyed","Basically a basic zombie","Wet and fast pole vaulter"]
-			const zombSpecStats	= {}
+			const zombsDesc = ["The most basic zombie","Signals a horde approaching","The cone on his head somehow cannot be bypassed","Leaps over the first plant he encounters","The bucket on his head also can't be bypassed","Runs really fast after you break his paper","Door, while not screen, has the same health and properties of a screen door. Maybe it's a cardboard cover","The football on his head also cannot be bypassed","Summons backup dancers every 3 seconds. All dancers in the same group move at the same speed","Tiny bit faster and weaker than a basic zombie","Straight shooting plants can't hit it unless it's eating","High health, crushes plants, slows down over time, and leaves ice trails behind","Spawns every 13 seconds from ice trails. Releases 4 bobsled zombies when destroyed","Basically a basic zombie","Wet and fast pole vaulter","Explodes semi-randomly and destroys most plants in a 3x3","Can't be hit by most plants until you hit its balloon","Digs under your defences and destroys them from behind","Jumps over all your plants"]
+			const zombSpecStats	= {16:"Can't swim after balloon pops"}
 			zombsDesc.forEach((e,ee) => {
 				let stats = "Health: "+ZombHealth[ee]+"<br>Speed: "+SpdRng[ee][0]+"-"+SpdRng[ee][1]+"t/s<br>"
 				if (ZombSpecial[ee].pool) stats += "Can swim<br>"
@@ -154,12 +156,13 @@
 					stats += key+" shield: "+value+(t ? "<br>Speed after break: "+t.speed[0]+"-"+t.speed[1]+"t/s" : "")+"<br>"
 				}
 				if (ZombSpecial[ee].spawn) stats += "Summons: "+{9:"backup dancer"}[ZombSpecial[ee].spawn]+" x"+ZombSpecial[ee].pattern.length+"<br>"
+				if (ZombSpecial[ee].metal) stats += "Weak to magnet<br>"
 				stats += zombSpecStats[ee] ?? ""
 				let newstats = ""
 				stats.split("<br>").forEach((e) => {
 					newstats += "<e class='adjust' data-original-size='"+Math.min(16,16*(15/e.length))+"' style='font-size:"+Math.min(16*sizePerc,16*sizePerc*(15/e.length))+"px'>"+e+"<br></e>"
 				})
-				zombiesA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/zombies/"+["base","flag","cone","pole","bucket","newspaper","door","football","dancer","backup dancer","snorkel","zomboni","bobsled team","bobsled","dolphin"][ee]+".png'><div class='stats'>"+newstats+"</div>"+e+"</div>")
+				zombiesA.insertAdjacentHTML("beforeend","<div class='med'><img src='./images/zombies/"+["base","flag","cone","pole","bucket","newspaper","door","football","dancer","backup dancer","snorkel","zomboni","bobsled team","bobsled","dolphin","box","balloon","pickaxe","pogo"][ee]+".png'><div class='stats'>"+newstats+"</div>"+e+"</div>")
 			})
 			
 			Array.from(document.getElementsByClassName("adjust")).forEach((e) => {
@@ -168,7 +171,7 @@
 			function openPanel(p) {
 				if (panel.dataset.top != 100*p || panel.style.visibility == "hidden") {
 					panel.dataset.top = 100*p
-					panel.innerHTML = "Plants: "+{5:"Peashooter, Repeater, Threepeater",22:"Peashooter, Repeater, Threepeater"}[p]+"<br>Effects: <br>"+(((special[p].upgradeSpec ?? {}).ice ? "Freeze: "+special[p].upgradeSpec.ice.dur/1000+"s/"+special[p].upgradeSpec.ice.chance*100+"%<br>" : "")+((special[p].upgradeSpec ?? {}).snow ? "Cool: "+special[p].upgradeSpec.snow/1000+"s" : "")+((special[p].upgradeSpec ?? {}).incend ? "Incendiary: true<br>" : ""))+((special[p].upgradeSet ?? {}).value ? "Damage: "+special[p].upgradeSet.value+"<br>" : "")
+					panel.innerHTML = "Plants: "+{5:"Peashooter, Repeater, Threepeater",22:"Peashooter, Repeater, Threepeater"}[p]+"<br>Effects: <br>"+(((special[p].upgradeSpec ?? {}).ice ? "Freeze: "+special[p].upgradeSpec.ice.dur/1000+"s/"+special[p].upgradeSpec.ice.chance*100+"%<br>" : "")+((special[p].upgradeSpec ?? {}).snow ? "Cool: "+special[p].upgradeSpec.snow/1000+"s" : "")+((special[p].upgradeSpec ?? {}).incend ? "Incendiary: true<br>" : ""))+((special[p].upgradeSet ?? {}).value ? "Damage: "+special[p].upgradeSet.value+"<br>" : "")+((special[p].upgradeSpec ?? {}).explode ? "Explosion: "+(special[p].upgradeSpec.explode[0]/100)+"x"+(special[p].upgradeSpec.explode[1]/100)+","+(special[p].upgradeSpec.explode[2])+"<br>" : "")
 					panel.style.visibility = "visible"
 					panel.style.left = (540-panel.offsetWidth/2)*sizePerc+"px"
 					panel.style.top = (Number(panel.dataset.top)+50-panel.offsetHeight/2)*sizePerc+returnn.offsetHeight+"px"

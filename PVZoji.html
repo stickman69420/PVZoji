@@ -84,6 +84,7 @@
 		<script src="Definitions.js"></script>
 		<script>
 			let lose = true
+			let lning = 0
 			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+((Level%10)+1)
 			if (Level == -1) {
 				alert("You need to select a level")
@@ -114,8 +115,6 @@
 			} else {
 				localStorage.setItem("PreSelId",0)
 			}
-			
-			const ispool = Math.abs(29.5-Level) <= 9.5
 			
 			canvas.context = canvas.getContext("2d")
 			
@@ -204,7 +203,7 @@
 				for (let i=0;i<(e.spec.count ?? 1);i++) {
 					setTimeout((ee,eee,j) => {
 						let img = new Image()
-						img.src = "./images/proj/"+e.projImg+".png"
+						img.src = "./images/proj/"+ee.projImg+".png"
 						Proj.push({"id":Pid,"damaged":[],"x":eee,"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":(Array.isArray(Lspeed[ee.plant]) ? Lspeed[ee.plant][j] : Lspeed[ee.plant]),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
@@ -216,7 +215,7 @@
 							Obstacles.push({"img":"hole","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
 							Oid++
 						}
-					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar) ? tar.x : (e.col*100+50)+projOff[e.plant][0],i)
+					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar) ? tar.x+projOff[e.plant][0] : (e.col*100+50)+projOff[e.plant][0],i)
 				}
 			}
 			reloadSeed()
@@ -317,7 +316,7 @@
 					}
 				} else {
 					let valid
-					let under
+					let other
 					const mouseLoc = [Math.floor(e.offsetX*1.2/(100*sizePerc)),Math.floor(e.offsetY*1.2/(100*sizePerc))]
 					if (select2 >= 0 && special[selected[select2]].upgrade == 2) {
 						valid = false
@@ -344,7 +343,11 @@
 						}
 					})
 					Lawn.forEach((ee,eee) => {
-						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0]) {
+						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder) {
+							if (select2 >= 0 && special[selected[select2]].out) {
+								other = ee.id
+								valid = 4
+							}else{
 							if (select2 == -2) {
 								if (!Dead.includes(["Lawn",ee.id])) {
 									Dead.push(["Lawn",ee.id])
@@ -385,20 +388,33 @@
 										},200*i+100)
 									}
 								}
+							} else if (ee.spec.out == true) {
+								valid = 3
+								other = ee.id
 							} else if (ee.spec.under == true) {
-								if (selected[select2] != 4) {
+								if ((selected[select2] != 4 || ee.type != 16) && selected[select2] != 21) {
 									valid = 2
-									under = ee.id
+									other = ee.id
 								}
 							} else {
 								valid = false
 							}
 						}
+						}
 					})
 					if (valid && select2 >= 0) {
 						if (Level != 4) {
 							Lawn.push({"id":Lid,"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
-							if (valid === 2) Lawn.find(ee => ee.id === under).spec.above = Lid
+							if (valid === 2) Lawn.find(ee => ee.id === other).spec.above = Lid
+							if (valid === 3) {
+								const p1 = Lawn.length-1
+								const p2 = Lawn.findIndex(ee => ee.id === other)
+								Lawn[p1].spec.in = other;
+								[Lawn[p1], Lawn[p2]] = [Lawn[p2], Lawn[p1]];
+							}
+							if (valid === 4) {
+								Lawn.find(ee => ee.id === other).spec.in = Lid
+							}
 							Lid++
 						} else {
 							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0]},"value":0})
@@ -459,6 +475,9 @@
 			}
 			function SpawnZombie(type,col,row) {
 				Zombies.push({"id":Zid,"x":col*100+50,"y":row*100,"type":type,"health":ZombHealth[type]/(Level == 24 ? 4 : 1),"ovx":(-SpdRng[type][0]+Math.random()*(SpdRng[type][1]-SpdRng[type][0]))*(Level == 24 ? 2 : 1),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[type]))})
+				if (type == 15) {
+					Zombies[Zombies.length-1].spec.threshold = Math.random() < 0.05 ? (4.4+Math.random()*3.14) : (13.22+Math.random()*9.46)
+				}
 				Zid++
 			}
 			function SpawnWave(points, guaranteed, ambush) {
@@ -614,6 +633,10 @@
 			Lid++
 			Lawn.push({"id":Lid,"projImg":ProjImg[15],"img":plants[15],"spec":JSON.parse(JSON.stringify(special[15])),"plant":15,"row":3,"col":3,"cool":fireRate[15]-fireOff[15],"health": plantHealth[15]})
 			Lid++*/
+			//SpawnZombie(15,9,1)
+			//SpawnWave(0,[15,15,15,15,15,15,15,15,15],[])
+			//SpawnZombie(16,9,1)
+			//SpawnZombie(17,9,1)
 			
 			function Select(plt) {
 				if (select2 != -1) {
@@ -649,6 +672,8 @@
 				}
 			}
 			setInterval(() => {
+				recharge = [0,0,0,0,0,0,0,0,0,0,0]
+				sun = Infinity
 				canvas.context.clearRect(0,0,900,600)
 				for (let i=0;i<rows;i++) {
 					for (let j=0;j<9;j++) {
@@ -767,15 +792,23 @@
 							}
 							if ((e.spec.proj || e.spec.sun) && e.spec.range == -1) {
 								plantFires(e,undefined)
-							} else if (e.spec.proj || e.spec.sun || e.plant == 6) {
+							} else if (e.spec.proj || e.spec.sun || e.plant == 6 || e.plant == 31) {
+								let fly = false
 								let fire = false
 								let tar = {"x":10000}
 								Zombies.forEach((ee) => {
+									//if (e.spec.metal) Debug.innerHTML += JSON.stringify(Object.keys(ee.spec))+","
 									const dist = (ee.x-e.col*100)/100
 									//Debug.innerHTML += (dist <= e.spec.range)+","+(dist > -(e.spec.negRange ?? 0))+","+dist+","+(e.spec.negRange ?? 0)+","+(Math.abs(Math.floor(ee.y/100)-e.row) <= (e.spec.vRange/2 ?? 0.5))+","+(Math.abs(Math.floor(ee.y/100)-e.row))+","+(e.spec.vRange/2 || 0.5)+"-"
 									if (dist <= e.spec.range && dist > -(e.spec.negRange ?? 0) && Math.abs(Math.floor(ee.y/100)-e.row) <= (e.spec.vRange/2 || 0.5)) {
-										fire = true
-										if(tar.x > ee.x) tar = ee
+										if (ee.spec.metal || !e.spec.metal) {
+											if (ee.spec.flying && e.spec.flight) {
+												fly = true
+												tar = ee
+											}
+											fire = true
+											if(tar.x > ee.x && !fly) tar = ee
+										}
 									}
 								})
 								if (fire) {
@@ -788,7 +821,16 @@
 											tar.health -= 40
 											e.cool = 1
 										}
+									} else if (e.plant == 31) {
+										//steal
+										let t = tar
+										eval(tar.spec.metal)
+										tar.spec.metal = undefined
+										//alert(JSON.stringify(tar))
 									} else {
+										if (e.spec.flight == 1) {
+											e.spec.flying = fly
+										}
 										plantFires(e,tar)
 									}
 								}
@@ -849,7 +891,7 @@
 								}
 							}
 							Zombies.forEach((ee) => {
-								if (!Dead.includes(["Zombies",ee]) && (!ee.hidden || e.spec.hitSnork)) {
+								if (!Dead.includes(["Zombies",ee]) && (!ee.hidden || e.spec.hitSnork) && !e.spec.flying == !ee.spec.flying) {
 									if(e.x-e.size/2 < ee.x+50 && e.x-e.size/2+(e.spec.CollBox ?? CollBox[e.type])[0] > ee.x) {
 										if (Math.abs(ee.y+50-e.y) <= (e.spec.CollBox ?? CollBox[e.type])[1]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										//Debug.innerHTML += ","+Math.abs(ee.y-e.y)+"/"+(e.spec.CollBox ?? CollBox[e.type])[1]/2
@@ -858,7 +900,7 @@
 												if (Math.abs(e.vx) > Math.abs(e.vy) && e.vx > 0 && (ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
 													if (e.spec.pen != undefined && e.spec.pen != 0) {
 														he = true
-														if (e.spec.pen != undefined) {
+														if (e.spec.pen != undefined && (!e.spec.damageOnce || !e.damaged.includes(ee.id))) {
 															e.spec.pen--
 															if(e.spec.pen == 0) {
 																if (!Dead.includes(["Proj",e.id])) {
@@ -929,7 +971,7 @@
 													if (!Dead.includes(["Proj",e.id])) {
 														Dead.push(["Proj",e.id])
 													}
-												} else {
+												} else if (!e.spec.damageOnce || !e.damaged.includes(ee.id)) {
 													e.spec.pen--
 													if(e.spec.pen == 0) {
 														if (!Dead.includes(["Proj",e.id])) {
@@ -968,8 +1010,26 @@
 						}
 					}
 				}
+				//Debug.innerHTML = ""
 				Zombies.forEach((e,ee) => {
 					if (e.health > 0) {
+						if (e.spec.timer != undefined) {
+							e.spec.timer += 0.016
+							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
+							if (e.spec.timer >= e.spec.threshold && e.type == 15) {
+								e.stun = 1.1
+								if (e.spec.timer >= e.spec.threshold+1.1) {
+									const c = Math.floor(e.x/100)
+									const r = Math.floor(e.y/100)
+									Lawn.filter(l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5).forEach((eee) => {
+										eee.health -= 1800
+									})
+									Proj.push({"id":Pid,"damaged":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+									Pid++
+									e.health = 0
+								}
+							}
+						}
 						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
 						e.x += (e.vx ?? 0)*100/60
@@ -1013,7 +1073,14 @@
 							}
 						}
 						if (e.x <= 0) {
-							if (Mowers[Math.floor(e.y/100)]) {
+							if (e.type == 17) {
+								e.x = 1
+								e.spec.action = false
+								e.ovx = -e.spec.AfterSpd[0]+Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])
+								e.spec.noColl = false
+								e.hidden = false
+								e.stun = 2
+							} else if (Mowers[Math.floor(e.y/100)]) {
 								Mowers[Math.floor(e.y/100)] = false
 								MowerTrigger[Math.floor(e.y/100)] = Wave
 								if (!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) {
@@ -1060,6 +1127,7 @@
 						Zombs[e.type].stages.forEach((eee) => {
 							if (e.health > eee.health && e.spec.action == eee.action) {
 								if (going) {
+									//Debug.innerHTML += e.health+","+eee.health+"-"
 									//head
 									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.headRot*Math.PI/180)
@@ -1075,6 +1143,9 @@
 									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 									canvas.context.rotate(-eee.armRot*Math.PI/180)
 									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
+									
+									if (eee.run) eee.run(e)
+									//alert(e.ovx+","+JSON.stringify(e.spec))
 									
 									going = false
 								}
@@ -1218,6 +1289,11 @@
 				//Debug.innerHTML = WaveTime+","+WaveHealth+","+WaveHealthO
 				//Debug.innerHTML = JSON.stringify(ambushes)
 				//Debug.innerHTML = JSON.stringify(Zombies[Zombies.length-1])
+				if (Level == 39) {
+					if (Math.random() < 0.005) lning = performance.now()
+					canvas.context.fillStyle = "rgba(0,0,0,"+Math.max(((performance.now()-lning)-500)/500,0.5)+")"
+					canvas.context.fillRect(0,0,1920,1080)
+				}
 				canvas.context.translate(115,0)
 				canvas.context.rotate(Math.PI)
 				Waves[+Hard][Level].forEach((e,ee,eee) => {
@@ -1225,8 +1301,21 @@
 				})
 				canvas.context.rotate(Math.PI)
 				canvas.context.translate(-115,0)
+				//Debug.innerHTML = ""
 				//Debug.innerHTML = JSON.stringify(Zombies)+","+WaveHealth
 				//if (Zombies.length > 0) alert(JSON.stringify(Zombies))
+				if (Math.abs(34.5-Level) <= 4.5) {
+					for (let i=0;i<6;i++) {
+						for (let j=8;j>8-fogA[Level%10];j--) {
+							let s = true
+							Lawn.filter((v) => (v.spec.light != undefined)).forEach((e) => {
+								if (Math.abs(e.col-j) < e.spec.light[0]/2 && Math.abs(e.row-i) < e.spec.light[1]/2) s = false
+								//Debug.innerHTML += Math.abs(e.col-i)+","+e.spec.light[0]/1+"|"+Math.abs(e.row-j)+","+e.spec.light[1]/1+"-"
+							})
+							if (s) canvas.context.drawImage(preloadedImg[12],j*100,i*100,100,100)
+						}
+					}
+				}
 			},16)
 			
 			setInterval(() => {
@@ -1281,12 +1370,22 @@
 					}
 					if ((e.spec.ice ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
 						if (e.spec.hide) e.hidden = true
+						if (e.spec.noColl) e.hidden = true
+						if (!e.spec.noColl) {
 						Lawn.forEach((ee) => {
-							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined))) {
+							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//const g = ee.health
-								if (e.spec.jump && !ee.spec.noColl && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+								if (e.spec.hop && !ee.spec.noColl && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
 									e.stun = 1
-									if (!ee.spec.tall) e.x = Math.floor(e.x/100)*100
+									if (!ee.spec.tall) {
+										setTimeout((eee) => {eee.x = Math.floor(eee.x/100)*100-1},1000,e)
+									} else {
+										e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
+										e.spec.action = false
+									}
+								} else if (e.spec.jump && !ee.spec.noColl && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+									e.stun = 1
+									if (!ee.spec.tall) e.x = Math.floor(e.x/100)*100-1
 									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
 									e.spec.jump = false
 									e.spec.action = false
@@ -1302,7 +1401,7 @@
 										setTimeout((p) => {
 											ee.health = 0
 										},e.spec.crush,ee)
-									} else if (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) {
+									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
@@ -1336,7 +1435,7 @@
 						Hypnos.forEach((ee) => {
 							if(Math.floor(e.x/100)==Math.floor(ee.x/100) && Math.floor(e.y/100)==Math.floor(ee.y/100)) {
 								if (e.spec.jump) {
-									e.x = Math.floor(e.x/100)*100
+									e.x = Math.floor(e.x/100)*100-1
 									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
 									e.spec.jump = false
 									e.spec.action = false
@@ -1373,6 +1472,7 @@
 							}
 						}
 					})
+					}
 					}
 					/*if (e.spec.linked != undefined) {
 						const linkedZ = Hypnos.find((ee) => ee.id === e.spec.linked)
@@ -1414,7 +1514,7 @@
 					Zombies.forEach((ee) => {
 						if(Math.floor(e.x/100)==Math.floor(ee.x/100) && Math.floor(e.y/100)==Math.floor(ee.y/100)) {
 							if (e.spec.jump) {
-								e.x = Math.ceil(e.x/100)*100
+								e.x = Math.ceil(e.x/100)*100+1
 								e.ovx = Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0]
 								e.spec.jump = false
 								e.spec.action = false
@@ -1466,9 +1566,19 @@
 							WaveTime = 1000
 							alert("🏆")
 							if (!LevsUnlocked.includes(Number(Level)+1)) {
+								if (Level == 33) localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
 								LevsUnlocked.push(Number(Level)+1)
 								localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
 								if (Unlocks[Number(Level)+1] >= 0) unlocked.push(Unlocks[Number(Level)+1])
+								if (unlocked.indexOf(Math.max(...unlocked)) != unlocked.length-1) {
+									let t = []
+									let t2 = [...unlocked]
+									unlocked.forEach(() => {
+										t.push(Math.min(...t2))
+										t2.splice(t2.indexOf(t[t.length-1]),1)
+									})
+									unlocked = t
+								}
 								localStorage.setItem("Unlocked",JSON.stringify(unlocked))
 							}
 							savedVars.forEach((e) => {
