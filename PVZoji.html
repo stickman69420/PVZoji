@@ -343,19 +343,19 @@
 						}
 					})
 					Lawn.forEach((ee,eee) => {
-						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder) {
+						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder && select2 != -1) {
 							if (select2 >= 0 && special[selected[select2]].out) {
 								other = ee.id
 								valid = 4
 							}else{
-							if (select2 == -2) {
+							if (select2 == -2 && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 								if (!Dead.includes(["Lawn",ee.id])) {
 									Dead.push(["Lawn",ee.id])
 									select2 = -1
 									document.getElementById("Shov").style.backgroundColor = "#421803"
 									document.getElementById("Shov").style.borderColor = "#93441D"
 								}
-							} else if (special[selected[select2]].upgrade > 0) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0) {
 								valid = false
 								if (ee.spec.UpgType == special[selected[select2]].UpgradeType && special[selected[select2]].extra+cost[selected[select2]] <= sun) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
@@ -378,7 +378,7 @@
 										recharge[select2] = special[selected[select2]].UpgradeRecharge
 										sun -= cost[selected[select2]]+special[selected[select2]].extra
 									}
-								} else if (ee.spec.UpgType == special[selected[select2]].UpgradeType) {
+								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
 									for (let i=0;i<5;i++) {
 										setTimeout(() => {
 											sunC.style.color = "red"
@@ -388,10 +388,10 @@
 										},200*i+100)
 									}
 								}
-							} else if (ee.spec.out == true) {
+							} else if (select2 >= 0 && ee.spec.out == true) {
 								valid = 3
 								other = ee.id
-							} else if (ee.spec.under == true) {
+							} else if (select2 >= 0 && ee.spec.under == true) {
 								if ((selected[select2] != 4 || ee.type != 16) && selected[select2] != 21) {
 									valid = 2
 									other = ee.id
@@ -672,8 +672,8 @@
 				}
 			}
 			setInterval(() => {
-				recharge = [0,0,0,0,0,0,0,0,0,0,0]
-				sun = Infinity
+				/*recharge = [0,0,0,0,0,0,0,0,0,0,0]
+				sun = Infinity*/
 				canvas.context.clearRect(0,0,900,600)
 				for (let i=0;i<rows;i++) {
 					for (let j=0;j<9;j++) {
@@ -1375,7 +1375,7 @@
 						Lawn.forEach((ee) => {
 							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//const g = ee.health
-								if (e.spec.hop && !ee.spec.noColl && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+								if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
 									e.stun = 1
 									if (!ee.spec.tall) {
 										setTimeout((eee) => {eee.x = Math.floor(eee.x/100)*100-1},1000,e)
@@ -1383,7 +1383,7 @@
 										e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
 										e.spec.action = false
 									}
-								} else if (e.spec.jump && !ee.spec.noColl && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+								} else if (e.spec.jump && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
 									e.stun = 1
 									if (!ee.spec.tall) e.x = Math.floor(e.x/100)*100-1
 									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
