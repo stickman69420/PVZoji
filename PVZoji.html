@@ -99,14 +99,18 @@
 				}
 			}
 			if (Object.keys(conveyors).includes(Level)) {
-				selected = []
-				recharge = [0,0,0,0,0,0,0,0,0,0,0]
-				sun = Infinity
-				WaveHealth = 0
+				if (!saveloaded) {
+					selected = []
+					recharge = [0,0,0,0,0,0,0,0,0,0,0]
+					sun = Infinity
+					WaveHealth = 0
+				}
 			} else if (Level == 14) {
-				selected = [4,2,11]
-				sun = 0
-				WaveHealth = 0
+				if (!saveloaded) {
+					selected = [4,2,11]
+					sun = 0
+					WaveHealth = 0
+				}
 			} else if (unlocked.length <= SeedC) {
 				selected = unlocked
 			} else if (selected.length < SeedC) {
@@ -1291,8 +1295,8 @@
 				//Debug.innerHTML = JSON.stringify(ambushes)
 				//Debug.innerHTML = JSON.stringify(Zombies[Zombies.length-1])
 				if (Level == 39) {
-					if (Math.random() < 0.005) lning = performance.now()
-					canvas.context.fillStyle = "rgba(0,0,0,"+Math.max(((performance.now()-lning)-500)/500,0.5)+")"
+					if (Math.random() < 0.01) lning = performance.now()
+					canvas.context.fillStyle = "rgba(0,0,0,"+Math.max(((performance.now()-lning)-750)/750,0.25)+")"
 					canvas.context.fillRect(0,0,1920,1080)
 				}
 				canvas.context.translate(115,0)
