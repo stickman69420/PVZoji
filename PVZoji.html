@@ -542,6 +542,7 @@
 					zombInWave.push(Zid-1)
 				})
 				const amb = AmbushArea[Math.floor(Level/10)]
+				//if (amb) alert(amb)
 				let ambushesRand = []
 				if (amb == true) {
 					ambushesRand = []
@@ -559,11 +560,11 @@
 							ambushesTemp.push([i,j])
 						}
 					}
-					ambushes.forEach((e) => {
+					for (let i=0;i<ambushesTemp.length+ambushesRand.length;i++) {
 						let ind = Math.floor(Math.random()*ambushesTemp.length)
 						ambushesRand.push(ambushesTemp[ind])
 						ambushesTemp.splice(ind,1)
-					})
+					}
 				}
 				if (Array.isArray(ambush)) {
 					if (ambushesRand.length > 0) {
@@ -575,6 +576,7 @@
 						})
 					}
 				} else {
+					alert(JSON.stringify(ambushesRand)+","+ambush)
 					if (ambushesRand.length > 0) {
 						for (let i=0;i<ambush;i++) {
 							const type = Math.floor(Math.random()*3)*2
