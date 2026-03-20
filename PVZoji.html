@@ -80,9 +80,13 @@
 		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
 		<e style="line-height:20px;" id="Debug"></e><br>
+		<input id="cons" onchange="subcons()">
 		<img id="debug"></ing>
 		<script src="Definitions.js"></script>
 		<script>
+			function subcons() {
+				eval(cons.value)
+			}
 			let lose = true
 			let lning = 0
 			document.title = "PVZ "+(Math.floor(Level/10)+1)+"-"+((Level%10)+1)
@@ -395,7 +399,7 @@
 							} else if (select2 >= 0 && ee.spec.out == true) {
 								valid = 3
 								other = ee.id
-							} else if (select2 >= 0 && ee.spec.under == true) {
+							} else if (select2 >= 0 && ee.spec.under == true && !special[selected[select2]].water) {
 								if ((selected[select2] != 4 || ee.type != 16) && selected[select2] != 21) {
 									valid = 2
 									other = ee.id
@@ -551,17 +555,17 @@
 				if (amb == true) {
 					ambushesRand = []
 					ambushesTemp = [...ambushes]
-					ambushes.forEach((e) => {
+					for (let i=0;i<ambushesTemp.length+ambushesRand.length;i++) {
 						let ind = Math.floor(Math.random()*ambushesTemp.length)
 						ambushesRand.push(ambushesTemp[ind])
 						ambushesTemp.splice(ind,1)
-					})
+					}
 				} else if (Array.isArray(amb)) {
 					ambushesRand = []
 					ambushesTemp = []
 					for (let i=amb[0];i<amb[2];i++) {
 						for (let j=amb[1];j<amb[3];j++) {
-							ambushesTemp.push([i,j])
+							ambushesTemp.push({"col":i,"row":j})
 						}
 					}
 					for (let i=0;i<ambushesTemp.length+ambushesRand.length;i++) {
@@ -583,7 +587,7 @@
 					if (ambushesRand.length > 0) {
 						for (let i=0;i<ambush;i++) {
 							const type = Math.floor(Math.random()*3)*2
-							SpawnZombie(type,ambushesRand[i%ambushesRand.length][0],ambushesRand[i%ambushesRand.length][1])
+							SpawnZombie(type,ambushesRand[i%ambushesRand.length].col,ambushesRand[i%ambushesRand.length].row)
 							WaveHealth += ZombHealth[type]/(Level == 24 ? 4 : 1)
 							WaveHealthO += ZombHealth[type]/(Level == 24 ? 4 : 1)
 							zombInWave.push(Zid-1)
@@ -855,7 +859,8 @@
 				})
 				canvas.context.globalAlpha = 1
 				Proj.forEach((e,eee) => {
-					e.x += e.vx/60*100
+					if (isroof && Math.floor(e.x+e.vx/100) > Math.floor(e.x/100) && Math.floor(e.x/100) < 5) Dead.push(["Proj",e.id])
+					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
 					//canvas.context.font = e.size+"px Arial";
 					//canvas.context.strokeText(e.img,e.x-e.size/2,e.y)
