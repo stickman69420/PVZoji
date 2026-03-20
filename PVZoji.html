@@ -1017,6 +1017,7 @@
 				}
 				//Debug.innerHTML = ""
 				Zombies.forEach((e,ee) => {
+					if (e.x > 900 && e.type == 17) e.health = 0
 					if (e.health > 0) {
 						if (e.spec.timer != undefined) {
 							e.spec.timer += 0.016
@@ -1295,7 +1296,7 @@
 				//Debug.innerHTML = JSON.stringify(ambushes)
 				//Debug.innerHTML = JSON.stringify(Zombies[Zombies.length-1])
 				if (Level == 39) {
-					if (Math.random() < 0.01) lning = performance.now()
+					if (Math.random() < 0.0075) lning = performance.now()
 					canvas.context.fillStyle = "rgba(0,0,0,"+Math.max(((performance.now()-lning)-750)/750,0.25)+")"
 					canvas.context.fillRect(0,0,1920,1080)
 				}
