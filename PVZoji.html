@@ -102,6 +102,14 @@
 					window.location = "./index.html"
 				}
 			}
+			if (!saveloaded && isroof) {
+				for (let i=0;i<rows;i++) {
+					for (let j=0;j<3+(Level == 40 ? 2 : (Level == 41 ? 1 : 0));j++) {
+						Lawn.push({"id":Lid,"projImg":ProjImg[33],"img":plants[33],"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":i,"col":j,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
+			Lid++
+					}
+				}
+			}
 			if (Object.keys(conveyors).includes(Level)) {
 				if (!saveloaded) {
 					selected = []
@@ -330,6 +338,8 @@
 						valid = false
 					} else if (select2 >= 0 && special[selected[select2]].water) {
 						valid = ispool && Math.abs(2.5-mouseLoc[1]) <= 0.5
+					} else if (select2 >= 0 && isroof) {
+						valid = special[selected[select2]].roof ?? false
 					} else if (selected[select2] >= 0) {
 						valid = !(special[selected[select2]].grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5)
 					} else {
@@ -363,9 +373,9 @@
 									document.getElementById("Shov").style.backgroundColor = "#421803"
 									document.getElementById("Shov").style.borderColor = "#93441D"
 								}
-							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && (ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType)) {
 								valid = false
-								if (ee.spec.UpgType == special[selected[select2]].UpgradeType && special[selected[select2]].extra+cost[selected[select2]] <= sun) {
+								if (special[selected[select2]].extra+cost[selected[select2]] <= sun) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
 										ee.spec[key] = value
 									}
@@ -485,6 +495,11 @@
 				Zombies.push({"id":Zid,"x":col*100+50,"y":row*100,"type":type,"health":ZombHealth[type]/(Level == 24 ? 4 : 1),"ovx":(-SpdRng[type][0]+Math.random()*(SpdRng[type][1]-SpdRng[type][0]))*(Level == 24 ? 2 : 1),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[type]))})
 				if (type == 15) {
 					Zombies[Zombies.length-1].spec.threshold = Math.random() < 0.05 ? (4.4+Math.random()*3.14) : (13.22+Math.random()*9.46)
+				}
+				if (type == 19) {
+					tp = Lawn[Math.floor(Math.random()*Lawn.length)]
+					Zombies[Zombies.length-1].x = tp.col*100+1
+					Zombies[Zombies.length-1].y = tp.row*100+1
 				}
 				Zid++
 			}
@@ -645,7 +660,8 @@
 			//SpawnZombie(15,9,1)
 			//SpawnWave(0,[15,15,15,15,15,15,15,15,15],[])
 			//SpawnZombie(16,9,1)
-			//SpawnZombie(17,9,1)
+			//SpawnZombie(19,1,1)
+			//SpawnWave(0,Array(100).fill(19),[])
 			
 			function Select(plt) {
 				if (select2 != -1) {
@@ -698,6 +714,12 @@
 						canvas.context.strokeRect(j*100+2,i*100+2,96,96)
 					}
 				}
+				if (isroof) {
+					canvas.context.fillStyle = "#DDB98C"
+					for (let i=1;i<6;i++) {
+						canvas.context.fillRect(100*i-2,0,4,rows*100)
+					}
+				}
 				if (ispool) {
 					canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][4]
 					canvas.context.fillRect(0,200,900,200)
@@ -740,6 +762,7 @@
 					canvas.context.font = "15px Arial"*/
 					//canvas.context.strokeText(JSON.stringify(e),e.col*100,e.row*100)
 					e.size = 100
+					canvas.context.drawImage(preloadedImg[15],e.col*100+25,e.row*100,100,100)
 					if (e.spec.shrinkOff != undefined) {
 						e.size = 100*((e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
 					}
@@ -859,7 +882,8 @@
 				})
 				canvas.context.globalAlpha = 1
 				Proj.forEach((e,eee) => {
-					if (isroof && Math.floor(e.x+e.vx/100) > Math.floor(e.x/100) && Math.floor(e.x/100) < 5) Dead.push(["Proj",e.id])
+					if (!e.origincol) e.origincol = Math.floor(e.x/100)
+					if (isroof && !e.spec.pult && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) Dead.push(["Proj",e.id])
 					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
 					//canvas.context.font = e.size+"px Arial";
@@ -973,6 +997,7 @@
 														}
 														if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
 														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = e.spec.ice.dur
+														if (Math.random() <= (e.spec.butter ?? {"chance":-1}).chance) ee.spec.butter = e.spec.butter.dur
 														ee.health -= e.value
 														e.damaged.push(ee.id)
 													}
@@ -1132,6 +1157,9 @@
 						}
 						if (e.spec.ice > 0) {
 							canvas.context.drawImage(preloadedImg[3],e.x,e.y+25,75,75)
+						}
+						if (e.spec.butter > 0) {
+							canvas.context.drawImage(preloadedImg[14],e.x,e.y+25,75,75)
 						}
 						//canvas.context.fillRect(e.x-5,e.y+65,10,10)
 						let going = true
@@ -1337,6 +1365,7 @@
 					e.spec.groupSpd = e.ovx
 				})
 				Zombies.forEach((e) => {
+					if (e.spec.steal && e.stun == undefined) e.stun = e.spec.steal/1000
 					if (e.spec.ice > 0) {
 						e.vx = 0
 						e.spec.ice -= 100
@@ -1349,7 +1378,19 @@
 								}
 							}
 						}
-					} else if (e.stun > 0) {
+					} 	if (e.spec.butter > 0) {
+						e.vx = 0
+						e.spec.butter -= 100
+						if (e.spec.linked != undefined) {
+							let z = Zombies.find((ee) => ee.id === e.spec.linked)
+							if (z) {
+								let spd = z.spec
+								if (spd.groupSpd < 0) {
+									spd.groupSpd = 0
+								}
+							}
+						}
+					} else if (e.stun >= 0) {
 						e.vx = 0
 						e.stun -= 0.1
 						if (e.spec.linked != undefined) {
@@ -1379,14 +1420,17 @@
 					} else {
 						e.vx = e.ovx
 					}
-					if ((e.spec.ice ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
+					if ((e.spec.ice ?? 0) <= 0 && (e.spec.butter ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
 						if (e.spec.hide) e.hidden = true
 						if (e.spec.noColl) e.hidden = true
 						if (!e.spec.noColl) {
 						Lawn.forEach((ee) => {
 							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//const g = ee.health
-								if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+								if (e.spec.ladder) {
+									e.spec.ladder = false
+									ee.spec.ladder = true
+								} else if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
 									e.stun = 1
 									if (!ee.spec.tall) {
 										setTimeout((eee) => {eee.x = Math.floor(eee.x/100)*100-1},1000,e)
@@ -1402,17 +1446,21 @@
 									e.spec.action = false
 								} else {
 									if (e.spec.crush != undefined) {
-										e.stun = e.spec.crush
+										e.stun = e.spec.crush/1000
 										if (e.spec.vehicle && ee.spec.popTire) {
-											if (zombInWave.includes(e.id)) {
-												WaveHealth -= e.health
-											}
+											if (zombInWave.includes(e.id)) WaveHealth -= e.health
 											e.health = 0
 										}
-										setTimeout((p) => {
-											ee.health = 0
-										},e.spec.crush,ee)
+										setTimeout((p,z) => {
+											if (Zombies.find(zz => zz.id == z)) ee.health = 0
+										},e.spec.crush,ee,e.id)
 									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+									if (e.spec.steal) {
+										if (e.stun <= 0) {
+											ee.health = 0
+											e.health = 0
+										}
+									} else {
 									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
@@ -1439,6 +1487,7 @@
 											}
 										}
 									}
+								}
 								}
 								}
 							}
@@ -1484,6 +1533,11 @@
 						}
 					})
 					}
+					}
+					if (e.spec.steal) {
+						if (e.stun <= 0) {
+							e.health = 0
+						}
 					}
 					/*if (e.spec.linked != undefined) {
 						const linkedZ = Hypnos.find((ee) => ee.id === e.spec.linked)
