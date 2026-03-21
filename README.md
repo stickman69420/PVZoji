@@ -5,3 +5,4 @@ doesn't use any emojis anymore but the images it uses are comprised only of emoj
 Almanac and start of shop are added
 
 Day, night, pool, and fog are now complete
+Little bit of roof
