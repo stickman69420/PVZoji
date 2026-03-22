@@ -373,6 +373,15 @@
 									document.getElementById("Shov").style.backgroundColor = "#421803"
 									document.getElementById("Shov").style.borderColor = "#93441D"
 								}
+							} else if (selected[select2] == 35) {
+								valid = 5
+								if (ee.spec.night && (Level%20 < 10)) {
+									ee.spec.night = false
+									if (ee.spec.dayHealth) ee.health = plantHealth[selected[select2]]
+									for (const [key,value] of Object.entries(ee.spec.daySpec)) {
+										ee.spec[key] = special[selected[select2]][key]
+									}
+								}
 							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && (ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType)) {
 								valid = false
 								if (special[selected[select2]].extra+cost[selected[select2]] <= sun) {
@@ -409,11 +418,9 @@
 							} else if (select2 >= 0 && ee.spec.out == true) {
 								valid = 3
 								other = ee.id
-							} else if (select2 >= 0 && ee.spec.under == true && !special[selected[select2]].water) {
-								if ((selected[select2] != 4 || ee.type != 16) && selected[select2] != 21) {
-									valid = 2
-									other = ee.id
-								}
+							} else if (select2 >= 0 && ee.spec.under == true && !special[selected[select2]].water && (selected[select2] != 4 || ee.type != 16) && ![16,21,33].includes(selected[select2])) {
+								valid = 2
+								other = ee.id
 							} else {
 								valid = false
 							}
@@ -422,7 +429,12 @@
 					})
 					if (valid && select2 >= 0) {
 						if (Level != 4) {
-							Lawn.push({"id":Lid,"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+							if (valid != 5) Lawn.push({"id":Lid,"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+							if (Level%20<10&&special[selected[select2]].daySpec != undefined) {
+								for (const [key,value] of Object.entries(special[selected[select2]].daySpec)) {
+									Lawn[Lawn.length-1].spec[key] = value
+								}
+							}
 							if (valid === 2) Lawn.find(ee => ee.id === other).spec.above = Lid
 							if (valid === 3) {
 								const p1 = Lawn.length-1
@@ -755,6 +767,8 @@
 					}
 				})
 				//Debug.innerHTML = ""
+				canvas.context.fillStyle = "#FFFFFF"
+				canvas.context.font = "50px Arial"
 				Lawn.forEach((e,ind) => {
 					//if (e.spec.explode && e.spec.explode.length == 3) e.spec.explode.push(1)
 					/*canvas.context.strokeStyle = "#000000"
@@ -762,7 +776,6 @@
 					canvas.context.font = "15px Arial"*/
 					//canvas.context.strokeText(JSON.stringify(e),e.col*100,e.row*100)
 					e.size = 100
-					canvas.context.drawImage(preloadedImg[15],e.col*100+25,e.row*100,100,100)
 					if (e.spec.shrinkOff != undefined) {
 						e.size = 100*((e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
 					}
@@ -774,6 +787,7 @@
 							e.previmg = e.img
 						}
 						canvas.context.drawImage(e.Img,e.col*100+(100-e.size)/2,e.row*100+(100-e.size)/2,e.size,e.size)
+						if (e.spec.ladder) canvas.context.drawImage(preloadedImg[15],e.col*100+25,e.row*100,100,100)
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.lineWidth = 1
 						canvas.context.font = "15px Arial"
@@ -784,6 +798,7 @@
 							Dead.push(["Lawn",e.id])
 						}
 					} else {
+					if (e.spec.night && (Level%20 < 10)) canvas.context.fillText("Z",e.col*100+25,e.row*100+50)
 					if (!e.spec.night || (Level%20 > 9)) {
 						if (e.spec.hide == undefined) {
 							e.cool-=0.016
@@ -931,7 +946,7 @@
 										//Debug.innerHTML += ","+Math.abs(ee.y-e.y)+"/"+(e.spec.CollBox ?? CollBox[e.type])[1]/2
 											if (!Dead.includes(["Proj",e.id])) {
 												let he = true
-												if (Math.abs(e.vx) > Math.abs(e.vy) && e.vx > 0 && (ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
+												if (Math.abs(e.vx) > Math.abs(e.vy) && e.vx > 0 && (ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0 && !e.spec.pult) {
 													if (e.spec.pen != undefined && e.spec.pen != 0) {
 														he = true
 														if (e.spec.pen != undefined && (!e.spec.damageOnce || !e.damaged.includes(ee.id))) {
@@ -1378,7 +1393,7 @@
 								}
 							}
 						}
-					} 	if (e.spec.butter > 0) {
+					} else if (e.spec.butter > 0) {
 						e.vx = 0
 						e.spec.butter -= 100
 						if (e.spec.linked != undefined) {
@@ -1425,9 +1440,9 @@
 						if (e.spec.noColl) e.hidden = true
 						if (!e.spec.noColl) {
 						Lawn.forEach((ee) => {
-							if(Math.floor(e.x/100)==ee.col && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
+							if(Math.floor(e.x/100)==ee.col && !ee.spec.ladder && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//const g = ee.health
-								if (e.spec.ladder) {
+								if (e.spec.ladder && ee.health > 300) {
 									e.spec.ladder = false
 									ee.spec.ladder = true
 								} else if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
