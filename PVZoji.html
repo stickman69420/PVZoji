@@ -1443,6 +1443,7 @@
 							if(Math.floor(e.x/100)==ee.col && !ee.spec.ladder && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//const g = ee.health
 								if (e.spec.ladder && ee.health > 300) {
+									e.spec.shields.front = 0
 									e.spec.ladder = false
 									ee.spec.ladder = true
 								} else if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
