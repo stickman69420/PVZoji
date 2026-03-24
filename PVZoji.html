@@ -382,7 +382,7 @@
 										ee.spec[key] = special[selected[select2]][key]
 									}
 								}
-							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && (ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType)) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && (ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
 								valid = false
 								if (special[selected[select2]].extra+cost[selected[select2]] <= sun) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
