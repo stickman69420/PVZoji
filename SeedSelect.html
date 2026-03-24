@@ -54,6 +54,25 @@
 			if (Level == -1) {
 				alert("You need to select a level")
 				window.location = "./LevelSelect.html"
+			} else {
+				if (localStorage.getItem("money") >= 750 && SeedC == 6 && !localStorage.getItem("consent")) {
+					if (confirm("Do you want to buy a 7th seed slot for $750?")) {
+						localStorage.setItem("money",localStorage.getItem("money")-750)
+						localStorage.setItem("SeedC",7)
+						location.reload()
+					} else {
+						localStorage.setItem("consent","true")
+					}
+				}
+				if (localStorage.getItem("money") >= 5000 && SeedC == 7) {
+					if (confirm("Do you want to buy an 8th seed slot for $5000?")) {
+						localStorage.setItem("money",localStorage.getItem("money")-5000)
+						localStorage.setItem("SeedC",8)
+						location.reload()
+					} else {
+						localStorage.setItem("consent","true")
+					}
+				}
 			}
 			document.title = "Select your seeds for PVZ "+(Math.floor(Level/10)+1)+"-"+((Level+1)%10)
 		
