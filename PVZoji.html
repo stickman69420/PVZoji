@@ -678,6 +678,7 @@
 			//SpawnZombie(16,9,1)
 			//SpawnZombie(19,1,1)
 			//SpawnWave(0,Array(100).fill(19),[])
+			SpawnZombie(21,9,1)
 			
 			function Select(plt) {
 				if (select2 != -1) {
@@ -1388,7 +1389,9 @@
 				})
 				Zombies.forEach((e) => {
 					if (e.spec.steal && e.stun == undefined) e.stun = e.spec.steal/1000
-					if (e.spec.ice > 0) {
+					if (e.type == 21 && e.spec.ammo != 0 && Lawn.filter(l => l.row == Math.floor(e.y/100)).length != 0) {
+						e.vx = 0
+					} else if (e.spec.ice > 0) {
 						e.vx = 0
 						e.spec.ice -= 100
 						if (e.spec.linked != undefined) {
@@ -1441,6 +1444,17 @@
 						e.vx = -e.spec.decel-(-e.spec.ocel-e.spec.decel)/900*(e.x)
 					} else {
 						e.vx = e.ovx
+					}
+					if (e.spec.shoot && e.spec.ammo != 0) {
+						const targets = Lawn.filter(l => l.row == Math.floor(e.y/100))
+						e.spec.cool -= 0.1
+						if (e.spec.cool <= 0 && targets.length != 0) {
+							e.spec.cool = e.spec.shootTime
+							const cols = targets.map(l => l.col)
+							targets[cols.indexOf(Math.min(...cols))].health -= 75
+							e.spec.ammo--
+							if (e.spec.ammo == 0) e.spec.action = false
+						}
 					}
 					if ((e.spec.ice ?? 0) <= 0 && (e.spec.butter ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
 						if (e.spec.hide) e.hidden = true
