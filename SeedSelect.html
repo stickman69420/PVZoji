@@ -98,7 +98,7 @@
 					e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-					e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%8)*sizePerc+"px"
+					e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%(ee < SeedC ? 0 : 8))*sizePerc+"px"
 					e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
@@ -174,7 +174,7 @@
 				}
 			}
 			Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-				e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%8)*sizePerc+"px"
+				e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%(ee < SeedC ? 0 : 8))*sizePerc+"px"
 				e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {

@@ -214,8 +214,6 @@
 			
 			//Main
 			function plantFires(e,tar) {
-				e.cool = fireRate[e.plant]
-				e.health -= e.spec.selfD ?? 0
 				for (let i=0;i<(e.spec.count ?? 1);i++) {
 					setTimeout((ee,eee,j) => {
 						let img = new Image()
@@ -378,11 +376,11 @@
 								if (ee.spec.night && (Level%20 < 10)) {
 									ee.spec.night = false
 									if (ee.spec.dayHealth) ee.health = plantHealth[selected[select2]]
-									for (const [key,value] of Object.entries(ee.spec.daySpec)) {
+									if (ee.spec.daySpec) for (const [key,value] of Object.entries(ee.spec.daySpec)) {
 										ee.spec[key] = special[selected[select2]][key]
 									}
 								}
-							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && (ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType == special[selected[select2]].UpgradeType) {
 								valid = false
 								if (special[selected[select2]].extra+cost[selected[select2]] <= sun) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
@@ -843,6 +841,8 @@
 								}
 							}
 							if ((e.spec.proj || e.spec.sun) && e.spec.range == -1) {
+								e.cool = fireRate[e.plant]
+								e.health -= e.spec.selfD ?? 0
 								plantFires(e,undefined)
 							} else if (e.spec.proj || e.spec.sun || e.plant == 6 || e.plant == 31) {
 								let fly = false
@@ -864,11 +864,12 @@
 									}
 								})
 								if (fire) {
+									e.cool = fireRate[e.plant]
+									e.health -= e.spec.selfD ?? 0
 									if (e.plant == 6) {
 										if (ZombHealth[tar.type] < 1800) {
 											WaveHealth -= tar.health
 											tar.health = 0
-											e.cool = fireRate[e.plant]
 											e.img = "chomper wait"
 										} else {
 											tar.health -= 40
@@ -886,6 +887,14 @@
 										}
 										plantFires(e,tar)
 									}
+								} else if (e.plant == 31) {
+									e.health -= e.spec.selfD ?? 0
+									Lawn.filter(p => p.spec.ladder && Math.abs(e.col-p.col) <= e.spec.range/2 && Math.abs(e.row-p.row) <= e.spec.vRange/2).forEach((ee) => {
+										if (e.cool <= 0) {
+											ee.spec.ladder = false
+											e.cool = fireRate[e.plant]
+										}
+									})
 								}
 							} else if (e.spec.destroy) {
 								if (!Dead.includes(["Lawn",e.id])) {
@@ -988,6 +997,10 @@
 														for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break] ?? {})) {
 															if (key == "speed") {
 																ee.ovx = -(Math.random()*(value[1]-value[0])+value[0])
+															} if (key == "spec") {
+																for (const [key2, value2] of Object.entries(key)) {
+																	ee.spec[key2] = value2
+																}
 															} else {
 																ee[key] = value
 															}
@@ -1562,7 +1575,11 @@
 										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
 											if (key == "speed") {
 												ee.ovx = Math.random()*(value[1]-value[0])+value[0]
-											} else {
+											} if (key == "spec") {
+												for (const [key2, value2] of Object.entries(key)) {
+													ee.spec[key2] = value2
+												}
+															} else {
 												ee[key] = value
 											}
 										}
@@ -1646,6 +1663,10 @@
 										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break] ?? {})) {
 											if (key == "speed") {
 												ee.ovx = -(Math.random()*(value[1]-value[0])+value[0])
+											} if (key == "spec") {
+												for (const [key2, value2] of Object.entries(key)) {
+													ee.spec[key2] = value2
+												}
 											} else {
 												ee[key] = value
 											}
