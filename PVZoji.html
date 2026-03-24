@@ -929,7 +929,7 @@
 									e.melt = []
 								}
 								Obstacles.forEach((ee) => {
-									if (ee.type == 1 && (!e.melt.includes(ee.id) || e.value == 1800) && ee.col-Math.floor(e.x/100) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2 && ee.row == Math.floor(e.y/100)) {
+									if (ee.type == 1 && (!e.melt.includes(ee.id) || e.value == 1800) && Math.abs(ee.col-Math.floor(e.x/100)) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2 && ee.row == Math.floor(e.y/100)) {
 										e.melt.push(ee.id)
 										ee.time += e.value
 										ee.time = Math.min(ee.time,ee.max-1)
@@ -945,7 +945,7 @@
 							}
 							Zombies.forEach((ee) => {
 								if (!Dead.includes(["Zombies",ee]) && (!ee.hidden || e.spec.hitSnork) && !e.spec.flying == !ee.spec.flying) {
-									if(Math.abs(e.x-ee.x-37.5) < (e.spec.CollBox ?? CollBox[e.type])[0]/2) {
+									if(Math.abs(e.x-ee.x-37.5) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2) {
 										if (Math.abs(ee.y+37.5-e.y) <= (e.spec.CollBox ?? CollBox[e.type])[1]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										//Debug.innerHTML += ","+Math.abs(ee.y-e.y)+"/"+(e.spec.CollBox ?? CollBox[e.type])[1]/2
 											if (!Dead.includes(["Proj",e.id])) {
