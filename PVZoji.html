@@ -838,6 +838,9 @@
 						if (e.cool <= 0) {
 							if (e.spec.transform != undefined) {
 								if ((e.spec.transform.count ?? 0) == 0) {
+									if (e.spec.transformSpec) for (const [key, value] of Object.entries(e.spec.transformSpec)) {
+										e.spec[key] = value
+									}
 									for (const [key, value] of Object.entries(e.spec.transform)) {
 										if (key != "count") {
 											e[key] = value
