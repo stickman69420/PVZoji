@@ -1084,6 +1084,8 @@
 					if (Mowers[i]) {
 						if (ispool && shop.pclean && Math.abs(2.5-i) == 0.5) {
 							canvas.context.drawImage(mowerImg[1],-30,i*100+25,50,50)
+						} else if (isroof) { 
+							if (shop.rclean) canvas.context.drawImage(mowerImg[2],-30,i*100+25,50,50)
 						} else {
 							canvas.context.drawImage(mowerImg[0],-30,i*100+25,50,50)
 						}
@@ -1168,11 +1170,12 @@
 							} else if (Mowers[Math.floor(e.y/100)]) {
 								Mowers[Math.floor(e.y/100)] = false
 								MowerTrigger[Math.floor(e.y/100)] = Wave
-								if (!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) {
-									Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100]},"value":10000000})
+								if ((!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) && (!isroof || shop.rclean)) {
+									Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean},"value":10000000})
+									Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean,"flying":2},"value":10000000})
 									Pid++
 								}
-								Zombies.forEach((eee) => {
+								if (!isroof || shop.rclean) {Zombies.forEach((eee) => {
 									if (Math.floor(e.y/100)==Math.floor(eee.y/100) && eee.x < 50) {
 										if (!Dead.includes(["Zombies",eee.id])) {
 											if (Level == 14 && Math.random() < 0.15) {
@@ -1182,7 +1185,7 @@
 											Dead.push(["Zombies",eee.id])
 										}
 									}
-								})
+								})}
 							} else {
 								if (lose) {
 									lose = false
@@ -1415,7 +1418,7 @@
 				})
 				Zombies.forEach((e) => {
 					if (e.spec.steal && e.stun == undefined) e.stun = e.spec.steal/1000
-					if (e.type == 21 && e.spec.ammo != 0 && Lawn.filter(l => l.row == Math.floor(e.y/100)).length != 0) {
+					if (e.type == 21 && e.x <= 850 && e.spec.ammo != 0 && Lawn.filter(l => l.row == Math.floor(e.y/100)).length != 0) {
 						e.vx = 0
 					} else if (e.spec.ice > 0) {
 						e.vx = 0
@@ -1471,9 +1474,9 @@
 					} else {
 						e.vx = e.ovx
 					}
-					if (e.spec.shoot && e.spec.ammo != 0) {
+					if (e.type == 21 && e.x <= 850 && !e.spec.butter > 0 && !e.spec.ice > 0 && e.spec.ammo != 0) {
 						const targets = Lawn.filter(l => l.row == Math.floor(e.y/100))
-						e.spec.cool -= 0.1
+						e.spec.cool -= e.spec.snow > 0 ? 0.05 : 0.1
 						if (e.spec.cool <= 0 && targets.length != 0) {
 							const cols = targets.map(l => l.col)
 							const target = targets[cols.indexOf(Math.min(...cols))]
