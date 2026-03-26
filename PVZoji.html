@@ -612,7 +612,7 @@
 					if (ambushesRand.length > 0) {
 						ambush.forEach((e,ee) => {
 						const tp = ambushesRand[ee%ambushesRand.length]
-						if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length == 0 || !isroof) {
+						if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length != 0 || !isroof) {
 								SpawnZombie(e,tp.col,tp.row)
 								WaveHealth += ZombHealth[e]/(Level == 24 ? 4 : 1)
 								WaveHealthO += ZombHealth[e]/(Level == 24 ? 4 : 1)
@@ -625,7 +625,7 @@
 						for (let i=0;i<ambush;i++) {
 							const type = Math.floor(Math.random()*3)*2
 							const tp = ambushesRand[i%ambushesRand.length]
-							if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length == 0 || !isroof) {
+							if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length != 0 || !isroof) {
 								SpawnZombie(type,tp.col,tp.row)
 								WaveHealth += ZombHealth[type]/(Level == 24 ? 4 : 1)
 								WaveHealthO += ZombHealth[type]/(Level == 24 ? 4 : 1)
