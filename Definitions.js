@@ -97,7 +97,7 @@
 				//Levels
 			const Unlocks = [0,1,2,3,-2,4,5,6,7,-1,8,9,10,11,-3,12,13,14,15,-1,16,17,18,19,-4,20,21,22,23,-1,24,25,26,27,-5,28,29,30,31,-1,32,33,34,35,-6,36,37,38,39,-1]
 			const AreaBg = [["#00DD33","#00CC22","#00BB55","#00AA44"],["#00AA00","#009900","#008822","#007711"],["#00DD33","#00CC22","#00BB55","#00AA44","#0BD0FC"],["#00AA00","#009900","#008822","#007711","#08A0C9"],["#D6723B","#73402F","#A44921","#73402F"]]
-			const conveyors = {4:[2,3],9:[0,2,3,4,5,6,7],19:[8,10,11,12,13,14,15],24:[0,2,3,16],29:[16,17,18,19,20,21,22,23],39:[16,24,26,27,28,29,30,31],44:[2,5,6,30,33],49:[14,15,18,32,33,34,35,36,37,38,39]}
+			const conveyors = {4:[2,3],9:[0,2,3,4,5,6,7],19:[8,10,11,12,13,14,15],24:[0,2,3,16],29:[16,17,18,19,20,21,22,23],39:[16,24,26,27,28,29,30,31],44:[2,5,6,30,33],49:[14,15,18,32,33,33,34,35,36,37,38,39]}
 				//Plants
 			//const plants = [["🫛"],["🌻"],["🍒"],["🌰"],["🥔"],["❄️"],["🟣","👄"],["🫛","🫛"],["🍄"],["🍄‍🟫"],["🍄"],["🪵"],["🍄","","","🩷","🩵"],["🍄","","👁️"],["🍄","❄️"],["🍄","💣"]]
 			const plants = ["peashooter","sunflower","cherry bomb","wall nut","potato mine unarmed","iceberg lettuce","chomper","repeater","puff shroom","sun shroom small","fume shroom","grave buster","hypno shroom","scaredy shroom","ice shroom","doom shroom","lily pad","squash","threepeater","tangle kelp","jalapeno","spikeweed","torchflame lettuce","tall nut","sea shroom","plantern","cactus","blover","split pea","starfruit","pumpkin","magnet shroom","cabbage pult","pot","kernel pult","coffee bean","garlic","umbrella leaf","lightning lettuce","melon pult"]
