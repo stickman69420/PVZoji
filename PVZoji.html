@@ -1113,24 +1113,6 @@
 						e.health = 0
 					}
 					if (e.health > 0) {
-						if (e.spec.timer != undefined) {
-							e.spec.timer += 0.016
-							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
-							if (e.spec.timer >= e.spec.threshold && e.type == 15) {
-								e.stun = 1.1
-								if (e.spec.timer >= e.spec.threshold+1.1) {
-									const c = Math.floor(e.x/100)
-									const r = Math.floor(e.y/100)
-									Lawn.filter(l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5).forEach((eee) => {
-										eee.health -= 1800
-									})
-									Proj.push({"id":Pid,"damaged":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
-									Pid++
-									WaveHealth -= e.health
-									e.health = 0
-								}
-							}
-						}
 						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
 						e.x += (e.vx ?? 0)*100/60
@@ -1464,7 +1446,15 @@
 						e.stun -= (e.spec.snow > 0 ? 0.05 : 0.1)
 						if (e.stun <= 0) {
 							if (e.spec.crush != undefined && e.crushing != undefined) {
-								e.crushing.forEach((ee) => {Lawn.find((l) => l.id == ee).health = 0})
+								e.crushing.forEach((ee) => {
+									let eee = Lawn.find((l) => l.id == ee)
+									if (eee) {
+										if (e.type == 22 && (eee.spec.garg ?? 1) <= 1) eee.health = 0
+										else eee.spec.garg--
+										if (e.spec.vehicle && (eee.spec.vehicle ?? 1) <= 1) eee.health = 0
+										else eee.spec.vehicle--
+									}
+								})
 								e.crushing = undefined
 							}
 						}
@@ -1479,6 +1469,7 @@
 						}
 					} else if (e.spec.snow > 0) {
 						e.vx = e.ovx/2
+						if (e.spec.timer != undefined) e.spec.timer += 0.05
 						e.spec.snow -= 100
 						if (e.spec.linked != undefined) {
 							let z = Zombies.find((ee) => ee.id === e.spec.linked)
@@ -1493,8 +1484,26 @@
 						//Debug.innerHTML = (JSON.stringify(e))
 						e.vx = -e.spec.decel-(-e.spec.ocel-e.spec.decel)/900*(e.x)
 					} else {
+						if (e.spec.timer != undefined) e.spec.timer += 0.1
 						e.vx = e.ovx
 					}
+					if (e.spec.timer != undefined) {
+							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
+							if (e.spec.timer >= e.spec.threshold && e.type == 15) {
+								e.stun = 1.1
+								if (e.spec.timer >= e.spec.threshold+1.1) {
+									const c = Math.floor(e.x/100)
+									const r = Math.floor(e.y/100)
+									Lawn.filter(l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5).forEach((eee) => {
+										eee.health -= 1800
+									})
+									Proj.push({"id":Pid,"damaged":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+									Pid++
+									WaveHealth -= e.health
+									e.health = 0
+								}
+							}
+						}
 					if (e.type == 21 && e.x <= 850 && !e.spec.butter > 0 && !e.spec.ice > 0 && e.spec.ammo != 0) {
 						const targets = Lawn.filter(l => l.row == Math.floor(e.y/100))
 						e.spec.cool -= e.spec.snow > 0 ? 0.05 : 0.1
@@ -1539,6 +1548,8 @@
 										if (e.spec.vehicle && ee.spec.popTire) {
 											if (zombInWave.includes(e.id)) WaveHealth -= e.health
 											e.health = 0
+											if ((ee.spec.vehicle ?? 1) <= 1) ee.health = 0
+											else ee.spec.vehicle--
 										}
 										e.crushing = e.crushing || []
 										e.crushing.push(ee.id)
