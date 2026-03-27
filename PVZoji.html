@@ -218,7 +218,8 @@
 					setTimeout((ee,eee,j) => {
 						let img = new Image()
 						img.src = "./images/proj/"+ee.projImg+".png"
-						Proj.push({"id":Pid,"damaged":[],"x":eee,"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":(Array.isArray(Lspeed[ee.plant]) ? Lspeed[ee.plant][j] : Lspeed[ee.plant]),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
+						Proj.push({"id":Pid,"damaged":[],"x":eee,"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
 							Lawn.forEach((o) => {
@@ -364,6 +365,7 @@
 								other = ee.id
 								valid = 4
 							}else{
+							//alert(JSON.stringify(ee.spec.UpgType)+"-"+special[selected[select2]].UpgradeType)
 							if (select2 == -2 && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 								if (!Dead.includes(["Lawn",ee.id])) {
 									Dead.push(["Lawn",ee.id])
@@ -380,9 +382,9 @@
 										ee.spec[key] = special[selected[select2]][key]
 									}
 								}
-							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType == special[selected[select2]].UpgradeType) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType.includes(special[selected[select2]].UpgradeType)) {
 								valid = false
-								if (special[selected[select2]].extra+cost[selected[select2]] <= sun) {
+								if ((special[selected[select2]].extra ?? 0)+cost[selected[select2]] <= sun) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
 										ee.spec[key] = value
 									}
@@ -400,8 +402,8 @@
 										seeds.innerHTML = ""
 										reloadSeed()
 									} else {
-										recharge[select2] = special[selected[select2]].UpgradeRecharge
-										sun -= cost[selected[select2]]+special[selected[select2]].extra
+										recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
+										sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 									}
 								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
 									for (let i=0;i<5;i++) {
@@ -855,7 +857,7 @@
 								}
 							}
 							if ((e.spec.proj || e.spec.sun) && e.spec.range == -1) {
-								e.cool = fireRate[e.plant]
+								e.cool = e.spec.fireRate ?? fireRate[e.plant]
 								e.health -= e.spec.selfD ?? 0
 								plantFires(e,undefined)
 							} else if (e.spec.proj || e.spec.sun || e.plant == 6 || e.plant == 31) {
