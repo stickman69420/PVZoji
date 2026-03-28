@@ -81,9 +81,16 @@
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
 		<e style="line-height:20px;" id="Debug"></e><br>
 		<input id="cons" onchange="subcons()">
+		<button id="sand" onclick="sand()">Sandbox Mode</button>
 		<img id="debug"></ing>
 		<script src="Definitions.js"></script>
 		<script>
+			function sand() {
+				sun=Infinity;
+				setInterval(() => {
+					recharge=Array(recharge.length).fill(0);
+				},16)
+			}
 			function subcons() {
 				eval(cons.value)
 			}
@@ -215,7 +222,7 @@
 			//Main
 			function plantFires(e,tar) {
 				for (let i=0;i<(e.spec.count ?? 1);i++) {
-					setTimeout((ee,eee,j) => {
+					setTimeout((ee,eee,j,tar) => {
 						let img = new Image()
 						img.src = "./images/proj/"+ee.projImg+".png"
 						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
@@ -230,7 +237,8 @@
 							Obstacles.push({"img":"hole","id":Oid,"col":e.col,"row":e.row,"type":0,"time":0,"max":10800})
 							Oid++
 						}
-					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar) ? tar.x+projOff[e.plant][0] : (e.col*100+50)+projOff[e.plant][0],i)
+						if (e.spec.homing) Proj[Proj.length-1].spec.target = tar.id
+					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar) ? tar.x+projOff[e.plant][0] : (e.col*100+50)+projOff[e.plant][0],i,tar)
 				}
 			}
 			reloadSeed()
@@ -382,7 +390,7 @@
 										ee.spec[key] = special[selected[select2]][key]
 									}
 								}
-							} else if (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType.includes(special[selected[select2]].UpgradeType)) {
+							} else if (ee.spec.UpgType && (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType.includes(special[selected[select2]].UpgradeType))) {
 								valid = false
 								if ((special[selected[select2]].extra ?? 0)+cost[selected[select2]] <= sun) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
@@ -418,7 +426,7 @@
 							} else if (select2 >= 0 && ee.spec.out == true) {
 								valid = 3
 								other = ee.id
-							} else if (select2 >= 0 && ee.spec.under == true && !special[selected[select2]].water && (selected[select2] != 4 || ee.type != 16) && ![16,21,33].includes(selected[select2])) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade != 2 && (ee.spec.under == true && (!special[selected[select2]].water || ee.spec.topWater) && (selected[select2] != 4 || ee.type != 16) && (selected[select2] != 16 || ee.spec.topWater) && ![21,33].includes(selected[select2]))) {
 								valid = 2
 								other = ee.id
 							} else {
@@ -447,7 +455,7 @@
 							}
 							Lid++
 						} else {
-							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0]},"value":0})
+							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0,{},0]},"value":0})
 							else Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
 							Pid++
 						}
@@ -880,7 +888,7 @@
 									}
 								})
 								if (fire) {
-									e.cool = fireRate[e.plant]
+									e.cool = (e.spec.fireRate ?? fireRate[e.plant])
 									e.health -= e.spec.selfD ?? 0
 									if (e.plant == 6) {
 										if (ZombHealth[tar.type] < 1800) {
@@ -941,11 +949,31 @@
 						e.img = new Image()
 						e.img.src = e.imgsrc
 					}
-					canvas.context.drawImage(e.img,e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2,e.size*(e.img.width/e.img.height),e.size)
+					
+					if (e.spec.homing) {
+						canvas.context.translate(e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2)
+						canvas.context.rotate(e.ang ?? 0)
+						canvas.context.drawImage(e.img,0,0,e.size*(e.img.width/e.img.height),e.size)
+						canvas.context.rotate(-(e.ang ?? 0))
+						canvas.context.translate(-(e.x-e.size*(e.img.width/e.img.height)/2),-(e.y-e.size/2))
+					} else {
+						canvas.context.drawImage(e.img,e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2,e.size*(e.img.width/e.img.height),e.size)
+					}
+					
 					/*canvas.context.fillStyle = "#FF0000"
 					//canvas.context.fillRect(e.x-5,e.y-CollBox[e.type][1]/2,10,CollBox[e.type][1])
 					canvas.context.fillRect(e.x-e.size/2, e.y-CollBox[e.type][1]/2,CollBox[e.type][0],CollBox[e.type][1])*/
-					if (e.x > 900 || e.x < 0 || e.y > 700 || e.y < -100) {
+					const t = Zombies.find(z => z.id == e.spec.target)
+					if (e.spec.homing && t) {
+						const ang = Math.atan2(t.y+35-e.y,t.x+35-e.x)
+						const ang2 = Math.atan2(e.vy,e.vx)
+						const ang3 = ang2+Math.min(Math.max((((ang-ang2+Math.PI)%(Math.PI*2)+(Math.PI*2))%(Math.PI*2))-Math.PI,-Math.PI/60),Math.PI/60)
+						e.ang = ang3
+						const amp = Math.sqrt(e.vx**2+e.vy**2)
+						e.vx = Math.cos(ang3)*amp
+						e.vy = Math.sin(ang3)*amp
+					}
+					if ((!e.spec.homing || !t) && (e.x > 900 || e.x < 0 || e.y > 700 || e.y < -100)) {
 						if (!Dead.includes(["Proj",e.id])) {
 							Dead.push(["Proj",e.id])
 						}
@@ -1008,7 +1036,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
@@ -1040,7 +1068,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
@@ -1749,7 +1777,12 @@
 							//Win
 							Wave++
 							WaveTime = 1000
-							alert("🏆")
+							let monCol = 0
+							Proj.forEach((e) => {
+								if (e.spec.money) monCol += e.value
+							})
+							localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
+							alert("🏆\n"+monCol+" dropped money was collected automatically")
 							if (!LevsUnlocked.includes(Number(Level)+1)) {
 								if (Level == 33) localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
 								LevsUnlocked.push(Number(Level)+1)
