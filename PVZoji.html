@@ -900,11 +900,16 @@
 											e.cool = 1
 										}
 									} else if (e.plant == 31) {
-										//steal
-										let t = tar
-										eval(tar.spec.metal)
-										tar.spec.metal = undefined
-										//alert(JSON.stringify(tar))
+										if (e.spec.sMagnet) {
+											Proj.filter((p) => p.spec.sun).forEach((e) => {
+												sun += e.value
+												Dead.push(["Proj",e.id])
+											})
+										} else {
+											let t = tar
+											eval(tar.spec.metal)
+											tar.spec.metal = undefined
+										}
 									} else {
 										if (e.spec.flight == 1) {
 											e.spec.flying = fly
