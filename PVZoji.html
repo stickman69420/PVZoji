@@ -226,7 +226,7 @@
 						let img = new Image()
 						img.src = "./images/proj/"+ee.projImg+".png"
 						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
-						Proj.push({"id":Pid,"damaged":[],"x":eee,"y":((ee.row+1)*100-50)+projOff[ee.plant][1],"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+						Proj.push({"id":Pid,"damaged":[],"x":eee ? tar.x+(Array.isArray(projOff[e.plant][0]) ? projOff[e.plant][0][j] : projOff[e.plant][0]) : (e.col*100+50)+(Array.isArray(projOff[e.plant][0]) ? projOff[e.plant][0][j] : projOff[e.plant][0]),"y": eee ? tar.y+(Array.isArray(projOff[e.plant][1]) ? projOff[e.plant][1][j] : projOff[e.plant][1]) : ((ee.row+1)*100-50)+(Array.isArray(projOff[e.plant][1]) ? projOff[e.plant][1][j] : projOff[e.plant][1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
 							Lawn.forEach((o) => {
@@ -238,7 +238,7 @@
 							Oid++
 						}
 						if (e.spec.homing) Proj[Proj.length-1].spec.target = tar.id
-					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar) ? tar.x+projOff[e.plant][0] : (e.col*100+50)+projOff[e.plant][0],i,tar)
+					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar),i,tar)
 				}
 			}
 			reloadSeed()

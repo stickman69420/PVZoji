@@ -12,12 +12,15 @@
 			if (LevsUnlocked.includes(14)) almanac.href = "./almanac.html"
 			if (LevsUnlocked.includes(24)) shopp.href = "./Shop.html"
 			function clearEverything() {
-				localStorage.clear()
-				location.reload()
+				if (confirm("!!!!!!!!!!!!!")) {
+					localStorage.clear()
+					location.reload()
+				}
 			}
 			function modify() {
 				localStorage.setItem("Levs",prompt("Levels Unlocked",JSON.stringify(LevsUnlocked)))
 				localStorage.setItem("Unlocked",prompt("Unlocked Plants",JSON.stringify(unlocked)))
+				localStorage.setItem("money",prompt("money",localStorage.getItem("money")))
 				window.location = "./LevelSelect.html"
 			}
 		</script>
