@@ -145,9 +145,13 @@
 			
 			if (!saveloaded) {
 				if (Level == 34) {
+					selected = [16]
 					for (let i=0;i<rows;i++) {
 						for (let j=3;j<9;j++) {
-							Obstacles.push({"img":"vase","id":Oid,"col":j,"row":i,"type":2})
+							const isp = Math.random() < 0.1
+							const ty = isp ? true : Math.random() < 0.5
+							Obstacles.push({"img":isp ? "plant vase" : "vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7,0][Math.floor(Math.random()*8)]})
+							//alert(JSON.stringify(Obstacles[Obstacles.length-1]))
 							Oid++
 						}
 					}
@@ -340,6 +344,17 @@
 				}
 			})
 			canvas.addEventListener("click",(e) => {
+				const mouseLoc = [Math.floor(e.offsetX*1.2/(100*sizePerc)),Math.floor(e.offsetY*1.2/(100*sizePerc))]
+				Obstacles.filter((o) => o.col == mouseLoc[0] && o.row == mouseLoc[1] && o.type == 2).forEach((ee) => {
+					if (ee.sumtype) {
+						selected.push(ee.summon)
+						seeds.innerHTML = ""
+						reloadSeed()
+					} else {
+						SpawnZombie(ee.summon,ee.col,ee.row)
+					}
+					Dead.push(["Obstacles",ee.id])
+				})
 				if (select2 == -1) {
 					if (Level==14) {
 						Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2,"y":e.offsetY*1.2,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
@@ -348,7 +363,6 @@
 				} else {
 					let valid
 					let other
-					const mouseLoc = [Math.floor(e.offsetX*1.2/(100*sizePerc)),Math.floor(e.offsetY*1.2/(100*sizePerc))]
 					if (select2 >= 0 && special[selected[select2]].upgrade == 2) {
 						valid = false
 					} else if (select2 >= 0 && special[selected[select2]].water) {
@@ -468,7 +482,7 @@
 							Pid++
 						}
 						if (Object.keys(conveyors).includes(Level)) {
-							selected.splice(select2,1)
+							if (Level != 34 || select2 != 0) selected.splice(select2,1)
 							seeds.innerHTML = ""
 							reloadSeed()
 						} else {
@@ -562,7 +576,7 @@
 						Aid++
 					}
 				}
-				if (guaranteed.includes(1)) {
+				if (guaranteed.includes(1) || guaranteed.includes(25)) {
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
 					alarm.style.left = 15*sizePerc+"px"
@@ -1426,7 +1440,7 @@
 				canvas.context.translate(115,0)
 				canvas.context.rotate(Math.PI)
 				Waves[+Hard][Level].forEach((e,ee,eee) => {
-					if (e.guaranteed.includes(1)) canvas.context.drawImage(preloadedImg[7],-45-(ee-1)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
+					if (e.guaranteed.includes(1) || e.guaranteed.includes(25)) canvas.context.drawImage(preloadedImg[7],-45-(ee-1)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
 				})
 				canvas.context.rotate(Math.PI)
 				canvas.context.translate(-115,0)
@@ -1528,6 +1542,10 @@
 						if (e.spec.timer != undefined) e.spec.timer += 0.1
 						e.vx = e.ovx
 					}
+					if (e.spec.snow > 0 && e.spec.fire) {
+						e.spec.fire = false
+						e.spec.action = false
+					}
 					if (e.spec.timer != undefined) {
 							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
 							if (e.spec.timer >= e.spec.threshold && e.type == 15) {
@@ -1594,6 +1612,12 @@
 										}
 										e.crushing = e.crushing || []
 										e.crushing.push(ee.id)
+									} else if (e.spec.fire && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+										if (ee.spec.snow) {
+											e.spec.fire = false
+											e.spec.action = false
+										}
+										else ee.health = 0
 									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 									if (e.spec.steal) {
 										if (e.stun <= 0) {
@@ -1783,10 +1807,10 @@
 				if (WaveHealth == 0 && Level == 14 && WaveTime > 1) {
 					WaveTime = Math.random()
 				}
-				if (WaveTime <= 0 && zSpawn) {
-					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1))) {
+				if (WaveTime <= 0) {
+					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1) || Waves[+Hard][Level][Wave].guaranteed.includes(25))) {
 						//alert(Wave+","+Waves[+Hard][Level].length)
-						if (Wave == Waves[+Hard][Level].length) {
+						if ((zSpawn && Wave == Waves[+Hard][Level].length) || (Zombies.length==0 && Obstacles.length==0)) {
 							//Win
 							Wave++
 							WaveTime = 1000
@@ -1816,7 +1840,7 @@
 								localStorage.removeItem(e)
 							})
 							window.location= "./LevelSelect.html"
-						} else {
+						} else if (zSpawn) {
 							WaveTime = 27
 							//alert(JSON.stringify(Waves[+Hard][Level][Wave]))
 							SpawnWave(Waves[+Hard][Level][Wave].points,Waves[+Hard][Level][Wave].guaranteed,(Waves[+Hard][Level][Wave].ambush ?? []))
@@ -1855,7 +1879,7 @@
 			if (Object.keys(conveyors).includes(Level)) setTimeout(convey,4000)
 			
 			function convey() {
-				if (selected.length < SeedC) {
+				if (selected.length < SeedC && Level != 34) {
 					let pool = []
 					conveyors[Level].forEach((e) => {
 						if (selected.filter(ee => ee == e).length >= 4) {
