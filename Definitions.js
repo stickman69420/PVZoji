@@ -90,7 +90,7 @@
 				mowerImg[mowerImg.length-1].src = "./images/proj/"+e+".png"
 			})
 			
-			const preloaded = ["plants/cherry bomb","plants/wall nut","proj/explosion","proj/ice","proj/sun","ui/grave","ui/hole","zombies/flag","ui/silver coin","ui/gold coin","ui/diamond","proj/fire","ui/fog","proj/jack explosion","ui/butter","zombies/ladder","proj/melon splash","proj/winter melon splash"]
+			const preloaded = ["plants/cherry bomb","plants/wall nut","proj/explosion","proj/ice","proj/sun","ui/grave","ui/hole","zombies/flag","ui/silver coin","ui/gold coin","ui/diamond","proj/fire","ui/fog","proj/jack explosion","ui/butter","zombies/ladder","proj/melon splash","proj/winter melon splash","zombies/fire flag"]
 			let preloadedImg = []
 			preloaded.forEach((e) => {
 				preloadedImg.push(new Image())
@@ -114,7 +114,7 @@
 			const value = [20,25,1800,0,1800,0,1800,20,20,15,20,0,0,20,20,1800,0,1800,20,1800,1800,10,0,0,20,0,20,1800,20,20,0,0,40,0,20,0,0,0,25,102,0,0,0,0,0,0,0,0,40,10]
 			//const ProjImg = ["🟢","☀️","💥","🌰","💥","❄️","👄","🟢","🟣","☀️","🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣","🪵","🍄","🟣","❄️","💥"]
 			const ProjImg = ["pea","sun","explosion","","explosion","ice","","pea","spore","sun","fume","","","spore","ice","doom explosion","","squash","pea","kelp","jalapeno","spikes","fire","","sea spore","","spike","gust","pea","star","","","cabbage","","kernel","","","","lightning","melon","","","","","","","","","spore","fist"]
-			const projOff = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[],[],[],[],[],[],[],[],[0,0],[0,[0,25,-12,12,-25]]]
+			const projOff = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,50],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[],[],[],[],[],[],[],[],[0,0],[0,[0,25,-12,12,-25]]]
 			const Lspeed = [7.5,0,0,0,0,0,0,7.5,7.5,0,0,0,0,7.5,0,0,0,0,7.5,0,0,0,[...Array(36).keys()].map((n) => 2*Math.cos((n*Math.PI)/18)),0,7.5,0,7.5,0.5,[7.5,-7.5,-7.5],[-7.5,0,0,7.5*Math.cos(Math.PI/6),7.5*Math.cos(Math.PI/6)],0,0,7.5,0,7.5,0,0,0,7.5,7.5,0,0,0,0,0,0,0,0,7.5,13]
 			const Vspeed = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,[-3.25,0,3.25],0,0,-1,[...Array(36).keys()].map((n) => 2*Math.sin((n*Math.PI)/18)),0,0,0,0,0,[0,0,0],[0,7.5,-7.5,7.5*Math.sin(Math.PI/6),-7.5*Math.sin(Math.PI/6)],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 			const ProjSize = [25,75,300,0,100,100,0,25,12,50,25,0,0,12,1000,700,0,100,25,100,100,100,50,0,12,0,25,1000,25,50,0,0,50,0,25,0,0,0,50,100,0,0,0,0,0,0,0,0,25,50]

@@ -1440,7 +1440,8 @@
 				canvas.context.translate(115,0)
 				canvas.context.rotate(Math.PI)
 				Waves[+Hard][Level].forEach((e,ee,eee) => {
-					if (e.guaranteed.includes(1) || e.guaranteed.includes(25)) canvas.context.drawImage(preloadedImg[7],-45-(ee-1)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
+					if (e.guaranteed.includes(1)) canvas.context.drawImage(preloadedImg[7],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
+					if (e.guaranteed.includes(25)) canvas.context.drawImage(preloadedImg[18],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
 				})
 				canvas.context.rotate(Math.PI)
 				canvas.context.translate(-115,0)
@@ -1455,7 +1456,7 @@
 								if (Math.abs(e.col-j) < e.spec.light[0]/2 && Math.abs(e.row-i) < e.spec.light[1]/2) s = false
 								//Debug.innerHTML += Math.abs(e.col-i)+","+e.spec.light[0]/1+"|"+Math.abs(e.row-j)+","+e.spec.light[1]/1+"-"
 							})
-							if (s) canvas.context.drawImage(preloadedImg[12],j*100,i*100,100,100)
+							if (s) canvas.context.drawImage(preloadedImg[16],j*100,i*100,100,100)
 						}
 					}
 				}
@@ -1810,7 +1811,7 @@
 				if (WaveTime <= 0) {
 					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1) || Waves[+Hard][Level][Wave].guaranteed.includes(25))) {
 						//alert(Wave+","+Waves[+Hard][Level].length)
-						if ((zSpawn && Wave == Waves[+Hard][Level].length) || (Zombies.length==0 && Obstacles.length==0)) {
+						if ((zSpawn && Wave == Waves[+Hard][Level].length) || (Zombies.length==0 && Obstacles.length==0 && !zSpawn)) {
 							//Win
 							Wave++
 							WaveTime = 1000
