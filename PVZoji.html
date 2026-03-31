@@ -3,7 +3,7 @@
 	<head>
 		<script>
 			addEventListener("error", (e) => {
-				alert(e.lineno+": "+e.message)+"\nMain"
+				alert(e.lineno+":"+e.colno+", "+e.message)+"\nMain"
 			});
 		</script>
 		<meta charset="utf-8">
@@ -144,6 +144,14 @@
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
 			
 			if (!saveloaded) {
+				if (Level == 34) {
+					for (let i=0;i<rows;i++) {
+						for (let j=3;j<9;j++) {
+							Obstacles.push({"img":"vase","id":Oid,"col":j,"row":i,"type":2})
+							Oid++
+						}
+					}
+				}
 				selected.forEach((e,ee) => {
 					recharge[ee] = InitCharge[e]
 				})
@@ -1775,7 +1783,7 @@
 				if (WaveHealth == 0 && Level == 14 && WaveTime > 1) {
 					WaveTime = Math.random()
 				}
-				if (WaveTime <= 0) {
+				if (WaveTime <= 0 && zSpawn) {
 					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1))) {
 						//alert(Wave+","+Waves[+Hard][Level].length)
 						if (Wave == Waves[+Hard][Level].length) {
