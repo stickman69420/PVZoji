@@ -150,7 +150,7 @@
 						for (let j=3;j<9;j++) {
 							const isp = Math.random() < 0.1
 							const ty = isp ? true : Math.random() < 0.5
-							Obstacles.push({"img":isp ? "plant vase" : "vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7,0][Math.floor(Math.random()*8)]})
+							Obstacles.push({"img":isp ? "plant vase" : "vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7][Math.floor(Math.random()*7)]})
 							//alert(JSON.stringify(Obstacles[Obstacles.length-1]))
 							Oid++
 						}
