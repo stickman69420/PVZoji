@@ -143,17 +143,25 @@
 			
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
 			
+			let vase = false
+			
 			if (!saveloaded) {
 				if (Level == 34) {
+					vase = 2
 					selected = [16]
-					for (let i=0;i<rows;i++) {
-						for (let j=3;j<9;j++) {
-							const isp = Math.random() < 0.1
-							const ty = isp ? true : Math.random() < 0.5
-							Obstacles.push({"img":isp ? "plant vase" : "vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7][Math.floor(Math.random()*7)]})
-							//alert(JSON.stringify(Obstacles[Obstacles.length-1]))
-							Oid++
+					do {
+						for (let i=0;i<rows;i++) {
+							for (let j=3;j<9;j++) {
+								//const isp = Math.random() < 0.1
+								const ty = /*isp ? true : */Math.random() < 0.5
+								Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7][Math.floor(Math.random()*7)]})
+								Oid++
+							}
 						}
+					} while (Obstacles.filter((o) => o.type==2 && o.sumtype).length <= 15)
+					for (let i=0;i<5;i++) {
+						let ofilt = Obstacles.filter((o) => o.type==2 && o.sumtype && o.img == "vase")
+						ofilt[Math.floor(Math.random()*ofilt.length)].img = "plant vase"
 					}
 				}
 				selected.forEach((e,ee) => {
@@ -1812,6 +1820,7 @@
 					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1) || Waves[+Hard][Level][Wave].guaranteed.includes(25))) {
 						//alert(Wave+","+Waves[+Hard][Level].length)
 						if ((zSpawn && Wave == Waves[+Hard][Level].length) || (Zombies.length==0 && Obstacles.length==0 && !zSpawn)) {
+						if (!vase) {
 							//Win
 							Wave++
 							WaveTime = 1000
@@ -1841,6 +1850,44 @@
 								localStorage.removeItem(e)
 							})
 							window.location= "./LevelSelect.html"
+						} else {
+							vase--
+							Lawn = []
+							for (let i=0;i<rows;i++) {
+								for (let j=3;j<9;j++) {
+									//const isp = Math.random() < 0.1
+									const ty = /*isp ? true : */Math.random() < 0.5
+									Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7][Math.floor(Math.random()*7)]})
+									//alert(JSON.stringify(Obstacles[Obstacles.length-1]))
+									Oid++
+								}
+							}
+							for (let i=0;i<5;i++) {
+								let ofilt = Obstacles.filter((o) => o.type==2 && o.sumtype && o.img == "vase")
+								ofilt[Math.floor(Math.random()*ofilt.length)].img = "plant vase"
+							}
+							alarm.innerHTML = "A NEW WAVE OF VASES IS APPROACHING"
+							alarm.style.fontSize = 35*sizePerc+"px"
+							alarm.style.left = 15*sizePerc+"px"
+							alarm.style.top = 300*sizePerc+"px"
+							setTimeout((e) => {
+								alarm.innerHTML = e ? "FINAL WAVE" : ""
+								if (!alarm.innerHTML.includes("FINAL")) {
+									alarm.style.fontSize = 35*sizePerc+"px"
+									alarm.style.left = 15*sizePerc+"px"
+									alarm.style.top = 300*sizePerc+"px"
+								} else {
+									alarm.style.fontSize = 70*sizePerc+"px"
+									alarm.style.left = 193*sizePerc+"px"
+									alarm.style.top = 287*sizePerc+"px"
+								}
+							},2000,vase==0)
+							if (vase==0) {
+								setTimeout(() => {
+									alarm.innerHTML = ""
+								},4000)
+							}
+						}
 						} else if (zSpawn) {
 							WaveTime = 27
 							//alert(JSON.stringify(Waves[+Hard][Level][Wave]))
