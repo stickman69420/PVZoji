@@ -75,13 +75,13 @@
 		</style>
 	</head>
 	<body id="body">
-		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:505px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img style="width:100%" src="./images/ui/shovel.png"></button></div>
+		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="HpBars" onclick="HpBars = (HpBars+1)%4" style="color:#00AF0F;position:absolute;left:425px;height:75px;width:80px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">HP</button><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:505px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img style="width:100%" src="./images/ui/shovel.png"></button></div>
 		<canvas style="background-color:#976B42;" id="canvas" width="900" height="600"></canvas>
 		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
 		<e style="line-height:20px;" id="Debug"></e><br>
 		<input id="cons" onchange="subcons()">
-		<button id="sand" onclick="sand()">Sandbox Mode</button>
+		<button id="sand" onclick="sand()">Sandbox Mode</button><button id="next" onclick="WaveTime = 0">Next Wave</button>
 		<img id="debug"></ing>
 		<script src="Definitions.js"></script>
 		<script>
@@ -142,8 +142,6 @@
 			canvas.context = canvas.getContext("2d")
 			
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
-			
-			let vase = false
 			
 			if (!saveloaded) {
 				if (Level == 34) {
@@ -842,6 +840,12 @@
 							e.previmg = e.img
 						}
 						canvas.context.drawImage(e.Img,e.col*100+(100-e.size)/2,e.row*100+(100-e.size)/2,e.size,e.size)
+						if (HpBars%2 == 1) {
+							canvas.context.fillStyle = "#FF0000"
+							canvas.context.fillRect(e.col*100,e.row*100,100,10)
+							canvas.context.fillStyle = "#00FF00"
+							canvas.context.fillRect(e.col*100,e.row*100,100*(e.health/plantHealth[e.plant]),10)
+						}
 						if (e.spec.ladder) canvas.context.drawImage(preloadedImg[15],e.col*100+25,e.row*100,100,100)
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.lineWidth = 1
@@ -1260,6 +1264,12 @@
 						}
 						//canvas.context.strokeText(Zombs[e.type].base,e.x,e.y+70)
 						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y-(75*((e.spec.size ?? 1)-1))+25,(75*(e.spec.size ?? 1))/(Level == 24 ? 2 : 1),(75*(e.spec.size ?? 1))/(Level == 24 ? 2 : 1))
+						if (HpBars > 1) {
+							canvas.context.fillStyle = "#FF0000"
+							canvas.context.fillRect(e.x,e.y,100,10)
+							canvas.context.fillStyle = "#FFFF00"
+							canvas.context.fillRect(e.x,e.y,100*(e.health/ZombHealth[e.type]),10)
+						}
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.font = "20px Arial"
 						canvas.context.strokeText(JSON.stringify(Zombs[e.type]),e.x,e.y)*/
@@ -1552,7 +1562,7 @@
 						if (e.spec.timer != undefined) e.spec.timer += 0.1
 						e.vx = e.ovx
 					}
-					if (e.spec.snow > 0 && e.spec.fire) {
+					if ((e.spec.ice > 0 || e.spec.snow > 0) && e.spec.fire) {
 						e.spec.fire = false
 						e.spec.action = false
 					}
@@ -1622,8 +1632,8 @@
 										}
 										e.crushing = e.crushing || []
 										e.crushing.push(ee.id)
-									} else if (e.spec.fire && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
-										if (ee.spec.snow) {
+									} else if (e.spec.fire && !ee.spec.incend && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+										if (ee.spec.snow || ee.spec.ice) {
 											e.spec.fire = false
 											e.spec.action = false
 										}
@@ -1650,17 +1660,34 @@
 											Hypnos.push(e)
 										}
 									} else {
-										if (ee.plant == 36) {
-											e.stun = 1
-											setTimeout((e2,ee2) => {
-												vrow = []
-												if (ispool && Math.abs(2.5-ee2.row+1) <= 0.5 && e2.spec.pool && ee2.row+1 < rows) vrow.push(100)
-												if (!(ispool && Math.abs(2.5-ee2.row+1) <= 0.5) && e2.spec.pool != 2 && ee2.row+1 < rows) vrow.push(100)
-												if (ispool && Math.abs(2.5-ee2.row-1) <= 0.5 && e2.spec.pool && ee2.row > 0) vrow.push(-100)
-												if (!(ispool && Math.abs(2.5-ee2.row-1) <= 0.5) && e2.spec.pool != 2 && ee2.row > 0) vrow.push(-100)
-												e2.y += vrow[Math.floor(Math.random()*vrow.length)]
-												e2.x -= 10
-											},1000,e,ee)
+										switch (ee.plant) {
+											case (36):
+												e.stun = 1
+												setTimeout((e2,ee2) => {
+													vrow = []
+													if (ispool && Math.abs(2.5-ee2.row+1) <= 0.5 && e2.spec.pool && ee2.row+1 < rows) vrow.push(100)
+													if (!(ispool && Math.abs(2.5-ee2.row+1) <= 0.5) && e2.spec.pool != 2 && ee2.row+1 < rows) vrow.push(100)
+													if (ispool && Math.abs(2.5-ee2.row-1) <= 0.5 && e2.spec.pool && ee2.row > 0) vrow.push(-100)
+													if (!(ispool && Math.abs(2.5-ee2.row-1) <= 0.5) && e2.spec.pool != 2 && ee2.row > 0) vrow.push(-100)
+													e2.y += vrow[Math.floor(Math.random()*vrow.length)]
+													e2.x -= 10
+												},1000,e,ee)
+												break;
+											case (49):
+												if (Level%20 > 9 || !ee.spec.night) {
+													if (ee.img.includes("snow")) e.spec.ice = 500
+													if (ee.img.includes("fire")) {
+														if (zombInWave.includes(e.id)) WaveHealth -= Math.min(e.health,10)
+														e.health -= 10
+													}
+													if (ee.img.includes("elec")) {
+														let img = new Image()
+														img.src = "./images/proj/lightning.png"
+														Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50),"y":((ee.row+1)*100-50),"type":ee.plant,"vx":7.5,"vy":0,"size":25,"img":img,"spec":{"bounce":true,"proj":true,"pen":-1,"pult":true,"damageOnce":true,"CollBox":[25,25]},"value":2.5})
+														Pid++
+													}
+												}
+												break;
 										}
 									}
 									if (e.spec.hide) e.hidden = false
