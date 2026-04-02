@@ -3,7 +3,7 @@
 	<head>
 		<script>
 			addEventListener("error", (e) => {
-				alert(e.lineno+":"+e.colno+", "+e.message)+"\nMain"
+				alert(e.lineno+":"+e.colno+", "+e.message+"\nMain")
 			});
 		</script>
 		<meta charset="utf-8">
@@ -144,6 +144,12 @@
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
 			
 			if (!saveloaded) {
+				if (Level == 54) {
+					for (let i=0;i<rows;i++) {
+						Lawn.push({"id":Lid,"projImg":ProjImg[51],"img":plants[51],"spec":JSON.parse(JSON.stringify(special[51])),"plant":51,"row":i,"col":0,"cool":fireRate[51]-fireOff[51],"health": plantHealth[51]})
+						Lid++
+					}
+				}
 				if (Level == 34) {
 					vase = 2
 					selected = [16]
@@ -245,7 +251,8 @@
 						let img = new Image()
 						img.src = "./images/proj/"+ee.projImg+".png"
 						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
-						Proj.push({"id":Pid,"damaged":[],"x":eee ? tar.x+(Array.isArray(projOff[e.plant][0]) ? projOff[e.plant][0][j] : projOff[e.plant][0]) : (e.col*100+50)+(Array.isArray(projOff[e.plant][0]) ? projOff[e.plant][0][j] : projOff[e.plant][0]),"y": eee ? tar.y+(Array.isArray(projOff[e.plant][1]) ? projOff[e.plant][1][j] : projOff[e.plant][1]) : ((ee.row+1)*100-50)+(Array.isArray(projOff[e.plant][1]) ? projOff[e.plant][1][j] : projOff[e.plant][1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+						const poff = e.spec.projOff ?? projOff[e.plant]
+						Proj.push({"id":Pid,"damaged":[],"x":eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]),"y": eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
 							Lawn.forEach((o) => {
@@ -363,10 +370,20 @@
 					Dead.push(["Obstacles",ee.id])
 				})
 				if (select2 == -1) {
-					if (Level==14) {
-						Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
-						Pid++
+					switch (Number(Level)) {
+						case (14):
+							Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
+							Pid++
+							break;
+						case (54):
+							Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[14],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6,"butter":{"chance":1,"dur":5000}},"value":0})
+							Pid++
+							break;
 					}
+					Lawn.filter(l => l.plant == 51 && l.cool <= 0 && l.col == mouseLoc[0] && l.row == mouseLoc[1]).forEach((ee) => {
+						select2 = -3
+						ee.selected = true
+					})
 				} else {
 					let valid
 					let other
@@ -396,6 +413,19 @@
 							valid = false
 						}
 					})
+					if (select2 == -3) {
+						Lawn.filter(l => l.plant == 51 && l.selected).forEach((ee) => {
+							ee.selected = false
+							ee.img = "mortar shroom wait"
+							select2 = -1
+							ee.cool = ee.spec.fireRate ?? fireRate[ee.plant]
+							ee.health -= ee.spec.selfD ?? 0
+							setTimeout((eee) => {
+								Proj.push({"id":Pid,"damaged":[],"x":eee.offsetX*1.2/sizePerc,"y":eee.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":200,"img":preloadedImg[19],"spec":{"proj":true,"CollBox":[200,200],"lifespan":0,"Threshold":-30,"pen":-1,"damageOnce":true},"value":1800})
+							},2500/*wiki said 2-3 seconds*/,e)
+							Pid++
+						})
+					} else {
 					Lawn.forEach((ee,eee) => {
 						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder && select2 != -1) {
 							if (select2 >= 0 && special[selected[select2]].out) {
@@ -502,6 +532,7 @@
 						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
 					}
 					select2 = -1
+					}
 					}
 				}
 				Proj.forEach((ee,eee) => {
@@ -850,7 +881,7 @@
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.lineWidth = 1
 						canvas.context.font = "15px Arial"
-						canvas.context.strokeText(e.img,e.col*100,e.row*100)*/
+						canvas.context.strokeText(Math.floor(e.cool*100)/100,e.col*100,e.row*100)*/
 					}
 					if(e.health <= 0) {
 						if (!Dead.includes(["Lawn",e.id])) {
@@ -881,8 +912,18 @@
 								}
 							}
 						}
-						if (e.cool == 0 && e.plant == 6) {
-							e.img = "chomper"
+						if (e.cool <= 0)
+							switch(e.plant) {
+								case (6):
+									e.img = "chomper"
+									break;
+								case (31):
+									e.img = "magnet shroom"
+									break;
+								case (51):
+									e.img = "mortar shroom"
+									break;
+							}
 						}
 						if (e.cool <= 0) {
 							if (e.spec.transform != undefined) {
@@ -935,6 +976,7 @@
 											e.cool = 1
 										}
 									} else if (e.plant == 31) {
+										e.img = "magnet shroom wait"
 										if (e.spec.sMagnet) {
 											Proj.filter((p) => p.spec.sun).forEach((e) => {
 												sun += e.value
@@ -972,7 +1014,7 @@
 							}
 						}
 					}
-					}
+					//}
 				})
 				canvas.context.globalAlpha = 1
 				Proj.forEach((e,eee) => {
@@ -1525,12 +1567,13 @@
 									let eee = Lawn.find((l) => l.id == ee)
 									if (eee) {
 										if (e.type == 22 && (eee.spec.garg ?? 1) <= 1) eee.health = 0
-										else eee.spec.garg--
+										eee.spec.garg--
 										if (e.spec.vehicle && (eee.spec.vehicle ?? 1) <= 1) eee.health = 0
 										else eee.spec.vehicle--
+										if (e.type != 22 && !e.spec.vehicle) eee.health = 0
 									}
 								})
-								if (e.type == 26) e.action = !e.action
+								if (e.type == 26) e.spec.action = !e.spec.action
 								e.crushing = undefined
 							}
 						}
@@ -1958,7 +2001,7 @@
 			if (Object.keys(conveyors).includes(Level)) setTimeout(convey,4000)
 			
 			function convey() {
-				if (selected.length < SeedC && Level != 34) {
+				if (selected.length < SeedC && conveyors[Level].length != 0) {
 					let pool = []
 					conveyors[Level].forEach((e) => {
 						if (selected.filter(ee => ee == e).length >= 4) {
