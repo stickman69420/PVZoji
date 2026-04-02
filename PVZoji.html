@@ -364,7 +364,7 @@
 				})
 				if (select2 == -1) {
 					if (Level==14) {
-						Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2,"y":e.offsetY*1.2,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
+						Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
 						Pid++
 					}
 				} else {
@@ -1530,6 +1530,7 @@
 										else eee.spec.vehicle--
 									}
 								})
+								if (e.type == 26) e.action = !e.action
 								e.crushing = undefined
 							}
 						}
