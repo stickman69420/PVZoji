@@ -1064,7 +1064,7 @@
 						e.vx = Math.cos(ang3)*amp
 						e.vy = Math.sin(ang3)*amp
 					}
-					if ((!e.spec.homing || !t) && (e.x > 900 || e.x < 0 || e.y > 700 || e.y < -100)) {
+					if ((!e.spec.homing || !t) && (e.x > 900 || (e.x < 0 && e.vx < 0) || e.y > 700 || e.y < -100)) {
 						if (!Dead.includes(["Proj",e.id])) {
 							Dead.push(["Proj",e.id])
 						}
@@ -1386,36 +1386,67 @@
 					}
 				})
 				Hypnos.forEach((e,ee) => {
-					/*canvas.context.strokeStyle = "#000000"
-					canvas.context.lineWidth = 1
-					canvas.context.font = "10px Arial"
-					canvas.context.strokeText(JSON.stringify(e),e.x,e.y)
-					canvas.context.font = "50px Arial"*/
 					if (e.health > 0) {
-						e.x += e.vx*100/60
+						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
+						e.x += (e.vx ?? 0)*100/60
+						if (e.type == 12) {
+							let vid = false
+							Obstacles.forEach((eee) => {
+								if (eee.type == 1 && eee.col == Math.floor(e.x/100) && eee.row == Math.floor(e.y/100)) {
+									vid = true
+								}
+							})
+							if (!vid) {
+								WaveHealth -= e.health
+								e.health = 0
+							}
+						}
+						if (e.type == 11 && (e.spec.last == undefined || e.x+0 <= e.spec.last)) {
+							e.spec.last = (e.spec.last ?? 1000)-100
+							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0})
+							Oid++
+						}
+						if (e.spec.iceImm) e.spec.ice = 0
+						if (e.spec.snowImm) e.spec.snow = 0
 						if (e.spec.spawn) {
-							if (performance.now() > e.spec.lastSummon+3000 && (!e.stun || e.stun<0)) {
+							if (e.x < 850 && performance.now() > e.spec.lastSummon+3000 && (!e.stun || e.stun<0)) {
 								e.spec.lastSummon = performance.now()
 								e.spec.pattern.forEach((eee,i) => {
 									if (Hypnos.findIndex((eeee) => eeee.id === e.spec.links[i]) == -1) {
-										e.stun = 1
-										setTimeout((r,rr) => {
-											Hypnos.push({"id":Zid,"x":r.x+rr[0]*100,"y":r.y+rr[1]*100,"type":e.spec.spawn,"health":ZombHealth[r.spec.spawn],"ovx":SpdRng[r.spec.spawn][0]+Math.random()*(SpdRng[r.spec.spawn][1]-SpdRng[r.spec.spawn][0]),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[r.spec.spawn]))})
-											Hypnos[Hypnos.length-1].spec.linked = r.id
-											r.spec.links.splice(i,1,Zid)
-											Zid++
-											r.ovx = r.spec.AfterSpd[0]+Math.random()*(r.spec.AfterSpd[1]-r.spec.AfterSpd[0])
-										},1000,e,eee)
+										if (e.x+eee[0]*100 < 900 && e.x+eee[0]*100 > -1 && e.y+eee[1]*100 < rows*100 && e.y+eee[1]*100 > -1) {
+											e.stun = 1
+											setTimeout((r,rr) => {
+												Hypnos.push({"id":Zid,"x":r.x+rr[0]*100,"y":r.y+rr[1]*100,"type":e.spec.spawn,"health":ZombHealth[r.spec.spawn],"ovx":SpdRng[r.spec.spawn][0]+Math.random()*(SpdRng[r.spec.spawn][1]-SpdRng[r.spec.spawn][0]),"vx":0,"spec":JSON.parse(JSON.stringify(ZombSpecial[r.spec.spawn]))})
+												Hypnos[Hypnos.length-1].spec.linked = r.id
+												r.spec.links.splice(i,1,Zid)
+												Zid++
+												r.ovx = r.spec.AfterSpd[0]+Math.random()*(r.spec.AfterSpd[1]-r.spec.AfterSpd[0])
+											},1000,e,eee)
+										}
 									}
 								})
 							}
 						}
-						if (e.x > 900) {
-							if (!Dead.includes(["Hypnos",e.id])) {
-								Dead.push(["Hypnos",e.id])
-							}
+						if (e.x >= 900) {
+							if (e.type == 17) {
+								e.x = 1
+								e.spec.action = false
+								e.ovx = e.spec.AfterSpd[0]+Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])
+								e.spec.noColl = false
+								e.hidden = false
+								e.stun = 2
+							} 
 						}
-						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y+25,75,75)
+						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y-(75*((e.spec.size ?? 1)-1))+25,(75*(e.spec.size ?? 1))/(Level == 24 ? 2 : 1),(75*(e.spec.size ?? 1))/(Level == 24 ? 2 : 1))
+						canvas.context.fillStyle = "#FF00FF33"
+						canvas.context.fillRect(e.x,e.y+25,75,75)
+						canvas.context.fillStyle = "#000000FF"
+						if (HpBars > 1) {
+							canvas.context.fillStyle = "#FF0000"
+							canvas.context.fillRect(e.x,e.y,100,10)
+							canvas.context.fillStyle = "#FF00FF"
+							canvas.context.fillRect(e.x,e.y,100*(e.health/ZombHealth[e.type]),10)
+						}
 						let going = true
 						Zombs[e.type].stages.forEach((eee) => {
 							if (e.health > eee.health && e.spec.action == eee.action) {
@@ -1423,17 +1454,18 @@
 									//head
 									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.headRot*Math.PI/180)
-									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75,75)
+									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 									canvas.context.rotate(-eee.headRot*Math.PI/180)
-									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
-									
+									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])									
 									//arm
 									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
 									canvas.context.rotate(eee.armRot*Math.PI/180)
-									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75,75)
+									//canvas.context.strokeText(eee.arm ?? "",-25,0)
+									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 									canvas.context.rotate(-eee.armRot*Math.PI/180)
 									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
 									
+									if (eee.run) eee.run(e)									
 									going = false
 								}
 							}
@@ -1441,19 +1473,20 @@
 						if (Zombs[e.type].shields != undefined) {
 						for (const [key, value] of Object.entries(Zombs[e.type].shields)) {
 							if (e.spec.shields[key] > 0) {
-								canvas.context.translate(e.x+0-(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
+								canvas.context.translate(e.x+0+(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
 								canvas.context.rotate(value.Rot*Math.PI/180)
-								canvas.context.drawImage(value.Img,-25,0,75,75)
+								canvas.context.drawImage(value.Img,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
 								canvas.context.rotate(-value.Rot*Math.PI/180)
-								canvas.context.translate(-e.x-0+(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
+								canvas.context.translate(-e.x-0-(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
 							}
 						}
 						}
-						canvas.context.fillStyle = "#FF00FF33"
-						canvas.context.fillRect(e.x,e.y+45,50,50)
-						canvas.context.fillStyle = "#000000FF"
 					} else {
 						if (!Dead.includes(["Hypnos",e.id])) {
+							if (Level == 14 && Math.random() < 0.15) {
+								Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
+								Pid++
+							}
 							Dead.push(["Hypnos",e.id])
 						}
 					}
@@ -1834,56 +1867,95 @@
 					}*/
 				})
 				Hypnos.forEach((e) => {
-					if (e.stun > 0) {
+					if (e.stun >= 0) {
 						e.vx = 0
-						e.stun -= 0.1
+						e.stun -= (e.spec.snow > 0 ? 0.05 : 0.1)
+						if (e.stun <= 0) {
+							if (e.spec.crush != undefined && e.crushing != undefined) {
+								e.crushing.forEach((ee) => {
+									let eee = Lawn.find((l) => l.id == ee)
+									if (eee) {
+										if (e.type == 22 && (eee.spec.garg ?? 1) <= 1) eee.health = 0
+										eee.spec.garg--
+										if (e.spec.vehicle && (eee.spec.vehicle ?? 1) <= 1) eee.health = 0
+										else eee.spec.vehicle--
+										if (e.type != 22 && !e.spec.vehicle) eee.health = 0
+									}
+								})
+								if (e.type == 26) e.spec.action = !e.spec.action
+								e.crushing = undefined
+							}
+						}
 						if (e.spec.linked != undefined) {
 							let z = Hypnos.find((ee) => ee.id === e.spec.linked)
 							if (z) {
 								let spd = z.spec
-								if (spd.groupSpd > 0) {
+								if (spd.groupSpd < 0) {
 									spd.groupSpd = 0
 								}
 							}
 						}
+					} else if (e.spec.decel != undefined) {
+						//Debug.innerHTML = (JSON.stringify(e))
+						e.vx = -e.spec.decel-(-e.spec.ocel-e.spec.decel)/900*(e.x)
 					} else {
+						if (e.spec.timer != undefined) e.spec.timer += 0.1
 						e.vx = e.ovx
 					}
-					Zombies.forEach((ee) => {
-						if(Math.floor(e.x/100)==Math.floor(ee.x/100) && Math.floor(e.y/100)==Math.floor(ee.y/100)) {
-							if (e.spec.jump) {
-								e.x = Math.ceil(e.x/100)*100+1
-								e.ovx = Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0]
-								e.spec.jump = false
-								e.spec.action = false
-							} else {
+					if (e.spec.timer != undefined) {
+							if (e.spec.timer >= e.spec.threshold && e.type == 15) {
+								e.stun = 1.1
+								if (e.spec.timer >= e.spec.threshold+1.1) {
+									Hypnos.filter(l => Math.abs(l.x-e.x) <= 1.5 && Math.abs(l.y-e.y) <= 1.5).forEach((eee) => {
+										if (ZombInWave.includes(eee.id)) WaveHealth -= eee.health
+										eee.health -= 1800
+									})
+									Proj.push({"id":Pid,"damaged":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+									Pid++
+									e.health = 0
+								}
+							}
+						}
+					if ((e.stun ?? 0) <= 0) {
+						if (e.spec.hide) e.hidden = true
+						if (e.spec.noColl) e.hidden = true
+						Zombies.forEach((ee) => {
+							if(Math.floor(e.x/100)==Math.floor(ee.x/100) && Math.floor(e.y/100)==Math.floor(ee.y/100)) {
+								if (e.spec.jump) {
+									e.x = Math.floor(e.x/100)*100-1
+									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
+									e.spec.jump = false
+									e.spec.action = false
+								} else {
 								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
-									ee.spec.shields.front -= 10
+									ee.spec.shields.front -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 									if (ee.spec.shields.front <= 0) {
-										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break] ?? {})) {
+										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
 											if (key == "speed") {
-												ee.ovx = -(Math.random()*(value[1]-value[0])+value[0])
+												ee.ovx = Math.random()*(value[1]-value[0])+value[0]
 											} if (key == "spec") {
 												for (const [key2, value2] of Object.entries(key)) {
 													ee.spec[key2] = value2
 												}
-											} else {
+															} else {
 												ee[key] = value
 											}
 										}
-									}
+									}  
 								} else {
-									if (zombInWave.includes(ee.id)) {
-										WaveHealth -= Math.min(ee.health, 10)
-									}
-									ee.health -= 10
+									if (e.spec.crush != undefined) {
+										e.stun = e.spec.crush
+										setTimeout((p) => {
+											ee.health = 0
+										},e.spec.crush,ee)
+									} else ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
 								}
 								e.vx = 0
 								if (e.spec.linked != undefined) {
 									let z = Hypnos.find((eee) => eee.id === e.spec.linked)
 									if (z) {
 										let spd = z.spec
-										if (spd.groupSpd > 0) {
+										if (spd.groupSpd < 0) {
 											spd.groupSpd = 0
 										}
 									}
@@ -1891,6 +1963,8 @@
 							}
 						}
 					})
+					}
+					//}
 				})
 				WaveTime -= 0.1
 				if ((WaveHealth <= WaveHealthO/2 || Level==14) && WaveTime > (Level==14 ? 5 : 2)) {
