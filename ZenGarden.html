@@ -1,0 +1,161 @@
+<!doctype HTML>
+<html>
+	<head>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+":"+e.colno+", "+e.message+"\nZeng")
+			});
+		</script>
+		<meta charset="utf-8">
+		<style id="css-output">
+			body {
+				font-family:arial;
+				background-color: #777777;
+				margin: 0px;
+				padding: 0px;
+				font-size: 20px;
+			}
+			a {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				display: block;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: auto;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
+		</style>
+	</head>
+	<body>
+		<a id="returnn" href="./index.html">Return</a>
+		<canvas id="canvas" width="1920" height="1180" style="width:100%;height:100%;"></canvas>
+		<e id="mney"></e>
+	</body>
+	<script src="Definitions.js"></script>
+	<script>
+		function save() {
+			localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+		}
+		function incMon(qty,off) {
+			localStorage.setItem("money",Number(localStorage.getItem("money"))+qty)
+			mGhosts.push({"x":off[0],"y":off[1],"qty":qty,"time":new Date()})
+		}
+		/*let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+		addEventListener("resize", (ee) => {
+			sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+		})*/
+		let slect = -1
+		let mov
+		let mGhosts = []
+		const zGard = ["ui/water drop","ui/water verb","ui/fertiliser","","","ui/sell","ui/glove"]
+		const btns = [1,2,3,4,5,6]
+		let zGardImg = []
+		zGard.forEach((e) => {
+			zGardImg.push(new Image())
+			zGardImg[zGardImg.length-1].src = "./images/"+e+".png"
+		})
+		canvas.context = canvas.getContext("2d")
+		let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+		/*for (let i=0;i<25;i++) {
+			Zengg[[Math.floor(Math.random()*16),Math.floor(Math.random()*8)]] = [Math.floor(Math.random()*51),Math.floor(Math.random()*4)]
+		}*/
+		canvas.addEventListener("click",(e) => {
+			const offset = [e.offsetX/canvas.offsetWidth*1920,e.offsetY/canvas.offsetHeight*1180]
+			//alert(JSON.stringify(offset))
+			if (offset[1] >= 1010) {
+				if (slect != -2) slect = Math.floor(offset[0]/170)
+			} else {
+				if (offset[0]%121 <= 100 && offset[1]%130 <= 100) {
+					const pnt = [Math.floor(offset[0]/121),Math.floor(offset[1]/130)]
+					//alert(JSON.stringify(pnt))
+					if ((Zengg[pnt] && slect != -2) || (!Zengg[pnt] && slect == -2)) {
+						switch (slect) {
+							case (-2):
+								Zengg[pnt] = JSON.parse(mov)
+								mov = undefined
+								slect = -1
+								save()
+								break;
+							case (0):
+								if (Zengg[pnt][3] < Zengg[pnt][4] && Zengg[pnt][2] < new Date()) {
+									Zengg[pnt][2] = Number(new Date())+Math.random()*5000+2000
+									Zengg[pnt][3]++
+									incMon(10,offset)
+									save()
+									slect = -1
+								}
+								break;
+							case (1):
+								if (Zengg[pnt][3] == Zengg[pnt][4] && Zengg[pnt][2] < new Date() && Zengg[pnt][1] < 3) {
+									incMon([200,500,2000][Zengg[pnt][1]],offset)
+									Zengg[pnt][2] = Number(new Date())+Math.random()*30000+1800000
+									Zengg[pnt][1]++
+									Zengg[pnt][3] = 0
+									Zengg[pnt][4] = Math.floor(Math.random()*2+2)
+									save()
+									slect = -1
+								}
+								break;
+							case (4):
+								incMon([500,2000,5000,20000][Zengg[pnt][1]],offset)
+								Zengg[pnt] = undefined
+								save()
+								slect = -1
+								break;
+							case (5):
+								mov = JSON.stringify(Zengg[pnt])
+								Zengg[pnt] = undefined
+								slect = -2
+								break;
+						}
+					}
+				}
+			}
+			//alert(slect)
+		})
+		setInterval(() => {
+			mney.innerHTML = "$"+localStorage.getItem("money")
+			canvas.context.clearRect(0,0,1920,1180)
+			canvas.context.fillStyle = "#F8DE8F"
+			canvas.context.strokeStyle = "#94752E"
+			canvas.context.lineWidth = 5
+			for (let i=0;i<16;i++) {
+				for (let j=0;j<8;j++) {
+					canvas.context.fillRect(i*121,j*130,100,100)
+					canvas.context.strokeRect(i*121,j*130,100,100)
+					if ((Zengg[[i,j]] ?? [-1])[0] != -1) {
+						if (Zengg[[i,j]][3] < Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date()) canvas.context.drawImage(zGardImg[0],i*121+75,j*130+75,25,25)
+						if (Zengg[[i,j]][3] == Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date() && Zengg[[i,j]][1] < 3) canvas.context.drawImage(zGardImg[2],i*121+75,j*130+75,25,25)
+						let img = new Image()
+						img.src = "./images/plants/"+plants[Zengg[[i,j]][0]]+".png"
+						const size = (Zengg[[i,j]][1]+1)*25
+						canvas.context.drawImage(img,i*121+50-size/2,j*130+50-size/2,size,size)
+					}
+				}
+			}
+			btns.forEach((e,ee) => {
+				try {
+					canvas.context.drawImage(zGardImg[e],ee*170,1010,170,170)
+				} catch {
+				}
+			})
+			canvas.context.fillStyle = "#000000"
+			canvas.context.font = "50px Arial"
+			mGhosts.forEach((e,ee) => {
+				canvas.context.globalAlpha = Math.max(1-(new Date()-e.time)/1000,0)
+				if (new Date()-e.time > 1000) mGhosts.splice(ee,ee+1)
+				canvas.context.fillText("$"+e.qty,e.x,e.y-(new Date()-e.time)/10)
+			})
+			canvas.context.globalAlpha = 1
+		},16)
+	</script>
+</html>

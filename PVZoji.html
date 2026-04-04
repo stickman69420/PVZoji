@@ -109,7 +109,7 @@
 					window.location = "./index.html"
 				}
 			}
-			if (!saveloaded && isroof) {
+			if (!saveloaded && isroof && Level != 54) {
 				for (let i=0;i<rows;i++) {
 					for (let j=0;j<3+(Level == 40 ? 2 : (Level == 41 ? 1 : 0));j++) {
 						Lawn.push({"id":Lid,"projImg":ProjImg[33],"img":plants[33],"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":i,"col":j,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
@@ -547,6 +547,17 @@
 								localStorage.setItem("money",Number(localStorage.getItem("money"))+ee.value)
 								Dead.push(["Proj",ee.id])
 							}
+						} else if (ee.spec.gift) {
+							if (!Dead.includes(["Proj",ee.id])) {
+								let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+								let occ
+								do {
+									occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
+								} while ((Zengg[occ] ?? -1) != -1)
+								Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+								localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+								Dead.push(["Proj",ee.id])
+							}
 						}
 					}
 				})
@@ -760,14 +771,12 @@
 			//SpawnZombie(19,9,1)
 			
 			function Select(plt) {
-				if (select2 != -1) {
-					if (select2 == -2) {
-						document.getElementById("Shov").style.backgroundColor = "#421803"
-						document.getElementById("Shov").style.borderColor = "#93441D"
-					} else {
-						document.getElementById("B"+select2).style.backgroundColor = "#CAF9E8"
-						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
-					}
+				if (select2 >= 0) {
+					document.getElementById("B"+select2).style.backgroundColor = "#CAF9E8"
+					document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
+				} else if (select2 == -2) {
+					document.getElementById("Shov").style.backgroundColor = "#421803"
+					document.getElementById("Shov").style.borderColor = "#93441D"
 				}
 				if (select2 == plt) {
 					select2 = -1
@@ -1481,6 +1490,8 @@
 									Pid++
 							} else if (/*zen garden unlocked && */false && Math.random()<0.1) {
 								//giftbox
+									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[20],"spec":{"gift":true,"lifespan":0,"Threshold":-900},"value":1})
+									Pid++
 							}
 						}
 					}
@@ -1903,7 +1914,10 @@
 							localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
 							alert("🏆\n"+monCol+" dropped money was collected automatically")
 							if (!LevsUnlocked.includes(Number(Level)+1)) {
-								if (Level == 33) localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+								if (Level == 33 || Level == 53) {
+									localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+									alert("Beating this level gives you $1000")
+								}
 								LevsUnlocked.push(Number(Level)+1)
 								localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
 								if (Unlocks[Number(Level)+1] >= 0) unlocked.push(Unlocks[Number(Level)+1])

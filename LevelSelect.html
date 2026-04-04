@@ -32,6 +32,9 @@
 				top: -70px;
 			}
 			a {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
 				display: block;
 				margin: 0px;
 				padding: 0px;
@@ -51,12 +54,12 @@
 	<body>
 		<a id="returnn" href="./index.html">Return</a>
 		<div style="line-height:160px;width:1080px;height:2240px;" id="levels"></div>
-		<script src="./Definitions.js"></script>
 		<script>
 			addEventListener("error", (e) => {
 				alert(e.lineno+": "+e.message+"\nLS")
 			});
 		</script>
+		<script src="./Definitions.js"></script>
 		<script>
 			const stylesheet = document.getElementById("css-output").sheet
 			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
@@ -91,7 +94,7 @@
 					ee.style.width = 98*sizePerc+"px"
 				})
 			})
-			const levsymb = ["note","shovel","almanac","key","taco","water"]
+			const levsymb = ["note","shovel","almanac","key","taco","water","bacon"]
 			for (let j=0;j<Waves.length;j++) {
 				for (let e=0;e<Waves[j].length;e++) {
 					if (Unlocks[e] >= 0) {

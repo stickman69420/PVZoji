@@ -99,7 +99,7 @@
 			stylesheet.cssRules[0].style.borderTopWidth = 20*sizePerc+"px"
 			stylesheet.cssRules[3].style.fontSize = 20*sizePerc+"px"
 			seedSeled.style.height = 110*sizePerc+"px"
-			seedSel.style.height = Math.ceil(unlocked.length/8)*110*sizePerc+"px"
+			seedSel.style.height = Math.ceil(Math.max(...unlocked)/8)*110*sizePerc+"px"
 			confDiv.style.width = 98.75*sizePerc+"px"
 			confDiv.style.height = 110*sizePerc+"px"
 			confDiv.style.left = 800*sizePerc+"px"
@@ -117,8 +117,8 @@
 					e.style.left = 49.375-e.length*e.style.fontSize*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-					e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%(ee < SeedC ? 15 : 8))*sizePerc+"px"
-					e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
+					e.style.left = 98.75*(e.dataset.index%(e.dataset.t ? 15 : 8))*sizePerc+"px"
+					e.style.top = 110*(e.dataset.t ? 0 : Math.max(Math.floor((e.dataset.index)/8),0))*sizePerc+"px"
 				})
 				Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
 					/*e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
@@ -136,7 +136,7 @@
 				stylesheet.cssRules[0].style.borderTopWidth = 20*sizePerc+"px"
 				stylesheet.cssRules[3].style.fontSize = 20*sizePerc+"px"
 				seedSeled.style.height = 110*sizePerc+"px"
-				seedSel.style.height = Math.ceil(unlocked.length/8)*110*sizePerc+"px"
+				seedSel.style.height = Math.ceil(Math.max(...unlocked)/8)*110*sizePerc+"px"
 				confDiv.style.width = 98.75*sizePerc+"px"
 				confDiv.style.height = 110*sizePerc+"px"
 				confDiv.style.left = 800*sizePerc+"px"
@@ -148,11 +148,11 @@
 			})
 		
 			for (let e=0;e<SeedC;e++) {
-				seedSeled.innerHTML += '<button class="seed" style="left:'+98.75*e+'px;" id="SSed'+e+'" onClick="Deselect('+e+')"></button>'
+				seedSeled.innerHTML += '<button class="seed" data-t="true" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SSed'+e+'" onClick="Deselect('+e+')"></button>'
 			}
 		
 			unlocked.forEach((e) => {
-				seedSel.innerHTML += '<button class="seed" data-index="'+98.75*e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
+				seedSel.innerHTML += '<button class="seed" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
 			})
 		
 			function Deselect(ind) {
@@ -193,8 +193,8 @@
 				}
 			}
 			Array.from(document.getElementsByClassName("seed")).forEach((e,ee) => {
-				e.style.left = 98.75*((ee-(ee < SeedC ? 0 : SeedC))%(ee < SeedC ? 15 : 8))*sizePerc+"px"
-				e.style.top = 110*Math.max(Math.floor((ee-SeedC)/8),0)*sizePerc+"px"
+				e.style.left = 98.75*(e.dataset.index%(e.dataset.t ? 15 : 8))*sizePerc+"px"
+				e.style.top = 110*(e.dataset.t ? 0 : Math.max(Math.floor((e.dataset.index)/8),0))*sizePerc+"px"
 			})
 			Array.from(document.getElementsByClassName("seedDisp")).forEach((e) => {
 				/*e.style.fontSize = e.dataset.originalSize*sizePerc+"px"
