@@ -485,7 +485,7 @@
 							} else if (select2 >= 0 && ee.spec.out == true) {
 								valid = 3
 								other = ee.id
-							} else if (select2 >= 0 && special[selected[select2]].upgrade != 2 && (ee.spec.under == true && (!special[selected[select2]].water || ee.spec.topWater) && (selected[select2] != 4 || ee.type != 16) && (selected[select2] != 16 || ee.spec.topWater) && ![21,33].includes(selected[select2]))) {
+							} else if (select2 >= 0 && special[selected[select2]].upgrade != 2 && (ee.spec.under == true && (special[selected[select2]].water != 2 || ee.spec.topWater) && (selected[select2] != 4 || ee.type != 16) && (selected[select2] != 16 || ee.spec.topWater) && ![21,33].includes(selected[select2]))) {
 								valid = 2
 								other = ee.id
 							} else {
@@ -830,6 +830,11 @@
 						canvas.context.fillRect(100*i-2,0,4,rows*100)
 					}
 				}
+				if (isside) {
+					canvas.context.fillStyle = "#B9B9B9"
+					canvas.context.fillRect(398,0,4,400)
+					canvas.context.fillRect(398,398,504,4)
+				}
 				if (ispool) {
 					canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][4]
 					canvas.context.fillRect(0,200,900,200)
@@ -964,7 +969,7 @@
 								let tar = {"x":10000}
 								Zombies.forEach((ee) => {
 									const dist = (ee.x+(ee.spec.coll ?? [0])[0]-e.col*100)/100
-									if (!ee.spec.noColl && dist <= e.spec.range+(ee.spec.coll ?? [75,75,75])[2]/200 && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/200 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) <= (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
+									if (!ee.spec.noColl && dist <= e.spec.range+(ee.spec.coll ?? [75,75,75])[2]/200 && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/200 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
 											if (ee.spec.flying && e.spec.flight) {
 												fly = true
@@ -1045,7 +1050,7 @@
 				canvas.context.globalAlpha = 1
 				Proj.forEach((e,eee) => {
 					if (!e.origincol) e.origincol = Math.floor(e.x/100)
-					if (isroof && !e.spec.pult && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) Dead.push(["Proj",e.id])
+					if ((isroof || (isside && e.y <= 400)) && !e.spec.pult && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) Dead.push(["Proj",e.id])
 					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
 					//canvas.context.font = e.size+"px Arial";
@@ -1137,7 +1142,7 @@
 							Zombies.forEach((ee) => {
 								if (!Dead.includes(["Zombies",ee.id]) && (!ee.hidden || e.spec.hitSnork) && !ee.spec.noColl && !e.spec.flying == !ee.spec.flying) {
 									if(Math.abs(e.x-ee.x-(ee.spec.coll ?? [75,75,75])[2]/2-(ee.spec.coll ?? [0])[0]) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2+(ee.spec.coll ?? [75,75,75])[2]/2) {
-										if (Math.abs(ee.y-(ee.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(ee.spec.coll ?? [0,0])[1] <= (e.spec.CollBox ?? CollBox[e.type])[1]/2+(ee.spec.coll ?? [75,75,75,75])[3]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
+										if (Math.abs(ee.y+(ee.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(ee.spec.coll ?? [0,0])[1] < (e.spec.CollBox ?? CollBox[e.type])[1]/2+(ee.spec.coll ?? [75,75,75,75])[3]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										/*let go
 										if (!e.damaged.includes(ee.id) && zombInWave.includes(ee.id)) {
 											go = true
