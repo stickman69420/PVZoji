@@ -883,6 +883,7 @@
 						e.size = 100*((e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
 					}
 					if(e.health > 0) {
+						if (e.health < plantHealth[e.plant]) e.health += e.spec.regen ?? 0
 						if (!e.Img || typeof e.Img == "object" || e.previmg != e.img) {
 							let img = new Image()
 							img.src = "./images/plants/"+e.img+".png"
@@ -907,6 +908,7 @@
 							Dead.push(["Lawn",e.id])
 						}
 					} else {
+					canvas.context.fillStyle = "#FFFFFF"
 					if (e.spec.night && (Level%20 < 10)) canvas.context.fillText("Z",e.col*100+25,e.row*100+50)
 					if (!e.spec.night || (Level%20 > 9)) {
 						if (e.spec.hide == undefined) {
@@ -969,7 +971,7 @@
 								let tar = {"x":10000}
 								Zombies.forEach((ee) => {
 									const dist = (ee.x+(ee.spec.coll ?? [0])[0]-e.col*100)/100
-									if (!ee.spec.noColl && dist <= e.spec.range+(ee.spec.coll ?? [75,75,75])[2]/200 && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/200 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
+									if (!ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
 											if (ee.spec.flying && e.spec.flight) {
 												fly = true
@@ -1072,10 +1074,7 @@
 					} else {
 						canvas.context.drawImage(e.img,e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2,e.size*(e.img.width/e.img.height),e.size)
 					}
-					
-					/*canvas.context.fillStyle = "#FF0000"
-					//canvas.context.fillRect(e.x-5,e.y-CollBox[e.type][1]/2,10,CollBox[e.type][1])
-					canvas.context.fillRect(e.x-e.size/2, e.y-CollBox[e.type][1]/2,CollBox[e.type][0],CollBox[e.type][1])*/
+					//canvas.context.fillRect(e.x-e.size/2, e.y-CollBox[e.type][1]/2,CollBox[e.type][0],CollBox[e.type][1])
 					const t = Zombies.find(z => z.id == e.spec.target)
 					if (e.spec.homing && t) {
 						const ang = Math.atan2(t.y+35-e.y,t.x+35-e.x)
@@ -1091,6 +1090,8 @@
 							Dead.push(["Proj",e.id])
 						}
 					} else {
+						/*canvas.context.fillStyle = "#FF0000"
+						canvas.context.fillRect(e.x-CollBox[e.type][0],e.y-CollBox[e.type][1]/2,CollBox[e.type][0],CollBox[e.type][1])*/
 						if(e.spec.proj) {
 							if (e.spec.incend) {
 								if (!e.melt) {
@@ -1109,6 +1110,8 @@
 									e.vy = Math.abs(e.vy)
 								} else if (e.y >= rows*100) {
 									e.vy = -Math.abs(e.vy)
+								} else if (isside && e.y <= 400 && e.y-e.vy/60*100 >= 400) {
+									e.vy = Math.abs(e.vy)
 								}
 							}
 							zombProj.forEach((ee) => {
