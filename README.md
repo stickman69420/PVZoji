@@ -5,5 +5,5 @@ doesn't use any emojis anymore but the images it uses are comprised only of emoj
 Outdated almanac, most of shop, and start of zen garden are added
 
 All of original adventure is now complete
-start of night roof too
+night roof too
 All upgrade plants are now here AND you can buy them
