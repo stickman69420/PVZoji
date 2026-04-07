@@ -252,7 +252,7 @@
 						img.src = "./images/proj/"+ee.projImg+".png"
 						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
 						const poff = e.spec.projOff ?? projOff[e.plant]
-						Proj.push({"id":Pid,"damaged":[],"x":eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]),"y": eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]),"y": eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
 							Lawn.forEach((o) => {
@@ -372,11 +372,11 @@
 				if (select2 == -1) {
 					switch (Number(Level)) {
 						case (14):
-							Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
+							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[2],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6},"value":434})
 							Pid++
 							break;
 						case (54):
-							Proj.push({"id":Pid,"damaged":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[14],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6,"butter":{"chance":1,"dur":5000}},"value":0})
+							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[14],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6,"butter":{"chance":1,"dur":5000}},"value":0})
 							Pid++
 							break;
 					}
@@ -389,7 +389,7 @@
 					let other
 					if (select2 >= 0 && special[selected[select2]].upgrade == 2) {
 						valid = false
-					} else if (select2 >= 0 && special[selected[select2]].water) {
+					} else if (select2 >= 0 && special[selected[select2]].water == 2) {
 						valid = ispool && Math.abs(2.5-mouseLoc[1]) <= 0.5
 					} else if (select2 >= 0 && isroof) {
 						valid = special[selected[select2]].roof ?? false
@@ -421,7 +421,7 @@
 							ee.cool = ee.spec.fireRate ?? fireRate[ee.plant]
 							ee.health -= ee.spec.selfD ?? 0
 							setTimeout((eee) => {
-								Proj.push({"id":Pid,"damaged":[],"x":eee.offsetX*1.2/sizePerc,"y":eee.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":200,"img":preloadedImg[19],"spec":{"proj":true,"CollBox":[200,200],"lifespan":0,"Threshold":-30,"pen":-1,"damageOnce":true},"value":1800})
+								Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee.offsetX*1.2/sizePerc,"y":eee.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":200,"img":preloadedImg[19],"spec":{"proj":true,"CollBox":[200,200],"lifespan":0,"Threshold":-30,"pen":-1,"damageOnce":true},"value":1800})
 							},2500/*wiki said 2-3 seconds*/,e)
 							Pid++
 						})
@@ -514,8 +514,8 @@
 							}
 							Lid++
 						} else {
-							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0,{},0]},"value":0})
-							else Proj.push({"id":Pid,"damaged":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
+							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0,{},0]},"value":0})
+							else Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
 							Pid++
 						}
 						if (Object.keys(conveyors).includes(Level)) {
@@ -592,14 +592,19 @@
 					Zombies[Zombies.length-1].spec.threshold = Math.random() < 0.05 ? (4.4+Math.random()*3.14) : (13.22+Math.random()*9.46)
 				}
 				if (type == 19) {
-					tp = Lawn[Math.floor(Math.random()*Lawn.length)]
-					Zombies[Zombies.length-1].x = tp.col*100+1
-					Zombies[Zombies.length-1].y = tp.row*100+1
-					//alert(Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length)
-					if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length != 0) {
-						WaveHealth -= Zombies[Zombies.length-1].health
-						Zombies[Zombies.length-1].health = 0
+					if (Lawn.length > 0) {
+						tp = Lawn[Math.floor(Math.random()*Lawn.length)]
+						Zombies[Zombies.length-1].x = tp.col*100+1
+						Zombies[Zombies.length-1].y = tp.row*100+1
+						if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length != 0) {
+							WaveHealth -= Zombies[Zombies.length-1].health
+							Zombies[Zombies.length-1].health = 0
+						}
 					}
+				}
+				if (type == 30) {
+					Zombies[Zombies.length-1].x = 700
+					Zombies[Zombies.length-1].y = 400
 				}
 				Zid++
 			}
@@ -935,15 +940,15 @@
 							}
 						}
 						if (e.cool <= 0) {
-							if (e.spec.transform != undefined) {
+							if (e.spec.transform != undefined && !e.spec.transform.reqTar) {
 								if ((e.spec.transform.count ?? 0) == 0) {
-									if (e.spec.transformSpec) for (const [key, value] of Object.entries(e.spec.transformSpec)) {
-										e.spec[key] = value
-									}
 									for (const [key, value] of Object.entries(e.spec.transform)) {
 										if (key != "count") {
 											e[key] = value
 										}
+									}
+									if (e.spec.transformSpec) for (const [key, value] of Object.entries(e.spec.transformSpec)) {
+										e.spec[key] = value
 									}
 								} else {
 									e.spec.transform.count -= 1
@@ -958,10 +963,8 @@
 								let fire = false
 								let tar = {"x":10000}
 								Zombies.forEach((ee) => {
-									//if (e.spec.metal) Debug.innerHTML += JSON.stringify(Object.keys(ee.spec))+","
-									const dist = (ee.x-e.col*100)/100
-									//Debug.innerHTML += (dist <= e.spec.range)+","+(dist > -(e.spec.negRange ?? 0))+","+dist+","+(e.spec.negRange ?? 0)+","+(Math.abs(Math.floor(ee.y/100)-e.row) <= (e.spec.vRange/2 ?? 0.5))+","+(Math.abs(Math.floor(ee.y/100)-e.row))+","+(e.spec.vRange/2 || 0.5)+"-"
-									if (dist <= e.spec.range && dist > -(e.spec.negRange ?? 0) && Math.abs(Math.floor(ee.y/100)-e.row) <= (e.spec.vRange/2 || 0.5)) {
+									const dist = (ee.x+(ee.spec.coll ?? [0])[0]-e.col*100)/100
+									if (!ee.spec.noColl && dist <= e.spec.range+(ee.spec.coll ?? [75,75,75])[2]/200 && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/200 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) <= (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
 											if (ee.spec.flying && e.spec.flight) {
 												fly = true
@@ -973,6 +976,20 @@
 									}
 								})
 								if (fire) {
+									if (e.spec.transform != undefined && e.spec.transform.reqTar) {
+										if ((e.spec.transform.count ?? 0) == 0) {
+											for (const [key, value] of Object.entries(e.spec.transform)) {
+												if (key != "count") {
+													e[key] = value
+												}
+											}
+											if (e.spec.transformSpec) for (const [key, value] of Object.entries(e.spec.transformSpec)) {
+												e.spec[key] = value
+											}
+										} else {
+											e.spec.transform.count -= 1
+										}
+									}
 									e.cool = (e.spec.fireRate ?? fireRate[e.plant])
 									e.health -= e.spec.selfD ?? 0
 									if (e.plant == 6) {
@@ -1089,10 +1106,38 @@
 									e.vy = -Math.abs(e.vy)
 								}
 							}
+							zombProj.forEach((ee) => {
+								if (Math.abs(e.x-ee.x) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2+ee.spec.CollBox[0]/2 && Math.abs(e.y-ee.y) <= (e.spec.CollBox ?? CollBox[e.type])[1]/2+ee.spec.CollBox[1]/2 && (!e.spec.damageOnce || !e.damaged2.includes(ee.id))) {
+									e.damaged2.push(ee.id)
+									let d = false
+									if (ee.spec.snow && e.spec.incend) {
+										ee.health -= e.value
+										d = true
+									}
+									if (ee.spec.incend && e.spec.snow) {
+										ee.health -= Math.max(e.value,e.spec.snow)
+										d = true
+									}
+									if (d) {
+										if (e.spec.pen == undefined) {
+											if (!Dead.includes(["Proj",e.id])) {
+												Dead.push(["Proj",e.id])
+											}
+										} else {
+											e.spec.pen--
+											if(e.spec.pen == 0) {
+												if (!Dead.includes(["Proj",e.id])) {
+													Dead.push(["Proj",e.id])
+												}
+											}
+										}
+									}
+								}
+							})
 							Zombies.forEach((ee) => {
-								if (!Dead.includes(["Zombies",ee]) && (!ee.hidden || e.spec.hitSnork) && !e.spec.flying == !ee.spec.flying) {
-									if(Math.abs(e.x-ee.x-37.5) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2+37.5) {
-										if (Math.abs(ee.y+37.5-e.y) <= (e.spec.CollBox ?? CollBox[e.type])[1]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
+								if (!Dead.includes(["Zombies",ee.id]) && (!ee.hidden || e.spec.hitSnork) && !ee.spec.noColl && !e.spec.flying == !ee.spec.flying) {
+									if(Math.abs(e.x-ee.x-(ee.spec.coll ?? [75,75,75])[2]/2-(ee.spec.coll ?? [0])[0]) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2+(ee.spec.coll ?? [75,75,75])[2]/2) {
+										if (Math.abs(ee.y-(ee.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(ee.spec.coll ?? [0,0])[1] <= (e.spec.CollBox ?? CollBox[e.type])[1]/2+(ee.spec.coll ?? [75,75,75,75])[3]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										/*let go
 										if (!e.damaged.includes(ee.id) && zombInWave.includes(ee.id)) {
 											go = true
@@ -1127,7 +1172,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
@@ -1159,7 +1204,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
@@ -1174,6 +1219,10 @@
 														if (Math.random() <= (e.spec.butter ?? {"chance":-1}).chance) {
 															ee.spec.butter = e.spec.butter.dur
 															e.value *= 2
+														}
+														if (e.type == 54) {
+															ee.small = true
+															e.value = ee.health/2
 														}
 														ee.health -= e.value
 														e.damaged.push(ee.id)
@@ -1209,6 +1258,29 @@
 							if (!Dead.includes(["Proj",e.id])) {
 								Dead.push(["Proj",e.id])
 							}
+						}
+					}
+				})
+				zombProj.forEach((e,eee) => {
+					e.x += e.vx/60*100
+					e.y += e.vy/60*100
+					if (!e.imgsrc) {
+						e.imgsrc = e.img.src
+					}
+					if (typeof e.img == "object") {
+						e.img = new Image()
+						e.img.src = e.imgsrc
+					}
+					canvas.context.drawImage(e.img,e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2,e.size*(e.img.width/e.img.height),e.size)
+					Lawn.forEach((ee) => {
+						if (ee.row == Math.floor(e.y/100) && ee.col == Math.floor(e.x/100) && !ee.spec.noColl) {
+							ee.health -= e.value
+							if (!e.spec.pen) e.health = 0
+						}
+					})
+					if (e.health <= 0 || e.x < 0) {
+						if (!Dead.includes(["Proj",e.id])) {
+							Dead.push(["zombProj",e.id])
 						}
 					}
 				})
@@ -1287,8 +1359,8 @@
 								Mowers[Math.floor(e.y/100)] = false
 								MowerTrigger[Math.floor(e.y/100)] = Wave
 								if ((!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) && (!isroof || shop.rclean)) {
-									Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean},"value":10000000})
-									Proj.push({"id":Pid,"damaged":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean,"flying":2},"value":10000000})
+									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean},"value":10000000})
+									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean,"flying":2},"value":10000000})
 									Pid++
 								}
 								if (!isroof || shop.rclean) {Zombies.forEach((eee) => {
@@ -1314,26 +1386,26 @@
 							}
 						}
 						//canvas.context.strokeText(Zombs[e.type].base,e.x,e.y+70)
-						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y-(75*((e.spec.size ?? 1)-1))+25,(75*(e.spec.size ?? 1))/(Level == 24 ? 2 : 1),(75*(e.spec.size ?? 1))/(Level == 24 ? 2 : 1))
+						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y-(75*((e.spec.size ?? 1)-1)/(e.small ? 2 : 1))+25,(75*(e.spec.size ?? 1)/(e.small ? 2 : 1))/(Level == 24 ? 2 : 1),(75*(e.spec.size ?? 1)/(e.small ? 2 : 1))/(Level == 24 ? 2 : 1))
 						if (HpBars > 1) {
 							canvas.context.fillStyle = "#FF0000"
-							canvas.context.fillRect(e.x,e.y,100,10)
+							canvas.context.fillRect(e.x,e.y,100/(e.small ? 2 : 1),10)
 							canvas.context.fillStyle = "#FFFF00"
-							canvas.context.fillRect(e.x,e.y,100*(e.health/ZombHealth[e.type]),10)
+							canvas.context.fillRect(e.x,e.y,100*(e.health/(ZombHealth[e.type]/(e.small ? 2 : 1)))/(e.small ? 2 : 1),10)
 						}
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.font = "20px Arial"
 						canvas.context.strokeText(JSON.stringify(Zombs[e.type]),e.x,e.y)*/
 						if (e.spec.snow > 0) {
 							canvas.context.fillStyle = "#0000FF33"
-							canvas.context.fillRect(e.x,e.y+25,75,75)
+							canvas.context.fillRect(e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
 							canvas.context.fillStyle = "#000000FF"
 						}
 						if (e.spec.ice > 0) {
-							canvas.context.drawImage(preloadedImg[3],e.x,e.y+25,75,75)
+							canvas.context.drawImage(preloadedImg[3],e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
 						}
 						if (e.spec.butter > 0) {
-							canvas.context.drawImage(preloadedImg[14],e.x,e.y+25,75,75)
+							canvas.context.drawImage(preloadedImg[14],e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
 						}
 						//canvas.context.fillRect(e.x-5,e.y+65,10,10)
 						let going = true
@@ -1656,18 +1728,83 @@
 					}
 					if (e.spec.timer != undefined) {
 							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
-							if (e.spec.timer >= e.spec.threshold && e.type == 15) {
-								e.stun = 1.1
-								if (e.spec.timer >= e.spec.threshold+1.1) {
-									const c = Math.floor(e.x/100)
-									const r = Math.floor(e.y/100)
-									Lawn.filter(l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5).forEach((eee) => {
-										eee.health -= 1800
-									})
-									Proj.push({"id":Pid,"damaged":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
-									Pid++
-									WaveHealth -= e.health
-									e.health = 0
+							if (e.spec.timer >= e.spec.threshold) {
+								switch (e.type) {
+									case (15):
+										e.stun = 1.1
+										if (e.spec.timer >= e.spec.threshold+1.1) {
+											const c = Math.floor(e.x/100)
+											const r = Math.floor(e.y/100)
+											Lawn.filter(l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5).forEach((eee) => {
+												eee.health -= 1800
+											})
+											Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+											Pid++
+											WaveHealth -= e.health
+											e.health = 0
+											break;
+										}
+									case (30):
+										switch (e.mode) {
+											case (1):
+												if (Math.random()<0.5) {
+													zombProj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y,"type":-1,"vx":-0.5,"vy":0,"size":100,"img":preloadedImg[22],"spec":{"CollBox":[200,100],"snow":true,"pen":true},"value":100000000,"health":300})
+												} else {
+													zombProj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y,"type":-1,"vx":-0.5,"vy":0,"size":100,"img":preloadedImg[23],"spec":{"CollBox":[200,100],"incend":true,"pen":true},"value":100000000,"health":300})
+												}
+												Pid++
+												e.y = Math.floor(Math.random()*rows)*100+50
+												e.mode = 2
+												e.spec.threshold += 10
+												break;
+											case (2):
+												e.spec.noColl = true
+												e.spec.threshold += 2
+												e.spec.size = 10
+												e.y = 400
+												e.mode = 0
+												break;
+											default:
+												e.spec.sCount++
+												switch(Math.floor(Math.random()*(7+e.spec.sCount-1))) {
+													case (0):
+													case (1):
+													case (2):
+													case (3):
+													case (4):
+														e.spec.threshold += 3
+														const zbosss = [0,2,3,4,5,6,7,11,15,18,20,21,22,24,26,27,28]
+														const pCosts = zbosss.map(q => Points[q] <= e.spec.maxPoints)
+														const newzbosss = zbosss.filter((z,zi) => pCosts[zi])
+														e.spec.maxPoints += 0.1
+														SpawnZombie(newzbosss[Math.floor(Math.random()*newzbosss.length)],7,Math.floor(Math.random()*rows))
+														break;
+													case (5):
+														e.spec.threshold += 4
+														for (let i=0;i<3;i++) {
+														SpawnZombie(19,0,0)
+														}
+														break;
+													case (6):
+														e.spec.threshold += 4
+														const tp = Lawn[Math.floor(Math.random()*Lawn.length)]
+														Lawn.filter(l => Math.abs(l.col-tp.col) <= 1.5 && Math.abs(l.row-tp.row) <= 1).forEach((eee) => {
+															eee.health = 0
+														})
+														Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":tp.col*100,"y":tp.row*100,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[21],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+														break;
+													default:
+														e.spec.threshold += 2
+														e.spec.noColl = false
+														e.spec.size = 5
+														e.spec.sCount = -5
+														e.y = Math.floor(Math.random()*rows)*100+50
+														e.mode = 1
+														break;
+												}
+												break;
+											}
+										break;
 								}
 							}
 						}
@@ -1680,7 +1817,7 @@
 							e.spec.cool = e.spec.shootTime
 							e.spec.ammo--
 							if (e.spec.ammo == 0) e.spec.action = false
-							if (Lawn.filter(l => Math.abs(l.row-target.row) <= 1 && Math.abs(l.col-target.col) <= 1 && l.plant == 37).length == 0) target.health -= 75
+							if (Lawn.filter(l => Math.abs(l.row-target.row) <= 1 && Math.abs(l.col-target.col) <= 1 && l.plant == 37).length == 0) target.health -= 75/(e.small ? 2 : 1)
 						}
 					}
 					if ((e.spec.ice ?? 0) <= 0 && (e.spec.butter ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
@@ -1733,7 +1870,7 @@
 											e.health = 0
 										}
 									} else {
-									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
@@ -1771,7 +1908,7 @@
 													if (ee.img.includes("elec")) {
 														let img = new Image()
 														img.src = "./images/proj/lightning.png"
-														Proj.push({"id":Pid,"damaged":[],"x":(ee.col*100+50),"y":((ee.row+1)*100-50),"type":ee.plant,"vx":7.5,"vy":0,"size":25,"img":img,"spec":{"bounce":true,"proj":true,"pen":-1,"pult":true,"damageOnce":true,"CollBox":[25,25]},"value":2.5})
+														Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(ee.col*100+50),"y":((ee.row+1)*100-50),"type":ee.plant,"vx":7.5,"vy":0,"size":25,"img":img,"spec":{"bounce":true,"proj":true,"pen":-1,"pult":true,"damageOnce":true,"CollBox":[25,25]},"value":2.5})
 														Pid++
 													}
 												}
@@ -1910,7 +2047,7 @@
 										if (ZombInWave.includes(eee.id)) WaveHealth -= eee.health
 										eee.health -= 1800
 									})
-									Proj.push({"id":Pid,"damaged":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
 									Pid++
 									e.health = 0
 								}
