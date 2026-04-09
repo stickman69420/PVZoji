@@ -144,30 +144,40 @@
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
 			
 			if (!saveloaded) {
-				if (Level == 54) {
-					for (let i=0;i<rows;i++) {
-						Lawn.push({"id":Lid,"projImg":ProjImg[51],"img":plants[51],"spec":JSON.parse(JSON.stringify(special[51])),"plant":51,"row":i,"col":0,"cool":fireRate[51]-fireOff[51],"health": plantHealth[51]})
-						Lid++
-					}
-				}
-				if (Level == 34) {
-					vase = 2
-					selected = [16]
-					do {
-						Obstacles = []
+				switch (Number(Level)) {
+					case (54):
 						for (let i=0;i<rows;i++) {
-							for (let j=3;j<9;j++) {
-								//const isp = Math.random() < 0.1
-								const ty = /*isp ? true : */Math.random() < 0.5
-								Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7][Math.floor(Math.random()*7)]})
-								Oid++
-							}
+							Lawn.push({"id":Lid,"projImg":ProjImg[51],"img":plants[51],"spec":JSON.parse(JSON.stringify(special[51])),"plant":51,"row":i,"col":0,"cool":fireRate[51]-fireOff[51],"health": plantHealth[51]})
+							Lid++
 						}
-					} while (Obstacles.filter((o) => o.type==2 && o.sumtype).length <= 15)
-					for (let i=0;i<5;i++) {
-						let ofilt = Obstacles.filter((o) => o.type==2 && o.sumtype && o.img == "vase")
-						ofilt[Math.floor(Math.random()*ofilt.length)].img = "plant vase"
-					}
+						break;
+					case (34):
+						vase = 2
+						selected = [16]
+						do {
+							Obstacles = []
+							for (let i=0;i<rows;i++) {
+								for (let j=3;j<9;j++) {
+								//const isp = Math.random() < 0.1
+									const ty = /*isp ? true : */Math.random() < 0.5
+									Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? [0,5,7,12,17][Math.floor(Math.random()*5)] : [0,4,7,8,0,4,7][Math.floor(Math.random()*7)]})
+									Oid++
+								}
+							}
+						} while (Obstacles.filter((o) => o.type==2 && o.sumtype).length <= 15)
+						for (let i=0;i<5;i++) {
+							let ofilt = Obstacles.filter((o) => o.type==2 && o.sumtype && o.img == "vase")
+							ofilt[Math.floor(Math.random()*ofilt.length)].img = "plant vase"
+						}
+						break;
+					case (64):
+						for (let i=0;i<9;i++) {
+							[0,2,3,5].forEach((e) => {
+								Obstacles.push({"img":"dirt","id":Oid,"col":i,"row":e,"type":3})
+								Oid++
+							})
+						}
+						break;
 				}
 				selected.forEach((e,ee) => {
 					recharge[ee] = InitCharge[e]
@@ -386,7 +396,7 @@
 					})
 					if (sun >= 50) Lawn.filter(l => l.plant == 58 && l.cool <= 0 && l.col == mouseLoc[0] && l.row == mouseLoc[1]).forEach((ee) => {
 						plantFires(ee,undefined)
-						ee.cool = ee.spec.fireRate ?? fireRate[ee.plant]
+						ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
 						sun -= 50
 					})
 				} else {
@@ -423,7 +433,7 @@
 							ee.selected = false
 							ee.img = "mortar shroom wait"
 							select2 = -1
-							ee.cool = ee.spec.fireRate ?? fireRate[ee.plant]
+							ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
 							ee.health -= ee.spec.selfD ?? 0
 							setTimeout((eee) => {
 								Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee.offsetX*1.2/sizePerc,"y":eee.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":200,"img":preloadedImg[19],"spec":{"proj":true,"CollBox":[200,200],"lifespan":0,"Threshold":-30,"pen":-1,"damageOnce":true},"value":1800})
@@ -438,7 +448,7 @@
 								valid = 4
 							}else{
 							//alert(JSON.stringify(ee.spec.UpgType)+"-"+special[selected[select2]].UpgradeType)
-							if (select2 == -2 && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+							if (select2 == -2 && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 								if (!Dead.includes(["Lawn",ee.id])) {
 									Dead.push(["Lawn",ee.id])
 									select2 = -1
@@ -487,7 +497,7 @@
 										},200*i+100)
 									}
 								}
-							} else if (select2 >= 0 && ee.spec.out == true) {
+							} else if (select2 >= 0 && ee.spec.out == true && valid) {
 								valid = 3
 								other = ee.id
 							} else if (select2 >= 0 && special[selected[select2]].upgrade != 2 && (ee.spec.under == true && (special[selected[select2]].water != 2 || ee.spec.topWater) && (selected[select2] != 4 || ee.type != 16) && (selected[select2] != 16 || ee.spec.topWater) && ![21,33].includes(selected[select2]))) {
@@ -885,7 +895,7 @@
 					//canvas.context.strokeText(JSON.stringify(e),e.col*100,e.row*100)
 					e.size = 100
 					if (e.spec.shrinkOff != undefined) {
-						e.size = 100*((e.cool/fireRate[e.plant])*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
+						e.size = 100*((e.cool/((e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)))*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
 					}
 					if(e.health > 0) {
 						if (e.health < plantHealth[e.plant]) e.health += e.spec.regen ?? 0
@@ -967,7 +977,7 @@
 								}
 							}
 							if ((e.spec.proj || e.spec.sun) && e.spec.range == -1) {
-								e.cool = e.spec.fireRate ?? fireRate[e.plant]
+								e.cool = (e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)
 								e.health -= e.spec.selfD ?? 0
 								if (e.plant == 59) Lawn.filter(l => Math.abs(l.col-e.col) <= 1.5 && l.row==e.row).forEach((ee)=>{ee.health = Math.max(ee.health,Math.min(ee.health+400,plantHealth[ee.plant]))})
 								plantFires(e,undefined)
@@ -1003,7 +1013,7 @@
 											e.spec.transform.count -= 1
 										}
 									}
-									e.cool = (e.spec.fireRate ?? fireRate[e.plant])
+									e.cool = (e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)
 									e.health -= e.spec.selfD ?? 0
 									if (e.plant == 6) {
 										if (ZombHealth[tar.type] < 1800) {
@@ -1037,7 +1047,7 @@
 									Lawn.filter(p => p.spec.ladder && Math.abs(e.col-p.col) <= e.spec.range/2 && Math.abs(e.row-p.row) <= e.spec.vRange/2).forEach((ee) => {
 										if (e.cool <= 0) {
 											ee.spec.ladder = false
-											e.cool = fireRate[e.plant]
+											e.cool = fireRate[e.plant]/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)
 										}
 									})
 								}
@@ -1230,7 +1240,8 @@
 															ee.spec.ice = 0
 														}
 														if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
-														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = e.spec.ice.dur
+														if (e.spec.poison != undefined) ee.spec.poison = (ee.spec.poison ?? 0)+e.spec.poison
+														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = Math.max(e.spec.ice.dur,ee.spec.ice)
 														if (Math.random() <= (e.spec.butter ?? {"chance":-1}).chance) {
 															ee.spec.butter = e.spec.butter.dur
 															e.value *= 2
@@ -1423,6 +1434,15 @@
 							canvas.context.fillStyle = "#0000FF33"
 							canvas.context.fillRect(e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
 							canvas.context.fillStyle = "#000000FF"
+						}
+						if (e.spec.poison) {
+							WaveHealth -= Math.min(e.spec.poison,e.health)
+							e.health -= e.spec.poison
+							canvas.context.fillStyle = "#5500AA"
+							canvas.context.globalAlpha = e.spec.poison
+							canvas.context.fillRect(e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
+							canvas.context.globalAlpha = 1
+							canvas.context.fillStyle = "#000000"
 						}
 						if (e.spec.ice > 0) {
 							canvas.context.drawImage(preloadedImg[3],e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
@@ -1894,7 +1914,7 @@
 											e.spec.action = false
 										}
 										else ee.health = 0
-									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 									if (e.spec.steal) {
 										if (e.stun <= 0) {
 											ee.health = 0
@@ -2150,11 +2170,22 @@
 							Wave++
 							WaveTime = 1000
 							let monCol = 0
+							let zgard = 0
+							let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
 							Proj.forEach((e) => {
 								if (e.spec.money) monCol += e.value
+								if (e.spec.gift) {
+									let occ
+									do {
+										occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
+									} while ((Zengg[occ] ?? -1) != -1)
+									Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+									zgard++
+								}
 							})
+							localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 							localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
-							alert("🏆\n"+monCol+" dropped money was collected automatically")
+							alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically")
 							if (!LevsUnlocked.includes(Number(Level)+1)) {
 								if (Level == 33 || Level == 53) {
 									localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
