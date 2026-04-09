@@ -1241,7 +1241,7 @@
 														}
 														if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
 														if (e.spec.poison != undefined) ee.spec.poison = (ee.spec.poison ?? 0)+e.spec.poison
-														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = Math.max(e.spec.ice.dur,ee.spec.ice)
+														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = Math.max(e.spec.ice.dur,ee.spec.ice ?? 0)
 														if (Math.random() <= (e.spec.butter ?? {"chance":-1}).chance) {
 															ee.spec.butter = e.spec.butter.dur
 															e.value *= 2
@@ -1951,16 +1951,23 @@
 												break;
 											case (49):
 												if (Level%20 > 9 || !ee.spec.night) {
-													if (ee.img.includes("snow")) e.spec.ice = 500
-													if (ee.img.includes("fire")) {
-														if (zombInWave.includes(e.id)) WaveHealth -= Math.min(e.health,10)
-														e.health -= 10
-													}
-													if (ee.img.includes("elec")) {
-														let img = new Image()
-														img.src = "./images/proj/lightning.png"
-														Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(ee.col*100+50),"y":((ee.row+1)*100-50),"type":ee.plant,"vx":7.5,"vy":0,"size":25,"img":img,"spec":{"bounce":true,"proj":true,"pen":-1,"pult":true,"damageOnce":true,"CollBox":[25,25]},"value":2.5})
-														Pid++
+													switch(ee.img){
+														case("absorb shroom snow"):
+															e.spec.ice = Math.max(e.spec.ice ?? 0,500)
+															break;
+														case("absorb shroom fire"):
+															if (zombInWave.includes(e.id)) WaveHealth -= Math.min(e.health,10)
+															e.health -= 10
+															break;
+														case("absorb shroom elec"):
+															let img = new Image()
+															img.src = "./images/proj/lightning.png"
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(ee.col*100+50),"y":((ee.row+1)*100-50),"type":ee.plant,"vx":7.5,"vy":0,"size":25,"img":img,"spec":{"bounce":true,"proj":true,"pen":-1,"pult":true,"damageOnce":true,"CollBox":[25,25]},"value":2.5})
+															Pid++
+															break;
+														case ("absorb shroom tox"):
+															e.spec.poison = (e.spec.poison ?? 0)+0.024
+															break;
 													}
 												}
 												break;
