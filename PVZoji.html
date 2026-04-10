@@ -433,7 +433,7 @@
 							ee.selected = false
 							ee.img = "mortar shroom wait"
 							select2 = -1
-							ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
+							ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
 							ee.health -= ee.spec.selfD ?? 0
 							setTimeout((eee) => {
 								Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee.offsetX*1.2/sizePerc,"y":eee.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":200,"img":preloadedImg[19],"spec":{"proj":true,"CollBox":[200,200],"lifespan":0,"Threshold":-30,"pen":-1,"damageOnce":true},"value":1800})
@@ -443,7 +443,7 @@
 					} else {
 					Lawn.forEach((ee,eee) => {
 						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder && select2 != -1) {
-							if (select2 >= 0 && special[selected[select2]].out) {
+							if (select2 >= 0 && special[selected[select2]].out && !ee.spec.out) {
 								other = ee.id
 								valid = 4
 							}else{
@@ -459,9 +459,9 @@
 								valid = 5
 								if (ee.spec.night && (Level%20 < 10)) {
 									ee.spec.night = false
-									if (ee.spec.dayHealth) ee.health = plantHealth[selected[select2]]
+									if (ee.spec.dayHealth) ee.health = plantHealth[ee.plant]
 									if (ee.spec.daySpec) for (const [key,value] of Object.entries(ee.spec.daySpec)) {
-										ee.spec[key] = special[selected[select2]][key]
+										ee.spec[key] = special[ee.plant][key]
 									}
 								}
 							} else if (ee.spec.UpgType && (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType.includes(special[selected[select2]].UpgradeType))) {
@@ -497,7 +497,7 @@
 										},200*i+100)
 									}
 								}
-							} else if (select2 >= 0 && ee.spec.out == true && valid) {
+							} else if (select2 >= 0 && ee.spec.out == true && !special[selected[select2]].out && valid) {
 								valid = 3
 								other = ee.id
 							} else if (select2 >= 0 && special[selected[select2]].upgrade != 2 && (ee.spec.under == true && (special[selected[select2]].water != 2 || ee.spec.topWater) && (selected[select2] != 4 || ee.type != 16) && (selected[select2] != 16 || ee.spec.topWater) && ![21,33].includes(selected[select2]))) {
@@ -1127,7 +1127,7 @@
 									e.vy = Math.abs(e.vy)
 								} else if (e.y >= rows*100) {
 									e.vy = -Math.abs(e.vy)
-								} else if (isside && e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400) {
+								} else if (!e.spec.pult && (isside && e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400)) {
 									e.vy = Math.abs(e.vy)
 								}
 							}
@@ -1240,6 +1240,7 @@
 															ee.spec.ice = 0
 														}
 														if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
+														if (e.spec.slow != undefined) ee.spec.slow = e.spec.slow
 														if (e.spec.poison != undefined) ee.spec.poison = (ee.spec.poison ?? 0)+e.spec.poison
 														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = Math.max(e.spec.ice.dur,ee.spec.ice ?? 0)
 														if (Math.random() <= (e.spec.butter ?? {"chance":-1}).chance) {
@@ -1408,6 +1409,8 @@
 										}
 									}
 								})}
+							} else if (e.type == 36) {
+								Dead.push(["Zombies",e.id])
 							} else {
 								if (lose) {
 									lose = false
@@ -1432,6 +1435,11 @@
 						canvas.context.strokeText(JSON.stringify(Zombs[e.type]),e.x,e.y)*/
 						if (e.spec.snow > 0) {
 							canvas.context.fillStyle = "#0000FF33"
+							canvas.context.fillRect(e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
+							canvas.context.fillStyle = "#000000FF"
+						}
+						if (e.spec.slow > 0) {
+							canvas.context.fillStyle = "#AA00AA33"
 							canvas.context.fillRect(e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
 							canvas.context.fillStyle = "#000000FF"
 						}
@@ -1616,7 +1624,7 @@
 					const arr = eval(e[0])
 					const ind = arr.findIndex((ee) => ee.id == e[1])
 					//if ((arr[ind] ?? {"spec":{"money":false}}).spec.money) alert(JSON.stringify(arr[ind]))
-					if (e[0] == "Zombies") {
+					if (e[0] == "Zombies" && arr[ind] != undefined) {
 						switch(arr[ind].type) {
 							case (12):
 								for (let i=0;i<4;i++) {
@@ -1627,6 +1635,16 @@
 							case (31):
 								if (!arr[ind].death.spec.incend && !arr[ind].death.spec.popTires && !arr[ind].death.imgsrc.includes("elec") && arr[ind].death.value < 1800 ) {
 									SpawnZombie(32,arr[ind].x/100,arr[ind].y/100)
+								}
+								break;
+							case (34):
+								for (let i=0;i<15;i) {
+									let row = -1
+									do {
+										i++
+										row = arr[ind].y/100+i%3-1
+									} while (row < 0 || row >= rows)
+									SpawnZombie(35,arr[ind].x/100+i/30,row)
 								}
 								break;
 						}
@@ -1643,7 +1661,7 @@
 								//diamond
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[10],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":1000})
 									Pid++
-							} else if (LevsUnlocked.includes(44) && Math.random()<0.1) {
+							} else if (LevsUnlocked.includes(44) && Math.random()<0.1 && Object.keys((JSON.parse(localStorage.getItem("ZenGarden")) ?? {})).length < 128) {
 								//giftbox
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[20],"spec":{"gift":true,"lifespan":0,"Threshold":-900},"value":1})
 									Pid++
@@ -1726,7 +1744,7 @@
 						}
 					} else if (e.stun >= 0) {
 						e.vx = 0
-						e.stun -= (e.spec.snow > 0 ? 0.05 : 0.1)
+						e.stun -= (e.spec.snow > 0 ? 0.05 : 0.1)/(e.spec.slow > 0 ? 2 : 1)
 						if (e.stun <= 0) {
 							if (e.spec.crush != undefined && e.crushing != undefined) {
 								e.crushing.forEach((ee) => {
@@ -1756,6 +1774,19 @@
 						e.vx = e.ovx/2
 						if (e.spec.timer != undefined) e.spec.timer += 0.05
 						e.spec.snow -= 100
+						if (e.spec.linked != undefined) {
+							let z = Zombies.find((ee) => ee.id === e.spec.linked)
+							if (z) {
+								let spd = z.spec
+								if (spd.groupSpd < 0) {
+									spd.groupSpd = e.ovx/2
+								}
+							}
+						}
+					} else if (e.spec.slow > 0) {
+						e.vx = e.ovx/2
+						if (e.spec.timer != undefined) e.spec.timer += 0.05
+						e.spec.slow -= 100
 						if (e.spec.linked != undefined) {
 							let z = Zombies.find((ee) => ee.id === e.spec.linked)
 							if (z) {
@@ -1860,7 +1891,7 @@
 						}
 					if (e.type == 21 && e.x <= 850 && !e.spec.butter > 0 && !e.spec.ice > 0 && e.spec.ammo != 0) {
 						const targets = Lawn.filter(l => l.row == Math.floor(e.y/100))
-						e.spec.cool -= e.spec.snow > 0 ? 0.05 : 0.1
+						e.spec.cool -= (e.spec.snow > 0 ? 0.05 : 0.1)/(e.spec.slow > 0 ? 2 : 1)
 						if (e.spec.cool <= 0 && targets.length != 0) {
 							const cols = targets.map(l => l.col)
 							const target = targets[cols.indexOf(Math.min(...cols))]
@@ -1921,7 +1952,7 @@
 											e.health = 0
 										}
 									} else {
-									ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)
+									ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
@@ -1998,7 +2029,7 @@
 									e.spec.action = false
 								} else {
 								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
-									ee.spec.shields.front -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									ee.spec.shields.front -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)/(e.small ? 2 : 1)
 									if (ee.spec.shields.front <= 0) {
 										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
 											if (key == "speed") {
@@ -2018,7 +2049,7 @@
 										setTimeout((p) => {
 											ee.health = 0
 										},e.spec.crush,ee)
-									} else ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									} else ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)/(e.small ? 2 : 1)
 								}
 								e.vx = 0
 								if (e.spec.linked != undefined) {
@@ -2064,7 +2095,7 @@
 				Hypnos.forEach((e) => {
 					if (e.stun >= 0) {
 						e.vx = 0
-						e.stun -= (e.spec.snow > 0 ? 0.05 : 0.1)
+						e.stun -= 0.1
 						if (e.stun <= 0) {
 							if (e.spec.crush != undefined && e.crushing != undefined) {
 								e.crushing.forEach((ee) => {
@@ -2123,7 +2154,7 @@
 									e.spec.action = false
 								} else {
 								if ((ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0) {
-									ee.spec.shields.front -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									ee.spec.shields.front -= 10*(Level == 24 ? 2 : 1)
 									if (ee.spec.shields.front <= 0) {
 										for (const [key, value] of Object.entries(ee.spec.transform[Zombs[ee.type].shields.front.break])) {
 											if (key == "speed") {
@@ -2143,7 +2174,7 @@
 										setTimeout((p) => {
 											ee.health = 0
 										},e.spec.crush,ee)
-									} else ee.health -= (e.spec.snow > 0 ? 5 : 10)*(Level == 24 ? 2 : 1)
+									} else ee.health -= 10*(Level == 24 ? 2 : 1)
 								}
 								e.vx = 0
 								if (e.spec.linked != undefined) {

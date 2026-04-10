@@ -126,11 +126,12 @@
 			mney.innerHTML = "$"+localStorage.getItem("money")
 			canvas.context.clearRect(0,0,1920,1180)
 			canvas.context.fillStyle = "#F8DE8F"
-			canvas.context.strokeStyle = "#94752E"
 			canvas.context.lineWidth = 5
 			for (let i=0;i<16;i++) {
 				for (let j=0;j<8;j++) {
 					canvas.context.fillRect(i*121,j*130,100,100)
+					if ((Zengg[[i,j]] ?? [-1])[0] != -1 && Zengg[[i,j]][1] == 3) canvas.context.strokeStyle = "#61A80B"
+					else canvas.context.strokeStyle = "#94752E"
 					canvas.context.strokeRect(i*121,j*130,100,100)
 					if ((Zengg[[i,j]] ?? [-1])[0] != -1) {
 						if (Zengg[[i,j]][3] < Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date()) canvas.context.drawImage(zGardImg[0],i*121+75,j*130+75,25,25)
