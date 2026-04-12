@@ -198,6 +198,8 @@
 				}
 			}
 			
+			if (Level == 74) recharge = [0,0,0,0,0,0,0,0,0,0,0]
+			
 			//Resize initially
 			const stylesheet = document.getElementById("css-output").sheet
 			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
@@ -261,8 +263,9 @@
 						let img = new Image()
 						img.src = "./images/proj/"+ee.projImg+".png"
 						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
+						const vSpd = ee.spec.projSpdV ?? Vspeed[ee.plant]
 						const poff = e.spec.projOff ?? projOff[e.plant]
-						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]),"y": eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(Vspeed[ee.plant]) ? Vspeed[ee.plant][j] : Vspeed[ee.plant]),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]),"y": eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(vSpd) ? vSpd[j] : vSpd),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
 							Lawn.forEach((o) => {
@@ -396,7 +399,7 @@
 					})
 					if (sun >= 50) Lawn.filter(l => l.plant == 58 && l.cool <= 0 && l.col == mouseLoc[0] && l.row == mouseLoc[1]).forEach((ee) => {
 						plantFires(ee,undefined)
-						ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
+						ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
 						sun -= 50
 					})
 				} else {
@@ -484,7 +487,7 @@
 										seeds.innerHTML = ""
 										reloadSeed()
 									} else {
-										recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
+										if (Level != 74) recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
 										sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 									}
 								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
@@ -538,7 +541,7 @@
 							seeds.innerHTML = ""
 							reloadSeed()
 						} else {
-							recharge[select2] = Recharges[selected[select2]]
+							if (Level != 74) recharge[select2] = Recharges[selected[select2]]
 							sun -= cost[selected[select2]]
 						}
 					}
@@ -624,6 +627,7 @@
 				Zid++
 			}
 			function SpawnWave(points, guaranteed, ambush) {
+				const boost = (Math.abs(74.5-Level) <= 4.5) && (guaranteed.includes(1) || guaranteed.includes(25))
 				zombInWave = []
 				WaveHealth = 0
 				WaveHealthO = 0
@@ -646,6 +650,7 @@
 					}
 				}
 				if (guaranteed.includes(1) || guaranteed.includes(25)) {
+					if (Level == 74) sun += 1000
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
 					alarm.style.left = 15*sizePerc+"px"
@@ -680,6 +685,7 @@
 				}
 				guaranteed.forEach((e) => {
 					SpawnZombie(e,9,lanePick(e))
+					if (boost) Zombies[Zombies.length-1].ovx *= 2
 					WaveHealth += ZombHealth[e]/(Level == 24 ? 4 : 1)
 					WaveHealthO += ZombHealth[e]/(Level == 24 ? 4 : 1)
 					zombInWave.push(Zid-1)
@@ -715,6 +721,7 @@
 						const tp = ambushesRand[ee%ambushesRand.length]
 						if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length != 0 || !isroof) {
 								SpawnZombie(e,tp.col,tp.row)
+								if (boost) Zombies[Zombies.length-1].ovx *= 2
 								WaveHealth += ZombHealth[e]/(Level == 24 ? 4 : 1)
 								WaveHealthO += ZombHealth[e]/(Level == 24 ? 4 : 1)
 								zombInWave.push(Zid-1)
@@ -728,6 +735,7 @@
 							const tp = ambushesRand[i%ambushesRand.length]
 							if (Lawn.filter(l => Math.abs(l.row-tp.row) <= 1 && Math.abs(l.col-tp.col) <= 1 && l.plant == 37).length != 0 || !isroof) {
 								SpawnZombie(type,tp.col,tp.row)
+								if (boost) Zombies[Zombies.length-1].ovx *= 2
 								WaveHealth += ZombHealth[type]/(Level == 24 ? 4 : 1)
 								WaveHealthO += ZombHealth[type]/(Level == 24 ? 4 : 1)
 								zombInWave.push(Zid-1)
@@ -750,6 +758,7 @@
 						WaveHealth += ZombHealth[WaveDist[ind]]/(Level == 24 ? 4 : 1)
 						WaveHealthO += ZombHealth[WaveDist[ind]]/(Level == 24 ? 4 : 1)
 						SpawnZombie(WaveDist[ind],9,lanePick(WaveDist[ind]))
+						if (boost) Zombies[Zombies.length-1].ovx *= 2
 						zombInWave.push(Zid-1)
 						Premain -= Points[WaveDist[ind]]
 					}
@@ -990,8 +999,8 @@
 									if (!ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
 											if (ee.spec.flying && e.spec.flight) {
+												if(tar.x > ee.x || !fly) tar = ee
 												fly = true
-												tar = ee
 											}
 											fire = true
 											if(tar.x > ee.x && !fly) tar = ee
@@ -1017,10 +1026,11 @@
 									e.health -= e.spec.selfD ?? 0
 									if (e.plant == 6) {
 										if (ZombHealth[tar.type] < 1800) {
-											WaveHealth -= tar.health
+											if (zombInWave.includes(tar.id)) WaveHealth -= tar.health
 											tar.health = 0
 											e.img = "chomper wait"
 										} else {
+											if (zombInWave.includes(tar.id)) WaveHealth -= 40
 											tar.health -= 40
 											e.cool = 1
 										}
@@ -1068,7 +1078,7 @@
 				canvas.context.globalAlpha = 1
 				Proj.forEach((e,eee) => {
 					if (!e.origincol) e.origincol = Math.floor(e.x/100)
-					if (((isroof && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) || (isside && e.y <= 400 && e.x > 400 && e.origincol < 4)) && !e.spec.pult) Dead.push(["Proj",e.id])
+					if (((isroof && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) || (isside && (e.y <= 400 && e.x > 400 && e.origincol < 4) || (e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400))) && !e.spec.pult) Dead.push(["Proj",e.id])
 					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
 					//canvas.context.font = e.size+"px Arial";
@@ -1160,7 +1170,7 @@
 								}
 							})
 							Zombies.forEach((ee) => {
-								if (!Dead.includes(["Zombies",ee.id]) && (!ee.hidden || e.spec.hitSnork) && !ee.spec.noColl && !e.spec.flying == !ee.spec.flying) {
+								if (!Dead.includes(["Zombies",ee.id]) && (!ee.hidden || e.spec.hitSnork) && !ee.spec.noColl && (!e.spec.flying == !ee.spec.flying || (e.spec.hitFly && ee.spec.flying))) {
 									if(Math.abs(e.x-ee.x-(ee.spec.coll ?? [75,75,75])[2]/2-(ee.spec.coll ?? [0])[0]) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2+(ee.spec.coll ?? [75,75,75])[2]/2) {
 										if (Math.abs(ee.y+(ee.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(ee.spec.coll ?? [0,0])[1] < (e.spec.CollBox ?? CollBox[e.type])[1]/2+(ee.spec.coll ?? [75,75,75,75])[3]/2 || Math.floor(e.y/100) == Math.floor(ee.y/100)) {
 										/*let go
@@ -1201,6 +1211,7 @@
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
+														ee.x = Math.min((e.spec.knock ?? 0)*100+ee.x,900)
 														e.damaged.push(ee.id)
 													}
 													if (ee.spec.shields.front <= 0) {
@@ -1252,6 +1263,7 @@
 															e.value = ee.health/2
 														}
 														ee.health -= e.value
+														ee.x = Math.min((e.spec.knock ?? 0)*100+ee.x,900)
 														ee.death = e
 														if (Math.abs(31.5-ee.type) == 0.5 && (e.spec.incend || e.type == 38 || e.imgsrc.includes("elec"))) {
 															if (zombInWave.includes(ee.id)) WaveHealth -= ee.health
@@ -1405,6 +1417,8 @@
 											Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 												Pid++
 											}
+											if (zombInWave.includes(eee.id)) WaveHealth -= eee.health
+											eee.health = 0
 											Dead.push(["Zombies",eee.id])
 										}
 									}
@@ -1520,7 +1534,6 @@
 								}
 							})
 							if (!vid) {
-								WaveHealth -= e.health
 								e.health = 0
 							}
 						}
@@ -1823,8 +1836,8 @@
 											Pid++
 											WaveHealth -= e.health
 											e.health = 0
-											break;
 										}
+										break;
 									case (30):
 										switch (e.mode) {
 											case (1):
@@ -2133,7 +2146,6 @@
 								e.stun = 1.1
 								if (e.spec.timer >= e.spec.threshold+1.1) {
 									Hypnos.filter(l => Math.abs(l.x-e.x) <= 1.5 && Math.abs(l.y-e.y) <= 1.5).forEach((eee) => {
-										if (ZombInWave.includes(eee.id)) WaveHealth -= eee.health
 										eee.health -= 1800
 									})
 									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})

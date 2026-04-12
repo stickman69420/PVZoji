@@ -152,7 +152,7 @@
 			}
 		
 			unlocked.forEach((e) => {
-				seedSel.innerHTML += '<button class="seed" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
+				if (spal || (!special[e].sun && cost[e] > 0)) seedSel.innerHTML += '<button class="seed" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
 			})
 		
 			function Deselect(ind) {
