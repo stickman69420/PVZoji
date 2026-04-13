@@ -6,6 +6,7 @@
 		<a id="almanac" href="">Almanac</a><br>
 		<a id="shopp" href="">Shop</a><br>
 		<a id="Zeng" href="">Zen garden</a><br>
+		<a id="Endles" href="">Endless modes</a><br>
 		<!----><button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">(Gulbre)</button>
 		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">[Gronk]</button>-->
 		<script src="Definitions.js"></script>
@@ -13,6 +14,7 @@
 			if (LevsUnlocked.includes(14)) almanac.href = "./almanac.html"
 			if (LevsUnlocked.includes(24)) shopp.href = "./Shop.html"
 			if (LevsUnlocked.includes(44)) Zeng.href = "./ZenGarden.html"
+			if (LevsUnlocked.includes(74)) Endles.href = "./Endless.html"
 			function clearEverything() {
 				if (confirm("!!!!!!!!!!!!!")) {
 					localStorage.clear()

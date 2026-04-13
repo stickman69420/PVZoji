@@ -16,6 +16,7 @@
 			if (sessionStorage.getItem("Level") != undefined) {
 				Level = sessionStorage.getItem("Level")
 			}
+			let Endless = sessionStorage.getItem("Endless") ?? -1
 			let lastPlant = -1
 			if (localStorage.getItem("Levs")) {
 				LevsUnlocked = JSON.parse(localStorage.getItem("Levs"))
@@ -67,24 +68,46 @@
 			let HpBars = 0
 			let spal = true
 			
+			let prevWave
+			let perBigWave
+			let bigWave
+			let ZombAllowed
+			let endAmbushes
+			
+			if (Endless+1) {
+				prevWave = 2
+				bigWave = [[],[24,24,24,24,24,24,24,25]][Endless]
+				ZombAllowed = [[],[0,2,7,24,27,33,34,36,37,38]][Endless]
+				endAmbushes = [0,0][Endless]
+			}
+			
 			//Consts
-			const savedVars = ["Lawn","Proj","Zombies","Hypnos","Obstacles","Mowers","lastPlant","MowerTrigger","selected","recharge","sun","Dead","Pid","Zid","Lid","Aid","Oid","Wave","Level","WaveTime","WaveHealth","WaveHealthO","Hard","zombInWave","ambushes","rows","HpBars","vase"]
-			if (sessionStorage.getItem("load")) {
-				sessionStorage.removeItem("load")
-				saveloaded = true
-				savedVars.forEach((e) => {
-					eval(e+" = "+localStorage.getItem(e))
-				})
-				Proj.forEach((e) => {
-					if (e.spec.money) {
-						Dead.push(["Proj",e.id])
-					}
-				})
+			const savedVars = ["Lawn","Proj","Zombies","Hypnos","Obstacles","Mowers","lastPlant","MowerTrigger","selected","recharge","sun","Dead","Pid","Zid","Lid","Aid","Oid","Wave","Level","WaveTime","WaveHealth","WaveHealthO","Hard","zombInWave","ambushes","rows","HpBars","vase","Endless","prevWave","bigWave","ZombAllowed","endAmbushes"]
+			for (ladd of ["","end0","end1"]) {
+				if (sessionStorage.getItem(ladd+"load")) {
+					sessionStorage.removeItem(ladd+"load")
+					saveloaded = true
+					savedVars.forEach((e) => {
+						eval(e+" = "+localStorage.getItem(ladd+e))
+					})
+					Proj.forEach((e) => {
+						if (e.spec.money) {
+							Dead.push(["Proj",e.id])
+						}
+					})
+					break;
+				}
+			}
+			
+			let ZombBan
+			if (Endless+1) {
+				ZombBan = [[],[10,11,12,13,14,15,17,18,19,20,21,26,30,31,32]][Endless]
+				perBigWave = [[],[24,24,24,24,24,24,24,25]][Endless]
 			}
 			
 			if (Level == 34) zSpawn = false
 			if (Level == 74) {
-				if (!saveloaded) sun = 5000
+				if (!saveloaded) sun = 6000
 				spal = false
 			}
 			

@@ -104,7 +104,8 @@
 			function Menu() {
 				if (confirm("(The game is paused)\nDo you want to save and exit?")) {
 					savedVars.forEach((e) => {
-						localStorage.setItem(e,JSON.stringify(eval(e)))
+						if (Endless == -1) localStorage.setItem(e,JSON.stringify(eval(e)))
+						else localStorage.setItem("end"+Endless+e,JSON.stringify(eval(e)))
 					})
 					window.location = "./index.html"
 				}
@@ -634,7 +635,7 @@
 				let WaveDist = []			
 				let Premain = points
 				//alert(String(Wave)+","+String((Waves[+Hard][Level].length)-1))
-				const final = (Wave == (Waves[+Hard][Level].length)-1)
+				const final = Endless == -1 && (Wave == (Waves[+Hard][Level].length)-1)
 				let valid2 = []
 				for (let i=6;i<9;i++) {
 					for (let ii=0;ii<rows;ii++) {
@@ -650,7 +651,11 @@
 					}
 				}
 				if (guaranteed.includes(1) || guaranteed.includes(25)) {
-					if (Level == 74) sun += 1000
+					if (Endless+1) {
+						bigWave.push(...perBigWave)
+						if ((prevWave+2)%54) bigWave.push(...ZombAllowed)
+					}
+					if (Level == 74) sun += 1200
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
 					alarm.style.left = 15*sizePerc+"px"
@@ -747,7 +752,7 @@
 				while (Premain > 0) {
 					WaveDist = []
 					Points.forEach((e,ee) => {
-						if (e<=Premain && ZombsAllowed[+Hard][Level].includes(ee)) {
+						if (e<=Premain && (Endless+1 ? ZombAllowed : ZombsAllowed[+Hard][Level]).includes(ee)) {
 							for (let i=0;i<Weight[ee];i++) {
 								WaveDist.push(ee)
 							}
@@ -763,6 +768,7 @@
 						Premain -= Points[WaveDist[ind]]
 					}
 				}
+				if (Endless+1) ZombAllowed.push(...Points.map((p,ip) => [p,ip]).filter((p) => p[0]<=prevWave/5 && !ZombAllowed.includes(p[1]) && !ZombBan.includes(p[1])).map((p) => p[1]))
 			}
 			//SpawnWave(25,[])
 			//SpawnWave(10,[1])
@@ -1429,9 +1435,15 @@
 								if (lose) {
 									lose = false
 									alert("🧟‍♂️\nYou lost")
-									savedVars.forEach((v) => {
-										localStorage.removeItem(v)
-									})
+									if (Endless == -1) {
+										savedVars.forEach((e) => {
+											localStorage.removeItem(e)
+										})
+									} else {
+										savedVars.forEach((e) => {
+											localStorage.removeItem("end"+Endless+e)
+										})
+									}
 									window.location = "./LevelSelect.html"
 								}
 							}
@@ -1684,8 +1696,13 @@
 					if (ind != -1) arr.splice(ind,1)
 				})
 				Dead = []
-				LevelProg.max = Waves[+Hard][Level].length
-				LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
+				if (Endless == -1) {
+					LevelProg.max = Waves[+Hard][Level].length
+					LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
+				} else {
+					LevelProg.max = 18
+					LevelProg.value = (prevWave-2+(1-WaveHealth/WaveHealthO)*2)%18
+				}
 				//Debug.innerHTML = 1-WaveHealth/WaveHealthO
 				//Debug.innerHTML = WaveTime+","+WaveHealth+","+WaveHealthO
 				//Debug.innerHTML = JSON.stringify(ambushes)
@@ -1697,10 +1714,15 @@
 				}
 				canvas.context.translate(115,0)
 				canvas.context.rotate(Math.PI)
-				Waves[+Hard][Level].forEach((e,ee,eee) => {
-					if (e.guaranteed.includes(1)) canvas.context.drawImage(preloadedImg[7],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
-					if (e.guaranteed.includes(25)) canvas.context.drawImage(preloadedImg[18],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
-				})
+				if (Endless == -1) {
+					Waves[+Hard][Level].forEach((e,ee,eee) => {
+						if (e.guaranteed.includes(1)) canvas.context.drawImage(preloadedImg[7],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
+						if (e.guaranteed.includes(25)) canvas.context.drawImage(preloadedImg[18],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
+					})
+				} else {
+					if (bigWave.includes(1)) canvas.context.drawImage(preloadedImg[7],-245,-50,75,75)
+					if (bigWave.includes(25)) canvas.context.drawImage(preloadedImg[18],-245,-50,75,75)
+				}
 				canvas.context.rotate(Math.PI)
 				canvas.context.translate(-115,0)
 				//Debug.innerHTML = ""
@@ -1762,7 +1784,7 @@
 							if (e.spec.crush != undefined && e.crushing != undefined) {
 								e.crushing.forEach((ee) => {
 									let eee = Lawn.find((l) => l.id == ee)
-									if (eee) {
+									if (eee && Math.floor(e.x/100) == eee.col && Math.floor(e.y/100) == eee.row) {
 										if (e.type == 22 && (eee.spec.garg ?? 1) <= 1) eee.health = 0
 										eee.spec.garg--
 										if (e.spec.vehicle && (eee.spec.vehicle ?? 1) <= 1) eee.health = 0
@@ -2212,10 +2234,10 @@
 					WaveTime = Math.random()
 				}
 				if (WaveTime <= 0) {
-					if (Zombies.length == 0 || !(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1) || Waves[+Hard][Level][Wave].guaranteed.includes(25))) {
+					if ((Zombies.length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == Waves[+Hard][Level].length || Waves[+Hard][Level][Wave].guaranteed.includes(1) || Waves[+Hard][Level][Wave].guaranteed.includes(25))))) {
 						//alert(Wave+","+Waves[+Hard][Level].length)
-						if ((zSpawn && Wave == Waves[+Hard][Level].length) || (Zombies.length==0 && Obstacles.length==0 && !zSpawn)) {
-						if (!vase) {
+						if ((Endless == -1 || Endless == 0) && ((zSpawn && Wave == Waves[+Hard][Level].length) || (Zombies.length==0 && Obstacles.length==0 && !zSpawn))) {
+						if (!vase && Endless == -1) {
 							//Win
 							Wave++
 							WaveTime = 1000
@@ -2255,9 +2277,15 @@
 								}
 								localStorage.setItem("Unlocked",JSON.stringify(unlocked))
 							}
-							savedVars.forEach((e) => {
-								localStorage.removeItem(e)
-							})
+							if (Endless == -1) {
+								savedVars.forEach((e) => {
+									localStorage.removeItem(e)
+								})
+							} else {
+								savedVars.forEach((e) => {
+									localStorage.removeItem("end"+Endless+e)
+								})
+							}
 							window.location= "./LevelSelect.html"
 						} else {
 							vase--
@@ -2302,7 +2330,8 @@
 						} else if (zSpawn) {
 							WaveTime = 27
 							//alert(JSON.stringify(Waves[+Hard][Level][Wave]))
-							SpawnWave(Waves[+Hard][Level][Wave].points,Waves[+Hard][Level][Wave].guaranteed,(Waves[+Hard][Level][Wave].ambush ?? []))
+							SpawnWave(Endless+1 ? prevWave : Waves[+Hard][Level][Wave].points,Endless+1 ? ((prevWave+2)%18==0 ? bigWave : []) : Waves[+Hard][Level][Wave].guaranteed,Endless+1 ? endAmbushes : (Waves[+Hard][Level][Wave].ambush ?? []))
+							prevWave += 2
 							Wave++
 						}
 					}
