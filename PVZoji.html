@@ -75,7 +75,7 @@
 		</style>
 	</head>
 	<body id="body">
-		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="HpBars" onclick="HpBars = (HpBars+1)%4" style="color:#00AF0F;position:absolute;left:425px;height:75px;width:80px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">HP</button><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:505px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img style="width:100%" src="./images/ui/shovel.png"></button></div>
+		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="HpBars" onclick="HpBars = (HpBars+1)%4" style="color:#00AF0F;position:absolute;left:425px;height:75px;width:80px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">HP</button><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:505px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img id="ShovImg" style="width:100%" src="./images/ui/shovel.png"></button></div>
 		<canvas style="background-color:#976B42;" id="canvas" width="900" height="600"></canvas>
 		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
@@ -113,7 +113,7 @@
 			if (!saveloaded && isroof && Level != 54) {
 				for (let i=0;i<rows;i++) {
 					for (let j=0;j<3+(Level == 40 ? 2 : (Level == 41 ? 1 : 0));j++) {
-						Lawn.push({"id":Lid,"projImg":ProjImg[33],"img":plants[33],"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":i,"col":j,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
+						Lawn.push({"id":Lid,"projImg":ProjImg[33],"cost":0,"img":plants[33],"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":i,"col":j,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
 			Lid++
 					}
 				}
@@ -144,11 +144,13 @@
 			
 			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
 			
+			ShovImg.src = Level == 74 ? "./images/ui/sell.png" : "./images/ui/shovel.png"
+			
 			if (!saveloaded) {
 				switch (Number(Level)) {
 					case (54):
 						for (let i=0;i<rows;i++) {
-							Lawn.push({"id":Lid,"projImg":ProjImg[51],"img":plants[51],"spec":JSON.parse(JSON.stringify(special[51])),"plant":51,"row":i,"col":0,"cool":fireRate[51]-fireOff[51],"health": plantHealth[51]})
+							Lawn.push({"id":Lid,"projImg":ProjImg[51],"img":plants[51],"cost":0,"spec":JSON.parse(JSON.stringify(special[51])),"plant":51,"row":i,"col":0,"cool":fireRate[51]-fireOff[51],"health": plantHealth[51]})
 							Lid++
 						}
 						break;
@@ -454,6 +456,7 @@
 							//alert(JSON.stringify(ee.spec.UpgType)+"-"+special[selected[select2]].UpgradeType)
 							if (select2 == -2 && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 								if (!Dead.includes(["Lawn",ee.id])) {
+									if (Level == 74) sun += ee.cost
 									Dead.push(["Lawn",ee.id])
 									select2 = -1
 									document.getElementById("Shov").style.backgroundColor = "#421803"
@@ -489,6 +492,7 @@
 										reloadSeed()
 									} else {
 										if (Level != 74) recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
+										ee.sun += cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 										sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 									}
 								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
@@ -515,7 +519,7 @@
 					})
 					if (valid && select2 >= 0) {
 						if (Level != 4) {
-							if (valid != 5) Lawn.push({"id":Lid,"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+							if (valid != 5) Lawn.push({"id":Lid,"cost":cost[selected[select2]],"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
 							if (Level%20<10&&special[selected[select2]].daySpec != undefined) {
 								for (const [key,value] of Object.entries(special[selected[select2]].daySpec)) {
 									Lawn[Lawn.length-1].spec[key] = value
@@ -969,7 +973,7 @@
 									e.img = "chomper"
 									break;
 								case (31):
-									e.img = "magnet shroom"
+									if (!e.spec.sMagnet) e.img = "magnet shroom"
 									break;
 								case (51):
 									e.img = "mortar shroom"
@@ -1004,12 +1008,15 @@
 									const dist = (ee.x+(ee.spec.coll ?? [0])[0]-e.col*100)/100
 									if (!ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
-											if (ee.spec.flying && e.spec.flight) {
+											if (ee.spec.flying && e.spec.flight || e.spec.hitFly) {
 												if(tar.x > ee.x || !fly) tar = ee
+												fire = true
 												fly = true
 											}
-											fire = true
-											if(tar.x > ee.x && !fly) tar = ee
+											if (!ee.spec.flying && e.spec.flight != 2) {
+												fire = true
+												if(tar.x > ee.x && !fly) tar = ee
+											}
 										}
 									}
 								})
@@ -1041,13 +1048,28 @@
 											e.cool = 1
 										}
 									} else if (e.plant == 31) {
-										e.img = "magnet shroom wait"
 										if (e.spec.sMagnet) {
 											Proj.filter((p) => p.spec.sun).forEach((e) => {
 												sun += e.value
 												Dead.push(["Proj",e.id])
 											})
+											let moncol = 0
+											Proj.filter((p) => p.spec.money).forEach((e) => {
+												moncol += e.value
+												Dead.push(["Proj",e.id])
+											})
+											localStorage.setItem("money",Number(localStorage.getItem("money"))+moncol)
+											let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+											Proj.filter((p) => p.spec.gift).forEach((e) => {
+												let occ
+												do {
+													occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
+												} while ((Zengg[occ] ?? -1) != -1)
+												Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+											})
+											localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 										} else {
+											e.img = "magnet shroom wait"
 											let t = tar
 											eval(tar.spec.metal)
 											tar.spec.metal = undefined
