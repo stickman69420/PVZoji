@@ -1133,7 +1133,7 @@
 					if (e.spec.homing && t) {
 						const ang = Math.atan2(t.y+35-e.y,t.x+35-e.x)
 						const ang2 = Math.atan2(e.vy,e.vx)
-						const ang3 = ang2+Math.min(Math.max((((ang-ang2+Math.PI)%(Math.PI*2)+(Math.PI*2))%(Math.PI*2))-Math.PI,-Math.PI/60),Math.PI/60)
+						const ang3 = ang2+Math.min(Math.max((((ang-ang2+Math.PI)%(Math.PI*2)+(Math.PI*2))%(Math.PI*2))-Math.PI,-Math.PI/30),Math.PI/30)
 						e.ang = ang3
 						const amp = Math.sqrt(e.vx**2+e.vy**2)
 						e.vx = Math.cos(ang3)*amp
@@ -1771,6 +1771,7 @@
 				Hypnos.filter(e => e.spec.links != undefined).forEach((e) => {
 					e.spec.groupSpd = e.ovx
 				})
+				//Debug.innerHTML = ""
 				Zombies.forEach((e) => {
 					if (e.spec.steal && e.stun == undefined) e.stun = e.spec.steal/1000
 					if (e.type == 21 && e.x <= 850 && e.spec.ammo != 0 && Lawn.filter(l => l.row == Math.floor(e.y/100)).length != 0) {
@@ -1807,11 +1808,20 @@
 								e.crushing.forEach((ee) => {
 									let eee = Lawn.find((l) => l.id == ee)
 									if (eee && Math.floor(e.x/100) == eee.col && Math.floor(e.y/100) == eee.row) {
-										if (e.type == 22 && (eee.spec.garg ?? 1) <= 1) eee.health = 0
-										eee.spec.garg--
-										if (e.spec.vehicle && (eee.spec.vehicle ?? 1) <= 1) eee.health = 0
-										else eee.spec.vehicle--
-										if (e.type != 22 && !e.spec.vehicle) eee.health = 0
+										if ((e.type == 22 || e.type == 28)) {
+											if (eee.plant == 57) {
+												if (eee.health >= 155) eee.health = 1
+												else eee.health = -1
+											} else {
+												if (eee.spec.garg == undefined) eee.health = 0
+												else eee.health -= plantHealth[eee.plant]/eee.spec.garg
+											}
+										}
+										if (e.spec.vehicle) {
+											if (eee.spec.vehicle == undefined) eee.health = 0
+											else eee.health -= plantHealth[eee.plant]/eee.spec.vehicle
+										}
+										if (e.type != 22 && e.type != 28 && !e.spec.vehicle) eee.health = 0
 									}
 								})
 								if (e.type == 26) e.spec.action = !e.spec.action
@@ -1991,25 +2001,27 @@
 											if (zombInWave.includes(e.id)) WaveHealth -= e.health
 											e.health = 0
 											e.death = ee
-											if ((ee.spec.vehicle ?? 1) <= 1) ee.health = 0
-											else ee.spec.vehicle--
+											if (ee.spec.vehicle == undefined) ee.health = 0
+											else ee.health -= plantHealth[ee.plant]/ee.spec.vehicle
 										}
 										e.crushing = e.crushing || []
-										e.crushing.push(ee.id)
-									} else if (e.spec.fire && !ee.spec.incend && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+										const outer = Lawn.find(l => l.id == ee.spec.in)
+										//alert(JSON.stringify(outer))
+										if ((ee.spec.in == undefined) || (outer == undefined) || ((outer.spec.garg == undefined && (e.type == 22 || e.type == 28))) || ((outer.spec.vehicle && e.spec.vehicle))) e.crushing.push(ee.id)
+									} else if (e.spec.fire && !ee.spec.incend && !ee.spec.noColl && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 										if (ee.spec.snow || ee.spec.ice) {
 											e.spec.fire = false
 											e.spec.action = false
 										}
 										else ee.health = 0
-									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 									if (e.spec.steal) {
 										if (e.stun <= 0) {
 											ee.health = 0
 											e.health = 0
 										}
 									} else {
-									ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
+									if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
