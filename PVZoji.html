@@ -1118,6 +1118,7 @@
 					if (!e.imgsrc) {
 						e.imgsrc = e.img.src
 					}
+					if (e.mower && isbeach && e.x >= beachA[Level%10]*100 && !e.imgsrc.includes("aclean")) Dead.push(["Proj",e.id])
 					if (typeof e.img == "object") {
 						e.img = new Image()
 						e.img.src = e.imgsrc
@@ -1446,6 +1447,10 @@ if (e.spec.pen == undefined) {
 							canvas.context.drawImage(mowerImg[1],-30,i*100+25,50,50)
 						} else if (isroof) { 
 							if (shop.rclean) canvas.context.drawImage(mowerImg[2],-30,i*100+25,50,50)
+						} else if (isside && shop.sbclean && i < 4) {
+							canvas.context.drawImage(mowerImg[3],-30,i*100+25,50,50)
+						} else if (isbeach && shop.aclean) {
+							canvas.context.drawImage(mowerImg[4],-30,i*100+25,50,50)
 						} else {
 							canvas.context.drawImage(mowerImg[0],-30,i*100+25,50,50)
 						}
@@ -1461,7 +1466,7 @@ if (e.spec.pen == undefined) {
 						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
 						e.x += (e.vx ?? 0)*100/60
-						if (e.type == 41 && e.spec.action && isbeach && e.x < beachA[Level%10]*100) {
+						if ([14,41,42].includes(e.type) && e.spec.action && isbeach && e.x < beachA[Level%10]*100) {
 							e.spec.action = false
 							e.ovx = -e.spec.AfterSpd[0]+Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])
 							
@@ -1518,8 +1523,7 @@ if (e.spec.pen == undefined) {
 								Mowers[Math.floor(e.y/100)] = false
 								MowerTrigger[Math.floor(e.y/100)] = Wave
 								if ((!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) && (!isroof || shop.rclean)) {
-									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean,"mower":true},"value":10000000})
-									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":e.y+50,"type":-1,"vx":2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : mowerImg[0],"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":isroof && shop.rclean,"flying":2,"mower":true},"value":10000000})
+									Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":e.y+50,"type":-1,"vx":(isside && shop.sbclean && e.y <= 300) ? 4 : 2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : (isbeach && shop.aclean ? mowerImg[4] : mowerImg[0]),"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":(isroof && shop.rclean) || (isside && shop.sbclean && e.y <= 300),"mower":true,"hitFly":true},"value":10000000})
 									Pid++
 								}
 								if (!isroof || shop.rclean) {Zombies.forEach((eee) => {
