@@ -75,16 +75,20 @@
 		</style>
 	</head>
 	<body id="body">
-		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="HpBars" onclick="HpBars = (HpBars+1)%4" style="color:#00AF0F;position:absolute;left:425px;height:75px;width:80px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">HP</button><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:505px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button><button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img id="ShovImg" style="width:100%" src="./images/ui/shovel.png"></button></div>
+		<div id="bartool" style="position: relative;height:75px;align-content:center;"><progress style="position:absolute;left:100px" id="LevelProg"></progress><img id="sunL" style="height:50px;" src="./images/ui/sun.png"><e id="sunC" style="color:white;">50</e><button id="HpBar" onclick="HpBars = (HpBars+1)%4" style="color:#00AF0F;position:absolute;left:350px;height:75px;width:80px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">HP</button><button id="MenBut" onclick="Menu()" style="color:#00AF0F;position:absolute;left:430px;height:75px;width:160px;top:0px;font-size:50px;background-color:#45426A;border-color:#222137;border-top-color:#8184B8;border-style:solid;border-width:5px;">Menu</button>
+		<button id="Glov" onclick="if (gCool <= 0) Select(-5)" style="position:absolute;left:590px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img id="GlovImg" style="width:100%" src="./images/ui/glove.png"></button>
+		<button id="Shov" onclick="Select(-2)" style="position:absolute;left:665px;top:0px;height:75px;width:75px;font-size:50px;border-radius:50px;background-color:#421803;border-color:#93441D;border-style:solid;border-width:5px;"><img id="ShovImg" style="width:100%" src="./images/ui/shovel.png"></button></div>
 		<canvas style="background-color:#976B42;" id="canvas" width="900" height="600"></canvas>
 		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
 		<e style="line-height:20px;" id="Debug"></e><br>
-		<input id="cons" onchange="subcons()">
+		<input placeholder="just do stuff" id="cons" onchange="subcons()">
 		<button id="sand" onclick="sand()">Sandbox Mode</button><button id="next" onclick="WaveTime = 0">Next Wave</button><button id="nomore" onclick="WaveTime = Infinity;WaveHealthO = -10">No Waves</button>
+		<input placeholder="plant id, column, row" id="spz" onchange='Lawn.push({"id":Lid,"projImg":ProjImg[spz.value.split(",")[0]],"cost":0,"img":plants[spz.value.split(",")[0]],"spec":JSON.parse(JSON.stringify(special[spz.value.split(",")[0]])),"plant":spz.value.split(",")[0],"row":spz.value.split(",")[2],"col":spz.value.split(",")[1],"cool":fireRate[spz.value.split(",")[0]]-fireOff[spz.value.split(",")[0]],"health": plantHealth[spz.value.split(",")[0]]});Lid++'>
 		<img id="debug"></ing>
 		<script src="Definitions.js"></script>
 		<script>
+			let sizePerc = 1
 			function sand() {
 				sun=Infinity;
 				setInterval(() => {
@@ -124,7 +128,7 @@
 					WaveHealth = 0
 				}
 				recharge = [0,0,0,0,0,0,0,0,0,0,0]
-				sun = Infinity
+				if (Level != 84) sun = Infinity
 			} else if (Level == 14) {
 				if (!saveloaded) {
 					selected = [4,2,11]
@@ -142,7 +146,8 @@
 			
 			canvas.context = canvas.getContext("2d")
 			
-			Shov.style.visibility = LevsUnlocked.includes(4) ? "visible" : "hidden"
+			Shov.style.visibility = (LevsUnlocked.includes(4) && Level != 84) ? "visible" : "hidden"
+			Glov.style.visibility = (LevsUnlocked.includes(84) && Level != 84) ? "visible" : "hidden"
 			
 			ShovImg.src = Level == 74 ? "./images/ui/sell.png" : "./images/ui/shovel.png"
 			
@@ -181,6 +186,23 @@
 							})
 						}
 						break;
+					case (84):
+						sun = 0
+						selected = [0,7,18,16,57]
+						recharge = [0,0,0,0,0,0,0,0,0,0,0]
+						for (let i=1;i<4;i++) {
+								Lawn.push({"id":Lid,"projImg":ProjImg[0],"img":plants[0],"cost":0,"spec":JSON.parse(JSON.stringify(special[0])),"plant":0,"row":i,"col":0,"cool":fireRate[0]-fireOff[0],"health": plantHealth[0]})
+								Lid++
+								Lawn.push({"id":Lid,"projImg":ProjImg[16],"img":plants[16],"cost":0,"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":i,"col":beachA[4],"cool":fireRate[16]-fireOff[16],"health": plantHealth[16]})
+								Lid++
+								Lawn.push({"id":Lid,"projImg":ProjImg[0],"img":plants[0],"cost":0,"spec":JSON.parse(JSON.stringify(special[0])),"plant":0,"row":i,"col":1,"cool":fireRate[0]-fireOff[0],"health": plantHealth[0]})
+								Lid++
+								Lawn.push({"id":Lid,"projImg":ProjImg[16],"img":plants[16],"cost":0,"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":i,"col":beachA[4]+1,"cool":fireRate[16]-fireOff[16],"health": plantHealth[16]})
+								Lid++
+								Lawn.push({"id":Lid,"projImg":ProjImg[57],"img":plants[57],"cost":0,"spec":JSON.parse(JSON.stringify(special[57])),"plant":57,"row":i,"col":2,"cool":fireRate[57]-fireOff[57],"health": plantHealth[57]})
+								Lid++
+						}
+						break;
 				}
 				selected.forEach((e,ee) => {
 					recharge[ee] = InitCharge[e]
@@ -205,7 +227,7 @@
 			
 			//Resize initially
 			const stylesheet = document.getElementById("css-output").sheet
-			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+			sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
 			stylesheet.cssRules[3].style.fontSize = 15*sizePerc+"px"
 			stylesheet.cssRules[3].style.top = -20*sizePerc+"px"
 			stylesheet.cssRules[9].style.height = 15*sizePerc+"px"
@@ -234,21 +256,38 @@
 			
 			canvas.style.width = 750*sizePerc+"px"
 			seeds.style.height = 83*sizePerc+"px"
+			
 			Shov.style.left = 667*sizePerc+"px"
 			Shov.style.borderWidth = 5*sizePerc+"px"
 			Shov.style.fontSize = 50*sizePerc+"px"
 			Shov.style.width = 75*sizePerc+"px"
 			Shov.style.borderRadius = 75*sizePerc+"px"
+			Shov.style.height = 75*sizePerc+"px"
+			
+			Glov.style.left = 592*sizePerc+"px"
+			Glov.style.fontSize = 50*sizePerc+"px"
+			Glov.style.width = 75*sizePerc+"px"
+			Glov.style.borderRadius = 75*sizePerc+"px"
+			Glov.style.height = 75*sizePerc+"px"
+			
 			bartool.style.height = 75*sizePerc+"px"
 			Shov.style.height = 75*sizePerc+"px"
 			sunL.style.height = 50*sizePerc+"px"
 			sunC.style.fontSize = 20*sizePerc+"px"
 			LevelProg.style.left = 100*sizePerc+"px"
-			MenBut.style.left = 505*sizePerc+"px"
+				
+			MenBut.style.left = 430*sizePerc+"px"
 			MenBut.style.height = 75*sizePerc+"px"
 			MenBut.style.width = 160*sizePerc+"px"
 			MenBut.style.fontSize = 50*sizePerc+"px"
 			MenBut.style.borderWidth = 5*sizePerc+"px"
+			
+			HpBar.style.left = 350*sizePerc+"px"
+			HpBar.style.height = 75*sizePerc+"px"
+			HpBar.style.width = 80*sizePerc+"px"
+			HpBar.style.fontSize = 50*sizePerc+"px"
+			HpBar.style.borderWidth = 5*sizePerc+"px"
+			
 			if (!alarm.innerHTML.includes("FINAL")) {
 				alarm.style.fontSize = 35*sizePerc+"px"
 				alarm.style.left = 15*sizePerc+"px"
@@ -261,6 +300,10 @@
 			
 			//Main
 			function plantFires(e,tar) {
+				if (Level == 84 && (e.spec.fireRate == undefined || e.spec.fireRate == fireRate[e.plant]) && Math.random() < 0.1) {
+					e.spec.fireRate = (e.spec.fireRate ?? fireRate[e.plant])*2
+					e.img += " burnt"
+				}
 				for (let i=0;i<(e.spec.count ?? 1);i++) {
 					setTimeout((ee,eee,j,tar) => {
 						let img = new Image()
@@ -349,20 +392,36 @@
 				
 				canvas.style.width = 750*sizePerc+"px"
 				seeds.style.height = 83*sizePerc+"px"
+				
 				Shov.style.left = 667*sizePerc+"px"
 				Shov.style.borderWidth = 5*sizePerc+"px"
 				Shov.style.fontSize = 50*sizePerc+"px"
 				Shov.style.width = 75*sizePerc+"px"
 				Shov.style.borderRadius = 75*sizePerc+"px"
 				Shov.style.height = 75*sizePerc+"px"
+				
+				Glov.style.left = 592*sizePerc+"px"
+				Glov.style.fontSize = 50*sizePerc+"px"
+				Glov.style.width = 75*sizePerc+"px"
+				Glov.style.borderRadius = 75*sizePerc+"px"
+				Glov.style.height = 75*sizePerc+"px"
+				
 				sunL.style.height = 50*sizePerc+"px"
 				sunC.style.fontSize = 20*sizePerc+"px"
 				LevelProg.style.left = 100*sizePerc+"px"
-				MenBut.style.left = 505*sizePerc+"px"
+				
+				MenBut.style.left = 430*sizePerc+"px"
 				MenBut.style.height = 75*sizePerc+"px"
 				MenBut.style.width = 160*sizePerc+"px"
 				MenBut.style.fontSize = 50*sizePerc+"px"
 				MenBut.style.borderWidth = 5*sizePerc+"px"
+				
+				HpBar.style.left = 350*sizePerc+"px"
+				HpBar.style.height = 75*sizePerc+"px"
+				HpBar.style.width = 80*sizePerc+"px"
+				HpBar.style.fontSize = 50*sizePerc+"px"
+				HpBar.style.borderWidth = 5*sizePerc+"px"
+				
 				if (!alarm.innerHTML.includes("FINAL")) {
 					alarm.style.fontSize = 35*sizePerc+"px"
 					alarm.style.left = 15*sizePerc+"px"
@@ -374,6 +433,35 @@
 				}
 			})
 			canvas.addEventListener("click",(e) => {
+				if (nTime <= 100) {
+					nTime = Math.random()*10000+5000
+					//let changed = []
+					Lawn.filter(l => l.img.includes(" burnt")).forEach((ee) => {
+						ee.cool = 0
+						ee.health = plantHealth[ee.plant]
+						ee.img = ee.img.replace(" burnt"," fire")
+						ee.spec.fireRate /= 16
+						ee.projImg += " fire"
+						ee.value = 25
+						ee.spec.incend = true
+						ee.spec.explode = [100,100,15,1,{},0]
+						ee.spec.timeLeft = 5000
+						//changed.push(ee.id)
+					})
+					/*setTimeout((change) => {
+						change.forEach((eee) => {
+							let ch = Lawn.find(l => l.id == eee)
+							if (ch) {
+								ch.img = ch.img.replace(" fire","")
+								ch.projImg = ch.projImg.replace(" fire","")
+								ch.spec.fireRate *= 8
+								ch.value = 20
+								ch.spec.incend = false
+								ch.spec.explode = undefined
+							}
+						})
+					},5000,changed)*/
+				}
 				const mouseLoc = [Math.floor(e.offsetX*1.2/(100*sizePerc)),Math.floor(e.offsetY*1.2/(100*sizePerc))]
 				Obstacles.filter((o) => o.col == mouseLoc[0] && o.row == mouseLoc[1] && o.type == 2).forEach((ee) => {
 					if (ee.sumtype) {
@@ -395,6 +483,12 @@
 							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.offsetX*1.2/sizePerc,"y":e.offsetY*1.2/sizePerc,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[14],"spec":{"proj":true,"CollBox":[50,50],"lifespan":0,"Threshold":-6,"butter":{"chance":1,"dur":5000}},"value":0})
 							Pid++
 							break;
+						case (84):
+							Lawn.filter(l => l.col == mouseLoc[0] && l.row == mouseLoc[1]).forEach((ee) => {
+								select2 = -4
+								if ((ee.spec.above == undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.move = true
+							})
+							break;
 					}
 					Lawn.filter(l => l.plant == 51 && l.cool <= 0 && l.col == mouseLoc[0] && l.row == mouseLoc[1]).forEach((ee) => {
 						select2 = -3
@@ -405,17 +499,22 @@
 						ee.cool = (ee.spec.fireRate ?? fireRate[ee.plant])/((ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined && Lawn.find(l => l.id == ee.spec.in).plant == 60) ? 2 : 1)
 						sun -= 50
 					})
+				} else if (select2 == -5) {
+					Lawn.filter(l => l.col == mouseLoc[0] && l.row == mouseLoc[1]).forEach((ee) => {
+						select2 = -4
+						if ((ee.spec.above == undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.move = true
+					})
 				} else {
-					let valid
 					let other
+					let valid
 					if (select2 >= 0 && special[selected[select2]].upgrade == 2) {
 						valid = false
 					} else if (select2 >= 0 && special[selected[select2]].water == 2) {
-						valid = (ispool && Math.abs(2.5-mouseLoc[1]) <= 0.5) || isbeach
+						valid = (ispool && Math.abs(2.5-mouseLoc[1]) <= 0.5) || isbeach && mouseLoc[0]>=beachA[Level%10]
 					} else if (select2 >= 0 && isroof) {
 						valid = special[selected[select2]].roof ?? false
 					} else if (selected[select2] >= 0) {
-						valid = !(special[selected[select2]].grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5 && !isbeach)
+						valid = !(special[selected[select2]].grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5 && (!isbeach || mouseLoc[0]>=beachA[Level%10]))
 					} else {
 						valid = true
 					}
@@ -434,6 +533,65 @@
 							valid = false
 						}
 					})
+					if (select2 == -4) {
+						Lawn.filter(l => l.move).forEach((ee) => {
+							const atTile = Lawn.filter(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1])
+							const atOrig = Lawn.filter(l => l.col==ee.col&&l.row==ee.row)
+							
+							let valid2
+							if (ee.spec.water == 2) {
+								valid2 = (ispool && Math.abs(2.5-mouseLoc[1]) <= 0.5) || isbeach && mouseLoc[0]>=beachA[Level%10]
+							} else if (isroof) {
+								valid2 = ee.spec.roof ?? false
+							} else {
+								valid2 = !(ee.spec.grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5) && (!isbeach || mouseLoc[0]<beachA[Level%10])
+								if (!(ee.spec.grave) && ((isbeach && mouseLoc[0]>=beachA[Level%10]) || (ispool && Math.abs(2.5-mouseLoc[1]) < 0.5))&& Lawn.find(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&l.spec.under&&l.spec.above==undefined)) valid2 = true
+							}
+					
+							if (valid2 && Lawn.filter(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&(!(l.spec.under||l.spec.above==undefined)==!ee.spec.under)&&(!(l.spec.out||l.spec.in!=undefined)==!ee.spec.in)).length == 0) {
+								/*glove fixed ourgh*/
+								if (select2 == -4) {
+									if (Level != 74) gCool = ee.spec.out || ee.spec.under ? 3 : 10
+									if (ee.spec.out) {
+										if (atOrig.find(l => l.spec.in != undefined)) {
+											const inside = atOrig.find(l => l.spec.in != undefined)
+											inside.spec.in = undefined
+										}
+										if (atTile.find(l => !l.spec.out&&!l.spec.under)) {
+											const othr = atTile.find(l => !l.spec.out&&!l.spec.under)
+											othr.spec.in = ee.id
+											const p1 = Lawn.indexOf(ee)
+											const p2 = Lawn.indexOf(othr)
+											if (p1 < p2) [Lawn[p1], Lawn[p2]] = [Lawn[p2], Lawn[p1]];
+										}
+									} else {
+										if (atOrig.find(l => l.spec.under)) {
+											const below = atOrig.find(l => l.spec.under)
+											below.spec.above = undefined
+										}
+										if (atTile.find(l => l.spec.under)) {
+											const below = atTile.find(l => l.spec.under)
+											below.spec.above = ee.id
+											const p1 = Lawn.indexOf(ee)
+											const p2 = Lawn.indexOf(below)
+											if (p1 < p2) [Lawn[p1], Lawn[p2]] = [Lawn[p2], Lawn[p1]];
+										}
+										if (atTile.find(l => l.spec.out)) {
+											const othr = atTile.find(l => l.spec.out)
+											ee.spec.in = othr.id
+											const p1 = Lawn.indexOf(ee)
+											const p2 = Lawn.indexOf(othr)
+											if (p1 > p2) [Lawn[p1], Lawn[p2]] = [Lawn[p2], Lawn[p1]];
+										}
+									}
+									ee.col = mouseLoc[0]
+									ee.row = mouseLoc[1]
+								}
+							}
+							ee.move = false
+							select2 = -1
+						})
+					}
 					if (select2 == -3) {
 						Lawn.filter(l => l.plant == 51 && l.selected).forEach((ee) => {
 							ee.selected = false
@@ -454,7 +612,7 @@
 								valid = 4
 							}else{
 							//alert(JSON.stringify(ee.spec.UpgType)+"-"+special[selected[select2]].UpgradeType)
-							if (select2 == -2 && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+							if (select2 == -2 && (ee.spec.above == undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 								if (!Dead.includes(["Lawn",ee.id])) {
 									if (Level == 74) sun += ee.cost
 									Dead.push(["Lawn",ee.id])
@@ -487,12 +645,13 @@
 										ee[key] = value
 									}
 									if (Object.keys(conveyors).includes(Level)) {
-										selected.splice(select2,1)
+										if (Level != 84) selected.splice(select2,1)
+										else sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 										seeds.innerHTML = ""
 										reloadSeed()
 									} else {
-										if (Level != 74) recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
-										ee.sun += cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
+										if (Level != 74 && Level != 84) recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
+										ee.cost += cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 										sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 									}
 								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
@@ -542,7 +701,8 @@
 							Pid++
 						}
 						if (Object.keys(conveyors).includes(Level)) {
-							if (Level != 34 || select2 != 0) selected.splice(select2,1)
+							if (Level != 84 && (Level != 34 || select2 != 0)) selected.splice(select2,1)
+							else sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 							seeds.innerHTML = ""
 							reloadSeed()
 						} else {
@@ -816,6 +976,17 @@
 				} else if (select2 == -2) {
 					document.getElementById("Shov").style.backgroundColor = "#421803"
 					document.getElementById("Shov").style.borderColor = "#93441D"
+				} else if (select2 == -5) {
+					document.getElementById("Glov").style.backgroundColor = "#421803"
+					document.getElementById("Glov").style.borderColor = "#93441D"
+				} else if (select2 == -3) {
+					Lawn.filter(l => l.selected).forEach((e) => {
+						e.selected = false
+					})
+				} else if (select2 == -4) {
+					Lawn.filter(l => l.move).forEach((e) => {
+						e.move = false
+					})
 				}
 				if (select2 == plt) {
 					select2 = -1
@@ -823,13 +994,17 @@
 					select2 = plt
 					document.getElementById("Shov").style.backgroundColor = "#310702"
 					document.getElementById("Shov").style.borderColor = "#82330C"
-				} else if (cost[selected[plt]] <= sun) {
+				} else if (plt == -5) {
+					select2 = plt
+					document.getElementById("Glov").style.backgroundColor = "#310702"
+					document.getElementById("Glov").style.borderColor = "#82330C"
+				} else if (plt >= 0 && cost[selected[plt]] <= sun) {
 					if (recharge[plt] <= 0) {
 						select2 = plt
 						document.getElementById("B"+select2).style.backgroundColor = "#B9E8D7"
 						document.getElementById("B"+select2).style.borderColor = "#7DAA89"
 					}
-				} else {
+				} else if (plt >= 0) {
 					for (let i=0;i<5;i++) {
 						setTimeout(() => {
 							sunC.style.color = "red"
@@ -844,6 +1019,15 @@
 				/*recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				sun = Infinity*/
 				canvas.context.clearRect(0,0,900,600)
+				gCool -= 0.016
+				nTime -= 16
+				//Debug.innerHTML = JSON.stringify(Lawn.map(l => l.spec.fireRate))
+				if (Level == 84) {
+					selected = [0,7,18,16,57]
+					recharge = [0,0,0,0,0,0,0,0,0,0,0]
+				}
+				Glov.style.borderWidth = 5+Math.max(gCool,0)*sizePerc+"px"
+				Glov.style.borderColor = gCool <= 0 ? "#93441D" : "#60110A"
 				for (let i=0;i<rows;i++) {
 					for (let j=0;j<9;j++) {
 						if ((i+j)%2==0) {
@@ -916,6 +1100,18 @@
 					canvas.context.lineWidth = 1
 					canvas.context.font = "15px Arial"*/
 					//canvas.context.strokeText(JSON.stringify(e),e.col*100,e.row*100)
+					if (e.spec.timeLeft) {
+						e.spec.timeLeft -= 16
+						if (e.spec.timeLeft <= 0) {
+							e.img = e.img.replace(" fire","")
+							e.projImg = e.projImg.replace(" fire","")
+							e.spec.fireRate *= 8
+							e.value = 20
+							e.spec.incend = false
+							e.spec.explode = undefined
+							e.spec.timeLeft = undefined
+						}
+					}
 					e.size = 100
 					if (e.spec.shrinkOff != undefined) {
 						e.size = 100*(Math.max(e.cool/((e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)),0)*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
@@ -1153,6 +1349,7 @@
 							}
 						})
 						e.spec.target = zDis[1]
+						if (e.spec.flight == 1 && zDis[1] != -1) e.spec.flying = Zombies.find(z => z.id == zDis[1]).spec.flying
 					}
 					if ((!e.spec.homing || !t) && !e.spec.reTarget && (e.x > 900 || (e.x < 0 && e.vx < 0) || e.y > 700 || e.y < -100)) {
 						if (!Dead.includes(["Proj",e.id])) {
@@ -1234,6 +1431,7 @@
 														}
 													})
 													e.spec.target = zDis[1]
+						if (e.spec.flight == 1 && zDis[1] != -1) e.spec.flying = Zombies.find(z => z.id == zDis[1]).spec.flying
 												}
 												if (Math.abs(e.vx) > Math.abs(e.vy) && e.vx > 0 && (ee.spec.shields ?? {}).front != undefined && ee.spec.shields.front > 0 && !e.spec.pult) {
 													if (e.spec.pen != undefined && e.spec.pen != 0) {
@@ -1265,7 +1463,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
@@ -1315,7 +1513,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.top -= e.value
@@ -1347,7 +1545,7 @@
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
@@ -1468,6 +1666,8 @@ if (e.spec.pen == undefined) {
 						e.x += (e.vx ?? 0)*100/60
 						if ([14,41,42].includes(e.type) && e.spec.action && isbeach && e.x < beachA[Level%10]*100) {
 							e.spec.action = false
+							e.spec.jump = false
+							e.spec.hop = false
 							e.ovx = -e.spec.AfterSpd[0]+Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])
 							
 						}
@@ -1529,7 +1729,7 @@ if (e.spec.pen == undefined) {
 								if (!isroof || shop.rclean) {Zombies.forEach((eee) => {
 									if (Math.floor(e.y/100)==Math.floor(eee.y/100) && eee.x < 50) {
 										if (!Dead.includes(["Zombies",eee.id])) {
-											if (Level == 14 && Math.random() < 0.15) {
+											if ((Level == 14 || Level == 84) && Math.random() < 0.15) {
 											Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 												Pid++
 											}
@@ -1636,7 +1836,7 @@ if (e.spec.pen == undefined) {
 						}
 					} else {
 						if (!Dead.includes(["Zombies",e.id])) {
-							if (Level == 14 && Math.random() < 0.15) {
+							if ((Level == 14 || Level == 84) && Math.random() < 0.15) {
 								Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 								Pid++
 							}
@@ -1741,7 +1941,7 @@ if (e.spec.pen == undefined) {
 						}
 					} else {
 						if (!Dead.includes(["Hypnos",e.id])) {
-							if (Level == 14 && Math.random() < 0.15) {
+							if ((Level == 14 || Level == 84) && Math.random() < 0.15) {
 								Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 								Pid++
 							}
@@ -1848,6 +2048,16 @@ if (e.spec.pen == undefined) {
 							})
 							if (s) canvas.context.drawImage(preloadedImg[12],j*100,i*100,100,100)
 						}
+					}
+				}
+				if (Level == 84 && nTime <= 1000) {
+					canvas.context.fillStyle = "#FF0000"
+					canvas.context.strokeRect(100,250,700,100)
+					canvas.context.fillRect(100,250,700*(nTime/1000),100)
+					if (nTime <= 100) {
+						canvas.context.fillStyle = "#AA0000"
+						canvas.context.fillText("CLICK!",100,250)
+						if (nTime <= -100) nTime = Math.random()*10000+5000
 					}
 				}
 			},16)
@@ -2068,7 +2278,7 @@ if (e.spec.pen == undefined) {
 									e.spec.shields.front = 0
 									e.spec.ladder = false
 									ee.spec.ladder = true
-								} else if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+								} else if (e.spec.hop && !ee.spec.noColl && (!ee.spec.out) && (ee.spec.above == undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
 									e.stun = 1
 									if (!ee.spec.tall) {
 										setTimeout((eee) => {eee.x = Math.floor(eee.x/100)*100-1},1000,e)
@@ -2076,7 +2286,7 @@ if (e.spec.pen == undefined) {
 										e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
 										e.spec.action = false
 									}
-								} else if (e.spec.jump && !ee.spec.noColl && (!ee.spec.out) && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
+								} else if (e.spec.jump && !ee.spec.noColl && (!ee.spec.out) && (ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1)) {
 									e.stun = 1
 									if (!ee.spec.tall) e.x = Math.floor(e.x/100)*100-1
 									e.ovx = -(Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])+e.spec.AfterSpd[0])
@@ -2096,26 +2306,26 @@ if (e.spec.pen == undefined) {
 										const outer = Lawn.find(l => l.id == ee.spec.in)
 										//alert(JSON.stringify(outer))
 										if ((ee.spec.in == undefined) || (outer == undefined) || ((outer.spec.garg == undefined && (e.type == 22 || e.type == 28))) || ((outer.spec.vehicle && e.spec.vehicle))) e.crushing.push(ee.id)
-									} else if (e.spec.fire && !ee.spec.incend && !ee.spec.noColl && (!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+									} else if (e.spec.fire && !ee.spec.incend && !ee.spec.noColl && (ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 										if (ee.spec.snow || ee.spec.ice) {
 											e.spec.fire = false
 											e.spec.action = false
 										}
 										else ee.health = 0
-									} else if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
+									} else if ((ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 									if (e.spec.steal) {
 										if (e.stun <= 0) {
 											ee.health = 0
 											e.health = 0
 										}
 									} else {
-									if ((!ee.spec.above || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
+									if ((ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
 												WaveHealth -= e.health
 											}
-											if (Level == 14 && Math.random() < 0.15) {
+											if ((Level == 14 || Level == 84) && Math.random() < 0.15) {
 												Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 												Pid++
 											}
