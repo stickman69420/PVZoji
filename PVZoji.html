@@ -1266,6 +1266,7 @@
 													occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
 												} while ((Zengg[occ] ?? -1) != -1)
 												Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+												Dead.push(["Proj",e.id])
 											})
 											localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 										} else {
@@ -2271,7 +2272,7 @@ if (e.spec.pen == undefined) {
 						if (e.spec.noColl) e.hidden = true
 						if (!e.spec.noColl) {
 						Lawn.filter(l => l.health > 0).forEach((ee) => {
-							if(Math.floor(e.x/100)==ee.col && !ee.spec.ladder && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
+							if(Math.floor(e.x/100)==ee.col && !ee.spec.ladder && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || !Lawn.find(l => l.id == ee.spec.in).spec.ladder) && (ee.spec.under == undefined || Lawn.find(l => l.id == ee.spec.under) == undefined || !Lawn.find(l => l.id == ee.spec.under).spec.ladder) && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//alert(JSON.stringify(ee)+"\n"+JSON.stringify(e))
 								//const g = ee.health
 								if (e.spec.ladder && ee.health > 300) {
