@@ -42,6 +42,15 @@
 	</body>
 	<script src="Definitions.js"></script>
 	<script>
+		function resize() {
+			canvas.style.width = Math.min(100,(100/(canvas.height/canvas.width))*((window.innerHeight-returnn.offsetHeight-mney.offsetHeight)/window.innerWidth))+"%"
+		}
+
+		resize()
+		addEventListener("resize", (e) => {
+			resize()
+		})
+		
 		function save() {
 			localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 		}
