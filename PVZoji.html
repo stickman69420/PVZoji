@@ -544,8 +544,9 @@
 							} else if (isroof) {
 								valid2 = ee.spec.roof ?? false
 							} else {
-								valid2 = !(ee.spec.grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5) && (!isbeach || mouseLoc[0]<beachA[Level%10])
-								if (!(ee.spec.grave) && ((isbeach && mouseLoc[0]>=beachA[Level%10]) || (ispool && Math.abs(2.5-mouseLoc[1]) < 0.5))&& Lawn.find(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&l.spec.under&&l.spec.above==undefined)) valid2 = true
+								valid2 = !(ee.spec.grave) && (ee.spec.water || ((!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5) && (!isbeach || mouseLoc[0]<beachA[Level%10])))
+								alert(ee.spec.water)
+								if (!(ee.spec.grave) && !ee.spec.water && ((isbeach && mouseLoc[0]>=beachA[Level%10]) || (ispool && Math.abs(2.5-mouseLoc[1]) < 0.5))&& Lawn.find(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&l.spec.under&&l.spec.above==undefined)) valid2 = true
 							}
 					
 							if (valid2 && Lawn.filter(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&(!(l.spec.under||l.spec.above==undefined)==!ee.spec.under)&&(!(l.spec.out||l.spec.in!=undefined)==!ee.spec.in)).length == 0) {
@@ -785,6 +786,7 @@
 						}
 					}
 				}
+				if (type == 43) Zombies[Zombies.length-1].x = 825
 				if (type == 30) {
 					Zombies[Zombies.length-1].x = 700
 					Zombies[Zombies.length-1].y = 400
@@ -1117,7 +1119,7 @@
 						e.size = 100*(Math.max(e.cool/((e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)),0)*(1-e.spec.shrinkOff)+e.spec.shrinkOff)
 					}
 					if(e.health > 0) {
-						if (e.health < plantHealth[e.plant]) e.health += e.spec.regen ?? 0
+						if (e.health < (e.spec.maxHealth ?? plantHealth[e.plant])) e.health += e.spec.regen ?? 0
 						if (!e.Img || typeof e.Img == "object" || e.previmg != e.img) {
 							let img = new Image()
 							img.src = "./images/plants/"+e.img+".png"
@@ -1129,7 +1131,7 @@
 							canvas.context.fillStyle = "#FF0000"
 							canvas.context.fillRect(e.col*100,e.row*100,100,10)
 							canvas.context.fillStyle = "#00FF00"
-							canvas.context.fillRect(e.col*100,e.row*100,100*(e.health/plantHealth[e.plant]),10)
+							canvas.context.fillRect(e.col*100,e.row*100,100*(e.health/(e.spec.maxHealth ?? plantHealth[e.plant])),10)
 						}
 						if (e.spec.ladder) canvas.context.drawImage(preloadedImg[15],e.col*100+25,e.row*100,100,100)
 						/*canvas.context.strokeStyle = "#000000"
@@ -1198,7 +1200,7 @@
 							if ((e.spec.proj || e.spec.sun) && e.spec.range == -1) {
 								e.cool = (e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)
 								e.health -= e.spec.selfD ?? 0
-								if (e.plant == 59) Lawn.filter(l => Math.abs(l.col-e.col) <= 1.5 && l.row==e.row).forEach((ee)=>{ee.health = Math.max(ee.health,Math.min(ee.health+400,plantHealth[ee.plant]))})
+								if (e.plant == 59) Lawn.filter(l => Math.abs(l.col-e.col) <= 1.5 && l.row==e.row).forEach((ee)=>{ee.health = Math.max(ee.health,Math.min(ee.health+400,(ee.spec.maxHealth ?? plantHealth[ee.plant])))})
 								plantFires(e,undefined)
 							} else if (e.spec.proj || e.spec.sun || e.plant == 6 || e.plant == 31) {
 								let fly = false
@@ -1665,7 +1667,7 @@ if (e.spec.pen == undefined) {
 						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
 						e.x += (e.vx ?? 0)*100/60
-						if ([14,41,42].includes(e.type) && e.spec.action && isbeach && e.x < beachA[Level%10]*100) {
+						if ([14,41,42,44].includes(e.type) && e.spec.action && isbeach && e.x < beachA[Level%10]*100) {
 							e.spec.action = false
 							e.spec.jump = false
 							e.spec.hop = false
@@ -2113,12 +2115,12 @@ if (e.spec.pen == undefined) {
 												else eee.health = -1
 											} else {
 												if (eee.spec.garg == undefined) eee.health = 0
-												else eee.health -= plantHealth[eee.plant]/eee.spec.garg
+												else eee.health -= (eee.spec.maxHealth ?? plantHealth[eee.plant])/eee.spec.garg
 											}
 										}
 										if (e.spec.vehicle) {
 											if (eee.spec.vehicle == undefined) eee.health = 0
-											else eee.health -= plantHealth[eee.plant]/eee.spec.vehicle
+											else eee.health -= (eee.spec.maxHealth ?? plantHealth[eee.plant])/eee.spec.vehicle
 										}
 										if (e.type != 22 && e.type != 28 && !e.spec.vehicle) eee.health = 0
 									}
@@ -2252,6 +2254,11 @@ if (e.spec.pen == undefined) {
 												break;
 											}
 										break;
+									case (43):
+										e.spec.threshold += 3*e.spec.lev
+										if (e.spec.lev > 1/* && Math.random() < 0.5*/) e.spec.lev--
+										SpawnZombie(44,e.x/100,e.y/100)
+										break;
 								}
 							}
 						}
@@ -2301,7 +2308,7 @@ if (e.spec.pen == undefined) {
 											e.health = 0
 											e.death = ee
 											if (ee.spec.vehicle == undefined) ee.health = 0
-											else ee.health -= plantHealth[ee.plant]/ee.spec.vehicle
+											else ee.health -= (ee.spec.maxHealth ?? plantHealth[ee.plant])/ee.spec.vehicle
 										}
 										e.crushing = e.crushing || []
 										const outer = Lawn.find(l => l.id == ee.spec.in)

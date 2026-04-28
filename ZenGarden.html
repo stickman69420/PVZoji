@@ -65,7 +65,7 @@
 		let slect = -1
 		let mov
 		let mGhosts = []
-		const zGard = ["ui/water drop","ui/"+(shop.dcan ? "diamond water verb" : (shop.gcan ? "golden water verb" : "water verb")),"ui/fertiliser","","","ui/sell","ui/glove"]
+		const zGard = ["ui/water drop","ui/"+(shop.dcan ? "diamond water verb" : (shop.gcan ? "golden water verb" : "water verb")),"ui/"+(shop.dfert ? "diamond fertiliser" : (shop.gfert ? "golden fertiliser" : "fertiliser")),"","","ui/sell","ui/glove"]
 		const btns = [1,2,3,4,5,6]
 		let zGardImg = []
 		zGard.forEach((e) => {
@@ -110,18 +110,24 @@
 								slect = -1
 								break;
 							case (1):
-								if (Zengg[pnt][3] == Zengg[pnt][4] && Zengg[pnt][2] < new Date() && Zengg[pnt][1] < 3) {
-									incMon([200,500,2000][Zengg[pnt][1]],offset)
-									Zengg[pnt][2] = Number(new Date())+Math.random()*30000+1800000
-									Zengg[pnt][1]++
-									Zengg[pnt][3] = 0
-									Zengg[pnt][4] = Math.floor(Math.random()*2+2)
-									save()
-									slect = -1
+								const fSize = shop.dfert ? 5 : (shop.gfert ? 3 : 1)
+								for (let i=Math.ceil(fSize/-2);i<=Math.floor(fSize/2);i++) {
+									for (let j=Math.ceil(fSize/-2);j<=Math.floor(fSize/2);j++) {
+										const pnt2 = [pnt[0]+i,pnt[1]+j]
+										if (Zengg[pnt2] && Zengg[pnt2][3] == Zengg[pnt2][4] && Zengg[pnt2][2] < new Date() && Zengg[pnt2][1] < 3) {
+											incMon([200,500,2000][Zengg[pnt2][1]],offset)
+											Zengg[pnt2][2] = Number(new Date())+Math.random()*30000+1800000
+											Zengg[pnt2][1]++
+											Zengg[pnt2][3] = 0
+											Zengg[pnt2][4] = Math.floor(Math.random()*2+2)
+										}
+									}
 								}
+								save()
+								slect = -1
 								break;
 							case (4):
-								incMon([500,2000,5000,20000][Zengg[pnt][1]],offset)
+								incMon([500,1000,3000,8000][Zengg[pnt][1]],offset)
 								Zengg[pnt] = undefined
 								save()
 								slect = -1
