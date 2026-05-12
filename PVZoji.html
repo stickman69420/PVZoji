@@ -148,7 +148,7 @@
 				}
 			} else if (unlocked.length <= SeedC) {
 				selected = unlocked
-			} else if (selected.length < SeedC) {
+			} else if (selected.length < SeedC && !["1,1"].includes(MinigameA+","+MinigameB)) {
 				localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
 				window.location = "./SeedSelect.html"
 			} else {
@@ -444,6 +444,7 @@
 				}
 			})
 			canvas.addEventListener("click",(e) => {
+				const cangamba = select2 == -1
 				if (nTime <= 100) {
 					nTime = Math.random()*10000+5000
 					//let changed = []
@@ -643,7 +644,7 @@
 								}
 							} else if (ee.spec.UpgType && (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType.includes(special[selected[select2]].UpgradeType))) {
 								valid = false
-								if ((special[selected[select2]].extra ?? 0)+cost[selected[select2]] <= sun) {
+								if (((special[selected[select2]].extra ?? 0)+cost[selected[select2]] <= sun) || (MinigameA == 1 && MinigameB ==1)) {
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
 										ee.spec[key] = value
 									}
@@ -656,15 +657,15 @@
 									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSet) ?? {})) {
 										ee[key] = value
 									}
-									if (Object.keys(conveyors).includes(Level)) {
+									if ((MinigameA == 1 && MinigameB ==1) || Object.keys(conveyors).includes(Level)) {
 										if (Level != 84) selected.splice(select2,1)
-										else sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
+										else if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 										seeds.innerHTML = ""
 										reloadSeed()
 									} else {
 										if (Level != 74 && Level != 84) recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
 										ee.cost += cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
-										sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
+										if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 									}
 								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
 									for (let i=0;i<5;i++) {
@@ -712,17 +713,17 @@
 							else Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
 							Pid++
 						}
-						if (Object.keys(conveyors).includes(Level)) {
+						if ((MinigameA == 1 && MinigameB ==1) || Object.keys(conveyors).includes(Level)) {
 							if (Level != 84 && (Level != 34 || select2 != 0)) selected.splice(select2,1)
-							else sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
+							else if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
 							seeds.innerHTML = ""
 							reloadSeed()
 						} else {
 							if (Level != 74) recharge[select2] = Recharges[selected[select2]]
-							sun -= cost[selected[select2]]
+							if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]
 						}
 					}
-					if (select2 >= 0 && !Object.keys(conveyors).includes(Level)) {
+					if (select2 >= 0 && !((MinigameA == 1 && MinigameB ==1) || Object.keys(conveyors).includes(Level))) {
 						document.getElementById("B"+select2).style.backgroundColor = "#CAF9E8"
 						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
 					}
@@ -730,16 +731,19 @@
 					}
 					}
 				}
+				let notcollecting = true
 				Proj.forEach((ee,eee) => {
 					if(Math.sqrt((ee.x-e.offsetX*1.2/sizePerc)**2+(ee.y-e.offsetY*1.2/sizePerc)**2) <= ee.size) {
 						if	(ee.spec.sun) {
 							if (!Dead.includes(["Proj",ee.id])) {
 								sun += ee.value
+								notcollecting = false
 								Dead.push(["Proj",ee.id])
 							}
 						} else if (ee.spec.money) {
 							if (!Dead.includes(["Proj",ee.id])) {
 								localStorage.setItem("money",Number(localStorage.getItem("money"))+ee.value)
+								notcollecting = false
 								Dead.push(["Proj",ee.id])
 							}
 						} else if (ee.spec.gift) {
@@ -751,11 +755,49 @@
 								} while ((Zengg[occ] ?? -1) != -1)
 								Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
 								localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+								notcollecting = false
 								Dead.push(["Proj",ee.id])
 							}
 						}
 					}
 				})
+				if (notcollecting) {
+					if (sun >= 25 && select2 == -1 && cangamba && MinigameA == 1 && MinigameB ==1) {
+						sun -= 25
+						const gamba = Array(3).fill(0).map(g => Math.floor(Math.random()*6))
+						let roll = Array(6).fill(0)
+						gamba.forEach((r,rr) => {
+							Proj.push({"id":Pid,"x":300+100*rr,"y":250,"type":-1,"vx":0,"vy":-0.5,"size":100,"img":preloadedImg[[27,29,28,1,4,10][r]],"spec":{"lifespan":0,"Threshold":-120},"value":0})
+							Pid++
+							roll[r]++
+						})
+						const succ = roll.findIndex(r => r >= 2)
+						for (let i=0;i<[0,0,1,3][roll[succ]];i++) {
+							switch (succ) {
+								case (0):
+									selected.push(0)
+									break;
+								case (1):
+									selected.push(1)
+									break;
+								case (2):
+									selected.push(5)
+									break;
+								case (3):
+									selected.push(3)
+									break;
+								case (4):
+									sun += roll[succ] == 3 ? 500/3 : 100
+									break;
+								case (5):
+										Proj.push({"id":Pid,"x":450,"y":250,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[10],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":1000})
+									break;
+							}
+							seeds.innerHTML = ""
+							reloadSeed()
+						}
+					}
+				}
 			})
 			function lanePick(z) {
 				let vlid = []
@@ -1011,7 +1053,7 @@
 					select2 = plt
 					document.getElementById("Glov").style.backgroundColor = "#310702"
 					document.getElementById("Glov").style.borderColor = "#82330C"
-				} else if (plt >= 0 && cost[selected[plt]] <= sun) {
+				} else if (plt >= 0 && (cost[selected[plt]] <= sun || (MinigameA == 1 && MinigameB ==1))) {
 					if (recharge[plt] <= 0) {
 						select2 = plt
 						document.getElementById("B"+select2).style.backgroundColor = "#B9E8D7"
@@ -1039,6 +1081,7 @@
 					selected = [0,7,18,16,57]
 					recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				}
+				if (MinigameA == 1 && MinigameB ==1) recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				Glov.style.borderWidth = 5+Math.max(gCool,0)*sizePerc+"px"
 				Glov.style.borderColor = gCool <= 0 ? "#93441D" : "#60110A"
 				for (let i=0;i<rows;i++) {
@@ -1640,7 +1683,7 @@ if (e.spec.pen == undefined) {
 					}
 					canvas.context.drawImage(e.img,e.x-e.size*(e.img.width/e.img.height)/2,e.y-e.size/2,e.size*(e.img.width/e.img.height),e.size)
 					Lawn.forEach((ee) => {
-						if (ee.row == Math.floor(e.y/100) && ee.col == Math.floor(e.x/100) && !ee.spec.noColl) {
+						if (ee.row == Math.floor(e.y/100) && ee.col == Math.floor(e.x/100) && !ee.spec.noColl && (!ee.spec.short || !e.spec.short)) {
 							ee.health -= e.value
 							if (!e.spec.pen) e.health = 0
 						}
@@ -2289,7 +2332,7 @@ if (e.spec.pen == undefined) {
 					} else if (e.spec.shoot) {
 							e.spec.cool = e.spec.shootTime
 							e.spec.ammo--
-							zombProj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y,"type":-1,"vx":-7.5,"vy":0,"size":25,"img":preloadedImg[e.spec.shoot],"spec":{"CollBox":[25,25]},"value":e.spec.damage,"health":e.spec.damage})
+							zombProj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y,"type":-1,"vx":-7.5,"vy":0,"size":25,"img":preloadedImg[e.spec.shoot],"spec":{"CollBox":[25,25],"short":true},"value":e.spec.damage,"health":e.spec.damage})
 							Pid++
 					}
 					}
@@ -2597,11 +2640,12 @@ if (e.spec.pen == undefined) {
 				if (WaveHealth == 0 && Level == 14 && WaveTime > 1) {
 					WaveTime = Math.random()
 				}
-				if (WaveTime <= 0) {
-					if ((Zombies.length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25))))) {
+				const winmini = MinigameA == 1 && MinigameB ==1 && sun >= 2000
+				if (winmini || WaveTime <= 0) {
+					if (winmini || ((Zombies.length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
 						//alert(Wave+","+zSpawns.length)
-						if ((Endless == -1 || Endless == 0) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn))) {
-						if (!vase && Endless == -1) {
+						if (winmini || ((Endless == -1 || Endless == 0) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
+						if (winmini || (!vase && Endless == -1 && !["1,1"].includes(MinigameA+","+MinigameB))) {
 							//Win
 							Wave++
 							WaveTime = 1000
