@@ -7,6 +7,7 @@
 		<a id="shopp" href="">Shop</a><br>
 		<a id="Zeng" href="">Zen garden</a><br>
 		<a id="Endles" href="">Endless modes</a><br>
+		<a id="Minig" href="">Minigames</a><br>
 		<!----><button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">Delete all save data</button>
 		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">Modify some save data</button>-->
 		<script src="Definitions.js"></script>
@@ -15,6 +16,14 @@
 			if (LevsUnlocked.includes(24)) shopp.href = "./Shop.html"
 			if (LevsUnlocked.includes(44)) Zeng.href = "./ZenGarden.html"
 			if (LevsUnlocked.includes(74)) Endles.href = "./Endless.html"
+			if (shop.mini) Minig.href = "./Minigame.html"
+			
+			document.querySelectorAll("a").forEach((e) => {
+				if (e.href == window.location.href) {
+					e.innerHTML = "<s>"+e.innerHTML+"</s>"
+				}
+			})
+			
 			function clearEverything() {
 				if (confirm("!!!!!!!!!!!!!")) {
 					localStorage.clear()

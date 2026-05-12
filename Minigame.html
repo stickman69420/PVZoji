@@ -1,0 +1,159 @@
+<!doctype HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Minigame select for PVZ</title>
+		<style id="css-output">
+			body {
+				font-family:arial;
+				background-color: #777777;
+				margin: 0px;
+				padding: 0px;
+				font-size: 20px;
+			}
+			button {
+				margin: 0px;
+				padding: 0px;
+				width: 108px;
+				height: 150px;
+				position: absolute;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				font-size:50px;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
+			.disp {
+				height: 50px;
+				top: -70px;
+			}
+			a {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				display: block;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: auto;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
+			div {
+				align-content: start;
+				margin: 0px;
+				padding: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		<a id="returnn" href="./index.html">Return</a>
+		<div style="width:1080px;height:auto;" id="levels"></div>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+": "+e.message+"\nMS")
+			});
+		</script>
+		<script src="./Definitions.js"></script>
+		<script>
+			function Enter(e,r) {
+				if (localStorage.getItem("minigame"+e+","+r+"sun") != undefined) {
+					const lvl = JSON.parse(localStorage.getItem("minigame"+e+","+r+"Level"))
+					if (confirm("You have data saved for this level.\nWould you like to resume?")) {
+						sessionStorage.setItem("minigame"+e+","+r+"load",true)
+						window.location = "./PVZoji.html"
+					} else {
+						if(confirm("Delete data for this level?")) {
+							savedVars.forEach((ee) => {
+								localStorage.removeItem("minigame"+e+","+r+ee)
+							})
+						} else {
+							location.reload()
+						}
+					}
+				} else {
+					sessionStorage.setItem("Level",[[4,14,24,34,44,54],[8]][e][r])
+					sessionStorage.setItem("MinigameA",e)
+					sessionStorage.setItem("MinigameB",r)
+					window.location = "./PVZoji.html"
+				}
+			}
+			
+			const stylesheet = document.getElementById("css-output").sheet
+			let sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+			stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
+			stylesheet.cssRules[1].style.fontSize = 50*sizePerc+"px"
+			stylesheet.cssRules[1].style.width = 108*sizePerc+"px"
+			stylesheet.cssRules[1].style.height = 150*sizePerc+"px"
+			stylesheet.cssRules[2].style.height = 50*sizePerc+"px"
+			stylesheet.cssRules[2].style.top = -70*sizePerc+"px"
+			stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+			//returnn.style.width = 1080*sizePerc+"px"
+			
+			addEventListener("resize", (e) => {
+				sizePerc = Math.min(window.innerHeight/722,window.innerWidth/1080)
+				stylesheet.cssRules[2].style.height = 50*sizePerc+"px"
+				stylesheet.cssRules[2].style.top = -70*sizePerc+"px"
+				stylesheet.cssRules[0].style.fontSize = 20*sizePerc+"px"
+				stylesheet.cssRules[1].style.fontSize = 50*sizePerc+"px"
+				stylesheet.cssRules[1].style.width = 108*sizePerc+"px"
+				stylesheet.cssRules[1].style.height = 150*sizePerc+"px"
+				stylesheet.cssRules[1].style.borderWidth = 5*sizePerc+"px"
+				//returnn.style.width = 1080*sizePerc+"px"
+				Array.from(document.getElementsByClassName("seed")).forEach((eee,ee) => {
+					eee.style.left = eee.dataset.left*sizePerc+"px"
+					eee.style.top = eee.dataset.top*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("head")).forEach((eee,ee) => {
+					eee.style.fontSize = 20*sizePerc+"px"
+					eee.style.height = eee.dataset.height*sizePerc+"px"
+				})
+				Array.from(document.getElementsByClassName("seedDisp")).forEach((ee) => {
+					/*ee.style.fontSize = ee.dataset.originalSize*sizePerc+"px"
+					ee.style.top = ee.dataset.originalTop*sizePerc+"px"
+					ee.style.left = ee.dataset.originalLeft*sizePerc+"px"*/
+					ee.style.height = 98*sizePerc+"px"
+					ee.style.width = 98*sizePerc+"px"
+				})
+			})
+			const minig = [["plants/wall nut","ui/mallet","ui/littlebig","ui/vase","ui/too hd bungee","plants/mortar shroom"],["zombies/peashooter"]]
+			const head = ["Hard versions","Original minigames"]
+			let bigi = 0
+			//let heado = 0
+			minig.forEach((e,ee) => {
+				const heado = levels.offsetHeight
+				levels.innerHTML += "<div id='cont"+ee+"' class='head' style='position:relative;height:"+(175+150*Math.floor(e.length/10))+"px' data-height='"+(175+150*Math.floor(e.length/10))+"'><e style='position:absolute;'>"+head[ee]+"</e></div>"
+				e.forEach((r,rr) => {
+					document.getElementById("cont"+ee).innerHTML += "<button class='seed' onclick='Enter("+ee+","+rr+")' style='left:"+108*(rr%10)+"px;top:"+(25+150*Math.floor(rr/10))+"px;' data-top='"+(25+150*Math.floor(rr/10))+"' data-left='"+108*(rr%10)+"'><img class='disp' src='./images/"+r+".png'></button>"
+					bigi++
+				})
+				//heado += 170+150*Math.floor(e.length/10)
+			})
+			Array.from(document.getElementsByClassName("seed")).forEach((eee,ee) => {
+				eee.style.left = eee.dataset.left*sizePerc+"px"
+				eee.style.top = eee.dataset.top*sizePerc+"px"
+			})
+			Array.from(document.getElementsByClassName("head")).forEach((eee,ee) => {
+				eee.style.fontSize = 20*sizePerc+"px"
+				eee.style.height = eee.dataset.height*sizePerc+"px"
+			})
+			Array.from(document.getElementsByClassName("seedDisp")).forEach((ee) => {
+				/*ee.style.fontSize = ee.dataset.originalSize*sizePerc+"px"
+				ee.style.top = ee.dataset.originalTop*sizePerc+"px"
+				ee.style.left = ee.dataset.originalLeft*sizePerc+"px"*/
+				ee.style.height = 98*sizePerc+"px"
+				ee.style.width = 98*sizePerc+"px"
+			})
+		</script>
+	</body>
+</html>
