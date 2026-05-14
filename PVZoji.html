@@ -15,6 +15,10 @@
 				margin: 0px;
 				padding: 0px;
 				font-size: 20px;
+				position:fixed;
+				height:100%;
+				width:100%;
+				overflow: hidden;
 			}
 			button.seed {
 				position: absolute;
@@ -85,7 +89,7 @@
 		<input placeholder="just do stuff" id="cons" onchange="subcons()">
 		<button id="sand" onclick="sand()">Sandbox Mode</button><button id="next" onclick="WaveTime = 0">Next Wave</button><button id="nomore" onclick="WaveTime = Infinity;WaveHealthO = -10">No Waves</button>
 		<input placeholder="plant id, column, row" id="spz" onchange='Lawn.push({"id":Lid,"projImg":ProjImg[spz.value.split(",")[0]],"cost":0,"img":plants[spz.value.split(",")[0]],"spec":JSON.parse(JSON.stringify(special[spz.value.split(",")[0]])),"plant":spz.value.split(",")[0],"row":spz.value.split(",")[2],"col":spz.value.split(",")[1],"cool":fireRate[spz.value.split(",")[0]]-fireOff[spz.value.split(",")[0]],"health": plantHealth[spz.value.split(",")[0]]});Lid++'>
-		<img id="debug"></ing>
+		<img id="debug"></img>
 		<script src="Definitions.js"></script>
 		<script>
 			let sizePerc = 1
@@ -142,8 +146,8 @@
 					selected = []
 					WaveHealth = 0
 				}
-				recharge = [0,0,0,0,0,0,0,0,0,0,0]
-				if (Level != 84) sun = Infinity
+				if (MinigameA != 1 || MinigameB != 4) recharge = [0,0,0,0,0,0,0,0,0,0,0]
+				if (Level != 84 && (MinigameA != 1 || MinigameB != 4)) sun = Infinity
 			} else if (Level == 14) {
 				if (!saveloaded) {
 					selected = [4,2,11]
@@ -172,10 +176,14 @@
 				mbut = ee.buttons
 			}
 			
-			if (MinigameA == 1 && MinigameB == 4 && !saveloaded) {
-				Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":550,"type":-1,"ox":0,"vx":0,"vy":0,"size":50,"img":preloadedImg[27],"spec":{"dir":Math.PI/2},"value":0})
-				Pid++
-				sun = 0
+			if (MinigameA == 1 && MinigameB == 4) {
+				if (!saveloaded) {
+					Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":550,"type":-1,"ox":0,"vx":0,"vy":0,"size":50,"img":preloadedImg[27],"spec":{"dir":Math.PI/2},"value":0})
+					Pid++
+					sun = 0
+					recharge = [0,undefined,0,0,0,0]
+				}
+				selected = [7,18,5,22,15,43]
 				canvas.addEventListener("pointermove",hwmove)
 				canvas.addEventListener("pointerdown",hwmove)
 				canvas.addEventListener("pointerup",hwmove)
@@ -241,9 +249,11 @@
 						}
 						break;
 				}
-				selected.forEach((e,ee) => {
-					recharge[ee] = InitCharge[e]
-				})
+				if (MinigameA != 1 || MinigameB != 4) {
+					selected.forEach((e,ee) => {
+						recharge[ee] = InitCharge[e]
+					})
+				}
 				if (AmbushArea[Math.floor(Level/10)] == true) {
 					let valid = []
 					for (let i=6;i<9;i++) {
@@ -1052,6 +1062,60 @@
 			//SpawnZombie(19,9,1)
 			
 			function Select(plt) {
+				if (MinigameA == 1 && MinigameB == 4 && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
+					sun -= cost[selected[plt]]
+					recharge[plt] = Recharges[selected[plt]]
+					switch (plt) {
+						case (0):
+							recharge[0] = undefined
+							recharge[1] = 0
+							Proj[0].spec.stream = 2
+							break;
+						case (1):
+							recharge[1] = undefined
+							Proj[0].spec.stream = 3
+							break;
+						case (2):
+							recharge[2] = undefined
+							recharge[3] = undefined
+							Proj[0].spec.upg = 1
+							setTimeout(() => {
+								recharge[2] = 0
+								recharge[3] = 0
+								Proj[0].spec.upg = 0
+							},5000)
+							break;
+						case (3):
+							recharge[2] = undefined
+							recharge[3] = undefined
+							Proj[0].spec.upg = 2
+							setTimeout(() => {
+								recharge[2] = 0
+								recharge[3] = 0
+								Proj[0].spec.upg = 0
+							},5000)
+							break;
+						case (4):
+							Lawn.push({"id":Lid,"projImg":ProjImg[15],"img":plants[15],"spec":JSON.parse(JSON.stringify(special[15])),"plant":15,"row":2,"col":4,"cool":fireRate[15]-fireOff[15],"health": plantHealth[15]})
+							Lawn.at(-1).spec.night = false
+							Lid++
+							break;
+						case (5):
+							Lawn.push({"id":Lid,"projImg":ProjImg[16],"img":plants[16],"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":5,"col":Lawn.length,"cool":fireRate[0]-fireOff[0],"health": plantHealth[0]})
+							let mod = Lawn.at(-1)
+							let modder = special[43]
+							for (const [key,value] of Object.entries(modder.upgradeSet)) {
+								mod[key] = value
+							}
+							for (const [key,value] of Object.entries(modder.upgradeSpec)) {
+								mod.spec[key] = value
+							}
+							mod.spec.count = 1
+							mod.spec.fireRate *= 2
+							Lid++
+							break;
+					}
+				} else {
 				if (select2 >= 0) {
 					document.getElementById("B"+select2).style.backgroundColor = "#CAF9E8"
 					document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
@@ -1095,6 +1159,7 @@
 							sunC.style.color = "white"
 						},200*i+100)
 					}
+				}
 				}
 			}
 			setInterval(() => {
@@ -1392,8 +1457,11 @@
 					t.value -= 0.016
 					if (t.value <= 0 && mbut > 0) {
 						t.value = 0.1
-						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":Proj[0].x,"y":550,"type":-1,"vx":Math.cos(t.spec.dir)*-7.5,"vy":Math.sin(t.spec.dir)*-7.5,"size":25,"img":preloadedImg[26],"spec":{"proj":true,"CollBox":[25,25]},"value":20})
-						Pid++
+						let odir = t.spec.dir-((t.spec.stream ?? 1)-1)*10/180*Math.PI
+						for (let i=0;i<(t.spec.stream ?? 1);i++) {
+							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":Proj[0].x,"y":550,"type":-1,"vx":Math.cos(odir+20/180*Math.PI*i)*-7.5,"vy":Math.sin(odir+20/180*Math.PI*i)*-7.5,"size":25,"img":preloadedImg[[26,31,32][t.spec.upg ?? 0]],"spec":{"proj":true,"CollBox":[25,25],"incend":t.spec.upg == 2,"snow":t.spec.upg == 1 ? 4500 : undefined,"ice":t.spec.upg == 1 ? {"chance":0.1,"dur":3250} : undefined,"explode":t.spec.upg == 2 ? [100,100,15,1,{},0] : undefined},"value":t.spec.upg == 2 ? 35 : 20})
+							Pid++
+						}
 					}
 					canvas.context.drawImage(mowerImg[0],t.x-50,500,100,100)
 				}
@@ -2051,10 +2119,11 @@ if (e.spec.pen == undefined) {
 					}
 				})
 				recharge.forEach((e,ee) => {
-					recharge[ee] = Math.max(e-0.016,0)
+					if (e != undefined) recharge[ee] = Math.max(e-0.016,0)
 				})
 				Array.from(document.getElementsByClassName("Recharge")).forEach((e,ee) => {
-					e.style.height = (recharge[ee]/Recharges[selected[ee]])*/*110*/83*sizePerc+"px"
+					if (recharge[ee] != undefined) e.style.height = (recharge[ee]/Recharges[selected[ee]])*/*110*/83*sizePerc+"px"
+					else e.style.height = 83*sizePerc+"px"
 				})
 				Dead.forEach((e) => {
 					const arr = eval(e[0])
