@@ -127,6 +127,219 @@
 					}
 				}
 			}
+			const types = ["A","B","C","D","E","F"]
+/**
+ * UTILITIES
+ * =========
+ */
+/** RegEx that match any number of any characters */
+function RegExDistance(number_of_characters) {
+  return '.{' + number_of_characters + '}'
+}
+/** 
+ * Find all the matches of pattern over a string, including overlappng matches
+ * - pattern: Regular Expression
+ * - str: the string to find matches
+ * - [Optional] filterFn: Reject matches that the filter returns falsy
+ */
+function matchAll(pattern, str, filterFn) {
+  var results = [], match;
+  pattern.lastIndex = 0
+  /** Keeps matching until no match */
+  while( (match = pattern.exec(str)) != null ) {
+    /** Filter the match if needed */
+    if ( !filterFn || filterFn(match) ) {
+      results.push(match)
+    }
+    pattern.lastIndex = match.index + 1
+  }
+  return results;
+}
+/** 
+ * Find the first match of pattern over a string
+ * - pattern: Regular Expression
+ * - str: the string to find matches
+ * - filterFn: Reject matches that the filter returns falsy
+ * There are no reason to use this function if you don't have a fileterFn
+ */
+function matchOne(pattern, str, filterFn) {
+  var match;
+  pattern.lastIndex = 0
+  /** Keeps matching until no match */
+  while( (match = pattern.exec(str)) != null ) {
+    /** Filter the match */
+    if ( filterFn(match) ) {
+      return match;
+    }
+    pattern.lastIndex = match.index + 1
+  }
+  return null;
+}
+/**
+ * DETECT MATCHES ON A ROW
+ * =======================
+ */
+/** 
+ * Build Detect Matches on a Row for an array of gem types
+ * ie. `/AAA|BBB|CCC/`
+ */
+function RegExMatchesRow(types) {
+  return new RegExp(
+    types.map(
+      /** Expression for each type `T` */
+      function(T) {
+        return [T, T, T].join('');
+      }
+    ).join('|'),
+    'g'
+  )
+}
+/**
+ * Returns a filter function to reject matches that have 
+ * index less than 3 cells from the end of the row
+ * 
+ * See Issue 1 in 'Detect Matches on a Row' section at
+ * http://bit.ly/2laynF5
+ * 
+ */
+function MatchesRowFilterCreator(number_of_cols) {
+  return function(match) {
+    /** Reject if no match found */
+    if (match == null) return false;
+    /** Distance from the match index to end of row */
+    var distance_to_EOR = number_of_cols - match.index % number_of_cols;
+    /** Rerturn true if match index is more than 2 cells from the end of row */
+    return distance_to_EOR > 2;
+  }
+}
+/** Returns the indices of gems to be removed from Matches on Row */
+function ExtractIndicesMatchesRow(match) {
+  var index = match.index;
+  return [index, index + 1, index + 2];
+}
+/**
+ * DETECT MATCHES ON A COLUMN
+ * ==========================
+ */
+/** 
+ * Build Detect Matches on a Column for an array of gem types
+ * 
+ * ie.
+ * 0T00
+ * 0T00
+ * 0T00
+ * 
+ * /T.{3}T.{3}T/
+ */
+function RegExMatchesCol(number_of_cols, types) {
+  var distance = RegExDistance(number_of_cols - 1);
+  
+  return new RegExp(
+    types.map(
+      /** Expression for each type `T` */
+      function(T) {
+        return [T, distance, T, distance, T].join('');
+      }
+    ).join('|'),
+    'g'
+  )
+}
+/** 
+ * Returns a function that returns 
+ * the indices of gems to be removed from Matches on Column
+ */
+function ExtractIndicesMatchesColCreator(number_of_cols) {
+  return function(match) {
+    var index = match.index;
+    return [index, index + number_of_cols, index + 2 * number_of_cols];
+  }
+}
+/**
+ * DETECT POTENTIAL MATCHES ON A ROW
+ * =================================
+ */
+/** 
+ * Build Detect Potential Matches on a Row for an array of gem types
+ * With swappable gem is on the row below
+ */
+function RegexPotentialMatchesRow(number_of_cols, types) {
+  var distance1 = RegExDistance(number_of_cols - 1),
+    distance2 = RegExDistance(number_of_cols - 1),
+    distance3 = RegExDistance(number_of_cols - 1);
+  
+  return new RegExp(
+    types.map(
+      /** Expression for each type `T` */
+      function(T) {
+        return [
+          [ T, T, '.', distance1, T ].join(''),
+          [ T, '.', T, distance2, T ].join(''),
+          [ '.', T, T, distance3, T ].join('')
+        ].join('|')
+      }
+    ).join('|'),
+    'g'
+  )
+}
+/** Reuse MatchesRowFilterCreator for this case */
+/** 
+ * Build Detect Potential Matches on a Column for an array of gem types
+ * With swappable gem is on the row on the right
+ */
+function RegexPotentialMatchesCol(number_of_cols, types) {
+  var distance = RegExDistance(number_of_cols),
+    distance1 = RegExDistance(number_of_cols - 1),
+    distance2 = RegExDistance(number_of_cols - 1),
+    distance3 = RegExDistance(number_of_cols - 1);
+  
+  return new RegExp(
+    types.map(
+      /** Expression for each type `T` */
+      function(T) {
+        return [
+          [      T, distance1, T, distance,  T ].join(''),
+          [      T, distance,  T, distance2, T ].join(''),
+          [ '.', T, distance2, T, distance1, T ].join('')
+        ].join('|')
+      }
+    ).join('|'),
+    'g'
+  );
+}
+/**
+ * Returns a filter function to reject matches that have 
+ * index less than 2 cells from the end of the row
+ * 
+ * See Issue 1 in 'Detect Matches on a Row' section at
+ * http://bit.ly/2laynF5
+ * 
+ */
+function PotentialMatchesColFilterCreator(number_of_cols) {
+  return function(match) {
+    /** Reject if no match found */
+    if (match == null) return false;
+    /** Distance from the match index to end of row */
+    var distance_to_EOR = number_of_cols - match.index % number_of_cols;
+    /** Rerturn true if match index is more than 1 cells from the end of row */
+    return distance_to_EOR > 1;
+  }
+}
+
+function detectMatches(grid_size) {
+  /** Regex for detecting matches */
+  const regExMatchesRow = RegExMatchesRow(types);
+  const regExMatchesCol = RegExMatchesCol(grid_size, types);
+  /** Filter for rejecting false matches */
+  const matchesRowFilter = MatchesRowFilterCreator(grid_size);
+  /** Regex for detecting potential matches */
+  const regexPotentialMatchesRow = RegexPotentialMatchesRow(grid_size, types);
+  const regexPotentialMatchesCol = RegexPotentialMatchesCol(grid_size, types);
+  /** Filter for rejecting false potential matches */
+  const potentialMatchesColFilter = PotentialMatchesColFilterCreator(grid_size);
+  const extractIndicesMatchesRow = ExtractIndicesMatchesRow;
+  const extractIndicesMatchesCol = ExtractIndicesMatchesColCreator(grid_size);
+  return([regExMatchesRow,regExMatchesCol,regexPotentialMatchesRow,regexPotentialMatchesCol])
+}
 			
 			let zSpawns = Waves[+Hard][Level]
 			if (MinigameA+1) {
@@ -146,8 +359,8 @@
 					selected = []
 					WaveHealth = 0
 				}
-				if (MinigameA != 1 || MinigameB != 4) recharge = [0,0,0,0,0,0,0,0,0,0,0]
-				if (Level != 84 && (MinigameA != 1 || MinigameB != 4)) sun = Infinity
+				if (!["1,4","1,5"].includes(MinigameA+","+MinigameB)) recharge = [0,0,0,0,0,0,0,0,0,0,0]
+				if (Level != 84 && !["1,4","1,5"].includes(MinigameA+","+MinigameB)) sun = Infinity
 			} else if (Level == 14) {
 				if (!saveloaded) {
 					selected = [4,2,11]
@@ -175,7 +388,44 @@
 				Proj[0].y = 550
 				mbut = ee.buttons
 			}
-			
+			let swap = []
+			if (MinigameA == 1 && MinigameB == 5) {
+				if (!saveloaded) {
+					sun = 0
+					recharge = [0,0,0,0,0,0,0,0,0,0,0]
+				}
+				selected = [7,23,10,1,2]
+				canvas.addEventListener("pointerdown",function (e) {
+					if (checkBoard) {
+						const la = Lawn.find(l => l.sel)
+						if (la) la.sel = undefined
+						const off = [Math.floor(e.offsetX*1.2/sizePerc/100),Math.floor(e.offsetY*1.2/sizePerc/100)]
+						const la2 = Lawn.find(l => l.row == off[1] && l.col == off[0])
+						if (la2) la2.sel = off
+					}
+				})
+				canvas.addEventListener("pointermove",function (e) {
+					if (checkBoard) {
+						const off = [Math.floor(e.offsetX*1.2/sizePerc/100),Math.floor(e.offsetY*1.2/sizePerc/100)]
+						const la = Lawn.find(l => l.row == off[1] && l.col == off[0])
+						if (la && !la.sel) {
+							const la2 = Lawn.find(l => l.sel)
+							if (la2 && Math.abs(la.col-la2.col)+Math.abs(la.row-la2.row) == 1) {
+								swap = [la,la2]
+								const tloc = [la.col,la.row]
+								la.col = la2.col
+								la.row = la2.row
+								la2.col = tloc[0]
+								la2.row = tloc[1]
+							}
+						}
+					}
+				})
+				canvas.addEventListener("pointerup",function (e) {
+					const la = Lawn.find(l => l.sel)
+					if (la) la.sel = undefined
+				})
+			}
 			if (MinigameA == 1 && MinigameB == 4) {
 				if (!saveloaded) {
 					Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":550,"type":-1,"ox":0,"vx":0,"vy":0,"size":50,"img":preloadedImg[27],"spec":{"dir":Math.PI/2},"value":0})
@@ -191,8 +441,8 @@
 			
 			canvas.context = canvas.getContext("2d")
 			
-			Shov.style.visibility = (LevsUnlocked.includes(4) && Level != 84) ? "visible" : "hidden"
-			Glov.style.visibility = (LevsUnlocked.includes(84) && Level != 84) ? "visible" : "hidden"
+			Shov.style.visibility = (LevsUnlocked.includes(4) && Level != 84 && (MinigameA != 1 || MinigameB != 5)) ? "visible" : "hidden"
+			Glov.style.visibility = (LevsUnlocked.includes(84) && Level != 84 && (MinigameA != 1 || MinigameB != 5)) ? "visible" : "hidden"
 			
 			ShovImg.src = Level == 74 ? "./images/ui/sell.png" : "./images/ui/shovel.png"
 			
@@ -249,7 +499,7 @@
 						}
 						break;
 				}
-				if (MinigameA != 1 || MinigameB != 4) {
+				if (MinigameA != 1 || (MinigameB != 4 && MinigameB != 5)) {
 					selected.forEach((e,ee) => {
 						recharge[ee] = InitCharge[e]
 					})
@@ -1062,58 +1312,92 @@
 			//SpawnZombie(19,9,1)
 			
 			function Select(plt) {
-				if (MinigameA == 1 && MinigameB == 4 && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
+				if (MinigameA == 1 && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
 					sun -= cost[selected[plt]]
 					recharge[plt] = Recharges[selected[plt]]
-					switch (plt) {
-						case (0):
-							recharge[0] = undefined
-							recharge[1] = 0
-							Proj[0].spec.stream = 2
-							break;
-						case (1):
-							recharge[1] = undefined
-							Proj[0].spec.stream = 3
-							break;
-						case (2):
-							recharge[2] = undefined
-							recharge[3] = undefined
-							Proj[0].spec.upg = 1
-							setTimeout(() => {
-								recharge[2] = 0
+					if (MinigameB == 4) {
+						switch (plt) {
+							case (0):
+								recharge[0] = undefined
+								recharge[1] = 0
+								Proj[0].spec.stream = 2
+								break;
+							case (1):
+								recharge[1] = undefined
+								Proj[0].spec.stream = 3
+								break;
+							case (2):
+								recharge[2] = undefined
+								recharge[3] = undefined
+								Proj[0].spec.upg = 1
+								setTimeout(() => {
+									recharge[2] = 0
+									recharge[3] = 0
+									Proj[0].spec.upg = 0
+								},5000)
+								break;
+							case (3):
+								recharge[2] = undefined
+								recharge[3] = undefined
+								Proj[0].spec.upg = 2
+								setTimeout(() => {
+									recharge[2] = 0
+									recharge[3] = 0
+									Proj[0].spec.upg = 0
+								},5000)
+								break;
+							case (4):
+								Lawn.push({"id":Lid,"projImg":ProjImg[15],"img":plants[15],"spec":JSON.parse(JSON.stringify(special[15])),"plant":15,"row":2,"col":4,"cool":fireRate[15]-fireOff[15],"health": plantHealth[15]})
+								Lawn.at(-1).spec.night = false
+								Lid++
+								break;
+							case (5):
+								Lawn.push({"id":Lid,"projImg":ProjImg[16],"img":plants[16],"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":5,"col":Lawn.length,"cool":fireRate[0]-fireOff[0],"health": plantHealth[0]})
+								let mod = Lawn.at(-1)
+								let modder = special[43]
+								for (const [key,value] of Object.entries(modder.upgradeSet)) {
+									mod[key] = value
+								}
+								for (const [key,value] of Object.entries(modder.upgradeSpec)) {
+									mod.spec[key] = value
+								}
+								mod.spec.count = 1
+								mod.spec.fireRate *= 2
+								Lid++
+								break;
+						}
+					} else if (MinigameB == 5) {
+						recharge[plt] = undefined
+						switch (plt) {
+							case (0):
+								let la
+								while ((la = Lawn.findIndex(l => l.plant == 0)) != -1) {
+									const e = Lawn[la]
+									Lawn[la] = {"id":e.id,"projImg":ProjImg[7],"img":plants[7],"spec":JSON.parse(JSON.stringify(special[7])),"plant":7,"row":e.row,"col":e.col,"cool":fireRate[7]-fireOff[7],"health": plantHealth[7]}
+								}
+								break;
+							case (1):
+								let la2
+								while ((la2 = Lawn.findIndex(l => l.plant == 3)) != -1) {
+									const e = Lawn[la2]
+									Lawn[la2] = {"id":e.id,"projImg":ProjImg[23],"img":plants[23],"spec":JSON.parse(JSON.stringify(special[23])),"plant":23,"row":e.row,"col":e.col,"cool":fireRate[23]-fireOff[23],"health": plantHealth[23]}
+								}
+								break;
+							case (2):
+								let la3
+								while ((la3 = Lawn.findIndex(l => l.plant == 8)) != -1) {
+									const e = Lawn[la3]
+									Lawn[la3] = {"id":e.id,"projImg":ProjImg[10],"img":plants[10],"spec":JSON.parse(JSON.stringify(special[10])),"plant":10,"row":e.row,"col":e.col,"cool":fireRate[10]-fireOff[10],"health": plantHealth[10]}
+								}
+								break;
+							case (3):
+								Lawn = []
 								recharge[3] = 0
-								Proj[0].spec.upg = 0
-							},5000)
-							break;
-						case (3):
-							recharge[2] = undefined
-							recharge[3] = undefined
-							Proj[0].spec.upg = 2
-							setTimeout(() => {
-								recharge[2] = 0
-								recharge[3] = 0
-								Proj[0].spec.upg = 0
-							},5000)
-							break;
-						case (4):
-							Lawn.push({"id":Lid,"projImg":ProjImg[15],"img":plants[15],"spec":JSON.parse(JSON.stringify(special[15])),"plant":15,"row":2,"col":4,"cool":fireRate[15]-fireOff[15],"health": plantHealth[15]})
-							Lawn.at(-1).spec.night = false
-							Lid++
-							break;
-						case (5):
-							Lawn.push({"id":Lid,"projImg":ProjImg[16],"img":plants[16],"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":5,"col":Lawn.length,"cool":fireRate[0]-fireOff[0],"health": plantHealth[0]})
-							let mod = Lawn.at(-1)
-							let modder = special[43]
-							for (const [key,value] of Object.entries(modder.upgradeSet)) {
-								mod[key] = value
-							}
-							for (const [key,value] of Object.entries(modder.upgradeSpec)) {
-								mod.spec[key] = value
-							}
-							mod.spec.count = 1
-							mod.spec.fireRate *= 2
-							Lid++
-							break;
+								break;
+							case (4):
+								Obstacles.splice(0,1)
+								break;
+						}
 					}
 				} else {
 				if (select2 >= 0) {
@@ -1162,9 +1446,117 @@
 				}
 				}
 			}
+			let prevBoard = []
+			let checkBoard = true
+			let combo = 0
+			const checkmatch = detectMatches(8)
 			setInterval(() => {
 				/*recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				sun = Infinity*/
+				if (MinigameA == 1 && MinigameB == 5) {
+				recharge[4] = Obstacles.length > 0 ? 0 : undefined
+				if (checkBoard) {
+					ambushes = []
+					let uncomp = ""
+					for (let j=0;j<5;j++) {
+						for (let i=0;i<8;i++) {
+							if (Obstacles.find(l => l.col == i && l.row == j)) {
+								uncomp += " "
+							} else {
+								let f = Lawn.find(l => l.col == i && l.row == j)
+								if (!f) {
+									const p = [recharge[0] != undefined ? 0 : 7,recharge[1] != undefined ? 3 : 23,recharge[2] != undefined ? 8 : 10,29,31,50][Math.floor(Math.random()*6)]
+									f = {"id":Lid,"projImg":ProjImg[p],"img":plants[p],"spec":JSON.parse(JSON.stringify(special[p])),"plant":p,"row":j,"col":i,"cool":fireRate[p]-fireOff[p],"health": plantHealth[p]}
+									Lawn.push(f)
+									Lid++
+								}
+								uncomp += ["A","B","C","D","E","F"][[recharge[0] != undefined ? 0 : 7,recharge[1] != undefined ? 3 : 23,recharge[2] != undefined ? 8 : 10,29,31,50].indexOf(f.plant)]
+							}
+						}
+					}
+					//alert(JSON.stringify(Lawn.map(l => l.plant)))
+					if (uncomp != prevBoard) {
+						let res = []
+						let mcount = [0,0,0,0]
+						let matches = []
+						checkmatch.forEach((e,ee) => {
+							matches[ee] = []
+							let match
+							while ((match = e.exec(uncomp)) != null) {
+								matches[ee].push(match)
+							}
+							mcount[ee] = matches[ee].length
+						})
+						/*alert(uncomp)
+						alert(checkmatch)*/
+						/*alert(mcount)
+						alert(JSON.stringify(matches))*/
+						Debug.innerHTML = matchesc+JSON.stringify(mcount)+JSON.stringify(matches)
+						matchesc += mcount[0]+mcount[1]
+						if (mcount[0]+mcount[1]+mcount[2]+mcount[3] == 0) Lawn = []
+						if (mcount[0]+mcount[1] == 0) {
+							combo = 0
+						} else {
+							swap = []
+						}
+						let hinds = []
+						let vinds = []
+						matches[0].forEach((e) => {
+							hinds.push(uncomp.indexOf(e))
+						})
+						matches[1].forEach((e) => {
+							vinds.push(uncomp.indexOf(e))
+						})
+						matches[0].forEach((e,ee) => {
+							const ind = hinds[ee]
+							const norme = e.toString()
+							let i = 0
+							while (uncomp[ind+i] == norme[0] && Math.floor((ind+i)/8) == Math.floor((ind)/8)) {
+								Lawn.splice(Lawn.findIndex(l => l.col == (ind+i)%8 && l.row == Math.floor((ind+i)/8)),1)
+								i++
+							}
+							sun += ([25,50,100][i-3]+25*combo || 0)
+							combo++
+						})
+						matches[1].forEach((e,ee) => {
+							const ind = vinds[ee]
+							const norme = e.toString()
+							let i = 0
+							while (uncomp[ind+i] == norme[0]) {
+								Lawn.splice(Lawn.findIndex(l => l.col == (ind+i)%8 && l.row == Math.floor((ind+i)/8)),1)
+								i+=8
+							}
+							sun += ([25,50,100][Math.floor(i/8)-3]+25*combo || 0)
+							combo++
+						})
+						checkBoard = false
+						setTimeout(() => {
+							let doing = true
+							while (doing) {
+								doing = false
+								Lawn.forEach((e) => {
+									if (e.row < 4 && !Lawn.find(l => l.col == e.col && l.row == e.row+1) && !Obstacles.find(l => l.col == e.col && l.row == e.row+1)) {
+										e.row++
+										doing = true
+									}
+								})
+							}
+							if (mcount[0]+mcount[1] == 0 && swap.length > 0) {
+								let la = swap[0]
+								let la2 = swap[1]
+								const tloc = [la.col,la.row]
+								la.col = la2.col
+								la.row = la2.row
+								la2.col = tloc[0]
+								la2.row = tloc[1]
+								swap = []
+							}
+							checkBoard = true
+						},250)
+					}
+					prevBoard = uncomp
+				}
+				}
 				canvas.context.clearRect(0,0,900,600)
 				gCool -= 0.016
 				nTime -= 16
@@ -2173,6 +2565,10 @@ if (e.spec.pen == undefined) {
 							}
 						}
 					}
+					if (e[0] == "Lawn" && MinigameA == 1 && MinigameB == 5) {
+						Obstacles.push({"img":"hole","id":Oid,"col":Lawn[ind].col,"row":Lawn[ind].row,"type":3})
+						Oid++
+					}
 					if (ind != -1) arr.splice(ind,1)
 				})
 				Dead = []
@@ -2762,12 +3158,12 @@ if (e.spec.pen == undefined) {
 				if (WaveHealth == 0 && Level == 14 && WaveTime > 1) {
 					WaveTime = Math.random()
 				}
-				const winmini = MinigameA == 1 && MinigameB ==1 && sun >= 2000
+				const winmini = (MinigameA == 1 && MinigameB ==1 && sun >= 2000) || (MinigameA == 1 && MinigameB ==5 && matchesc >= 75)
 				if (winmini || WaveTime <= 0) {
 					if (winmini || ((Zombies.length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
 						//alert(Wave+","+zSpawns.length)
 						if (winmini || ((Endless == -1 || Endless == 0) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
-						if (winmini || (!vase && Endless == -1 && !["1,1"].includes(MinigameA+","+MinigameB))) {
+						if (winmini || (!vase && Endless == -1 && !["1,1","1,5"].includes(MinigameA+","+MinigameB))) {
 							//Win
 							Wave++
 							WaveTime = 1000
@@ -2821,6 +3217,9 @@ if (e.spec.pen == undefined) {
 									localStorage.removeItem("end"+Endless+e)
 								})
 							}
+							sessionStorage.removeItem("MinigameA")
+							sessionStorage.removeItem("MinigameB")
+							sessionStorage.removeItem("Endless")
 							window.location= "./LevelSelect.html"
 						} else {
 							vase--
