@@ -436,11 +436,7 @@ function detectMatches(grid_size) {
 				selected = [7,23,10,1,2]
 				canvas.addEventListener("pointerdown",function (e) {
 					if (checkBoard) {
-						/*const la = Lawn.find(l => l.sel)
-						if (la) la.sel = undefined*/
 						const off = [Math.round(e.offsetX*1.2/sizePerc/100)-1,Math.round(e.offsetY*1.2/sizePerc/100)-1]
-						/*const la2 = Lawn.find(l => l.row == off[1] && l.col == off[0])
-						if (la2) la2.sel = off*/
 						ooff = off
 						let rot = []
 						let valid = true
@@ -460,27 +456,15 @@ function detectMatches(grid_size) {
 						if (!valid) swap = []
 					}
 				})
-				/*canvas.addEventListener("pointermove",function (e) {
-					if (checkBoard) {
-						const off = [Math.floor(e.offsetX*1.2/sizePerc/100),Math.floor(e.offsetY*1.2/sizePerc/100)]
-						const la = Lawn.find(l => l.row == off[1] && l.col == off[0])
-						if (la && !la.sel) {
-							const la2 = Lawn.find(l => l.sel)
-							if (la2 && Math.abs(la.col-la2.col)+Math.abs(la.row-la2.row) == 1) {
-								swap = [la,la2]
-								const tloc = [la.col,la.row]
-								la.col = la2.col
-								la.row = la2.row
-								la2.col = tloc[0]
-								la2.row = tloc[1]
-							}
-						}
+			}
+			if (MinigameA == 1 && MinigameB == 7) {
+				if (!saveloaded) {
+					Obstacles = []
+					for (let i=0;i<4;i++) {
+						Obstacles.push({"img":"portal","id":Oid,"col":[1.5,8.5,8.5,1.5][i],"row":Math.floor(i*1.5),"type":4,"type2":Math.floor(i/2),"timer":-30})
+						Oid++
 					}
-				})*/
-				/*canvas.addEventListener("pointerup",function (e) {
-					const la = Lawn.find(l => l.sel)
-					if (la) la.sel = undefined
-				})*/
+				}
 			}
 			if (MinigameA == 1 && MinigameB == 4) {
 				if (!saveloaded) {
@@ -1034,6 +1018,11 @@ function detectMatches(grid_size) {
 					if (valid && select2 >= 0) {
 						if (Level != 4) {
 							if (valid != 5) Lawn.push({"id":Lid,"cost":cost[selected[select2]],"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+							if (MinigameA == 1 && MinigameB == 7) {
+								["range","negRange","vRange"].forEach((r,rr) => {
+									if (special[selected[select2]][r] != -1) Lawn.at(-1).spec[r] = 20
+								})
+							}
 							if (Level%20<10&&special[selected[select2]].daySpec != undefined) {
 								for (const [key,value] of Object.entries(special[selected[select2]].daySpec)) {
 									Lawn[Lawn.length-1].spec[key] = value
@@ -1368,7 +1357,7 @@ function detectMatches(grid_size) {
 			//SpawnZombie(19,9,1)
 			
 			function Select(plt) {
-				if (MinigameA == 1 && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
+				if (MinigameA == 1 && [4,5,6].includes(MinigameB) && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
 					sun -= cost[selected[plt]]
 					recharge[plt] = Recharges[selected[plt]]
 					switch (Number(MinigameB)) {
@@ -1511,6 +1500,14 @@ function detectMatches(grid_size) {
 			setInterval(() => {
 				/*recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				sun = Infinity*/
+				Obstacles.filter(o => o.type == 4).forEach((e,ee) => {
+					e.timer += 0.016
+					if (e.timer >= 60) {
+						e.col = Math.floor(Math.random()*6)+1.5
+						e.row = Math.floor(Math.random()*5)
+						e.timer = 0
+					}
+				})
 				if (MinigameA == 1 && (MinigameB == 5 || MinigameB == 6)) {
 				recharge[4] = Obstacles.length > 0 ? 0 : undefined
 				if (checkBoard) {
@@ -1686,7 +1683,7 @@ function detectMatches(grid_size) {
 				Obstacles.forEach((e) => {
 					if (!e.Img || typeof e.Img == "object") {
 						e.Img = new Image()
-						e.Img.src = "./images/ui/"+e.img+".png"
+						e.Img.src = "./images/ui/"+e.img+(e.type2 ?? "")+".png"
 					}
 					//canvas.context.font = (100-(e.time/e.max)*100)+"px Arial"
 					const size = e.time != undefined ? (100-(e.time/e.max)*100) : 100
@@ -1939,6 +1936,16 @@ function detectMatches(grid_size) {
 					if (((isroof && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) || (isside && ((e.y <= 400 && e.x > 400 && e.origincol < 4) || (e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400)))) && !e.spec.pult) Dead.push(["Proj",e.id])
 					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
+					const finds = Obstacles.filter(o => o.type == 4 && o.row == Math.floor(e.y/100))
+					const dists = finds.map(f => Math.abs(f.col*100+50-e.x))
+					const findP = finds[dists.indexOf(Math.min(...dists))]
+					if (findP && (e.x > 50+findP.col*100) != (e.x-e.vx/60*100 > 50+findP.col*100)) {
+						const findP2 = Obstacles.find(o => o.type2 == findP.type2 && o.type == 4 && o.id != findP.id)
+						if (findP2) {
+							e.x = 50+findP2.col*100+e.vx/60*100
+							e.y = findP2.row*100+(e.y-findP.row*100)
+						}
+					}
 					//canvas.context.font = e.size+"px Arial";
 					//canvas.context.strokeText(e.img,e.x-e.size/2,e.y)
 					if (!e.imgsrc) {
@@ -2301,6 +2308,16 @@ if (e.spec.pen == undefined) {
 						if (e.spec.decel != undefined && e.spec.ocel == undefined) e.spec.ocel = e.ovx
 						//if (e.spec.spawn) alert(e.x+","+e.vx+","+e.vx*100/60)
 						e.x += (e.vx ?? 0)*100/60
+						const finds = Obstacles.filter(o => o.type == 4 && o.row == Math.floor(e.y/100))
+						const dists = finds.map(f => Math.abs(f.col*100+50-e.x))
+						const findP = finds[dists.indexOf(Math.min(...dists))]
+						if (findP && (e.x > 50+findP.col*100) != (e.x-e.vx/60*100 > 50+findP.col*100)) {
+							const findP2 = Obstacles.find(o => o.type2 == findP.type2 && o.type == 4 && o.id != findP.id)
+							if (findP2) {
+								e.x = 50+findP2.col*100+e.vx/60*100
+								e.y = findP2.row*100+(e.y-findP.row*100)
+							}
+						}
 						if ([14,41,42,44,45].includes(e.type) && e.spec.action && isbeach && e.x < beachA[Level%10]*100) {
 							e.spec.action = false
 							e.spec.jump = false
