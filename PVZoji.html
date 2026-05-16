@@ -478,6 +478,17 @@ function detectMatches(grid_size) {
 					}
 				}
 			}
+			if (MinigameA == 1 && MinigameB == 8) {
+				if (!saveloaded) {
+					Obstacles = []
+					for (let j=4;j<10;j++) {
+						for (let i=0;i<4;i++) {
+							Obstacles.push({"img":"ice trail","id":Oid,"col":j,"row":[0,1,4,5][i],"type":1,"time":0,"max":2700,"last":0})
+							Oid++
+						}
+					}
+				}
+			}
 			if (MinigameA == 1 && MinigameB == 4) {
 				if (!saveloaded) {
 					Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":550,"type":-1,"ox":0,"vx":0,"vy":0,"size":50,"img":preloadedImg[27],"spec":{"dir":Math.PI/2},"value":0})
@@ -1315,7 +1326,7 @@ function detectMatches(grid_size) {
 				while (Premain > 0) {
 					WaveDist = []
 					Points.forEach((e,ee) => {
-						if (e<=Premain && (Endless+1 ? ZombAllowed : zAllowed).includes(ee)) {
+						if ((e<=Premain || (MinigameA == 1 && MinigameB == 8)) && (Endless+1 ? ZombAllowed : zAllowed).includes(ee)) {
 							for (let i=0;i<Weight[ee];i++) {
 								WaveDist.push(ee)
 							}
@@ -1710,7 +1721,7 @@ function detectMatches(grid_size) {
 							}
 						}
 					}
-					if (e.time != undefined) {
+					if (e.time != undefined && ((MinigameA != 1 || MinigameB != 8 || e.type != 1) || e.time == e.max)) {
 						e.time++
 						if (e.time == e.max) {
 							Dead.push(["Obstacles",e.id])
