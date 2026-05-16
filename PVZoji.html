@@ -1721,9 +1721,10 @@ function detectMatches(grid_size) {
 							}
 						}
 					}
-					if (e.time != undefined && ((MinigameA != 1 || MinigameB != 8 || e.type != 1) || e.time == e.max)) {
+					alert(e.time+","+e.max)
+					if (e.time != undefined && ((MinigameA != 1 || MinigameB != 8 || e.type != 1) || e.time >= e.max)) {
 						e.time++
-						if (e.time == e.max) {
+						if (e.time >= e.max) {
 							Dead.push(["Obstacles",e.id])
 						}
 					}
@@ -2036,7 +2037,7 @@ function detectMatches(grid_size) {
 									if (ee.type == 1 && (!e.melt.includes(ee.id) || e.value == 1800) && Math.abs(ee.col-Math.floor(e.x/100)) <= (e.spec.CollBox ?? CollBox[e.type])[0]/2 && ee.row == Math.floor(e.y/100)) {
 										e.melt.push(ee.id)
 										ee.time += e.value
-										ee.time = Math.min(ee.time,ee.max-1)
+										if (MinigameA != 1 || MinigameB != 8) ee.time = Math.min(ee.time,ee.max-1)
 									}
 								})
 							}
@@ -2641,8 +2642,13 @@ if (e.spec.pen == undefined) {
 					if (e[0] == "Zombies" && arr[ind] != undefined) {
 						switch(arr[ind].type) {
 							case (12):
+								if (zombInWave.includes(arr[ind].id)) WaveHealthO -= ZombHealth[12]
 								for (let i=0;i<4;i++) {
 									SpawnZombie(13,Math.floor(arr[ind].x/100),Math.floor(arr[ind].y/100))
+									if (zombInWave.includes(arr[ind].id)) {
+										WaveHealth += Zombies.at(-1).health
+										WaveHealthO += Zombies.at(-1).health
+									}
 									Zombies[Zombies.length-1].x += 25*i
 								}
 								break;
