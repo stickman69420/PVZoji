@@ -355,6 +355,18 @@ function detectMatches(grid_size) {
 				cBelt = minicbelt[MinigameA+","+MinigameB]
 			}
 			
+			if (MinigameA == 1 && MinigameB == 2) {
+				lim = 25
+			} else {
+				if (!saveloaded && cBelt) {
+					lim = Array(cBelt.plants.length).fill(undefined)
+					const buh /*ikyky*/ = (cBelt.max ?? [])
+					buh.forEach((e,ee) => {
+						lim[ee] = e
+					})
+				}
+			}
+			
 			if (cBelt) {
 				if (!saveloaded) {
 					selected = []
@@ -946,7 +958,7 @@ function detectMatches(grid_size) {
 					} else {
 					Lawn.forEach((ee,eee) => {
 						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder && select2 != -1) {
-							if (select2 >= 0 && special[selected[select2]].out && !ee.spec.out) {
+							if (valid && select2 >= 0 && special[selected[select2]].out && !ee.spec.out) {
 								other = ee.id
 								valid = 4
 							}else{
@@ -1546,7 +1558,7 @@ function detectMatches(grid_size) {
 						alert(checkmatch)*/
 						/*alert(mcount)
 						alert(JSON.stringify(matches))*/
-						Debug.innerHTML = matchesc+JSON.stringify(mcount)+JSON.stringify(matches)
+						//Debug.innerHTML = matchesc+JSON.stringify(mcount)+JSON.stringify(matches)
 						matchesc += mcount[0]+mcount[1]
 						if (mcount[0]+mcount[1]+mcount[2]+mcount[3] == 0) Lawn = []
 						if (mcount[0]+mcount[1] == 0) {
@@ -1630,6 +1642,7 @@ function detectMatches(grid_size) {
 					prevBoard = uncomp
 				}
 				}
+				//Debug.innerHTML = WaveHealth+"/"+WaveHealthO
 				canvas.context.clearRect(0,0,900,600)
 				gCool -= 0.016
 				nTime -= 16
@@ -1852,7 +1865,7 @@ function detectMatches(grid_size) {
 									e.health -= e.spec.selfD ?? 0
 									if (e.plant == 6) {
 										if (ZombHealth[tar.type] < 1800) {
-											if (zombInWave.includes(tar.id)) WaveHealth -= tar.health
+											if (zombInWave.includes(tar.id)) WaveHealth -= Math.max(0,tar.health)
 											tar.health = 0
 											e.img = "chomper wait"
 										} else {
@@ -2193,7 +2206,7 @@ function detectMatches(grid_size) {
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
-															WaveHealth -= Math.min(ee.health,e.value)
+															WaveHealth -= Math.max(0,Math.min(ee.health,e.value))
 														}
 														if (e.spec.incend) {
 															ee.spec.snow = 0
@@ -2215,7 +2228,7 @@ function detectMatches(grid_size) {
 														ee.x = 	Math.min((e.spec.knock ?? 0)*100+ee.x,900)
 														ee.death = e
 														if (Math.abs(31.5-ee.type) == 0.5 && (e.spec.incend || e.type == 38 || e.imgsrc.includes("elec"))) {
-															if (zombInWave.includes(ee.id)) WaveHealth -= ee.health
+															if (zombInWave.includes(ee.id)) WaveHealth -= Math.max(0,ee.health)
 															ee.health = 0
 															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[2],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[300,300]},"value":1800})
 															Pid++
@@ -2301,7 +2314,7 @@ if (e.spec.pen == undefined) {
 				//Debug.innerHTML = ""
 				Zombies.forEach((e,ee) => {
 					if (e.x > 900 && e.type == 17) {
-						WaveHealth -= e.health
+						WaveHealth -= Math.max(0,e.health)
 						e.health = 0
 					}
 					if (e.health > 0) {
@@ -2333,7 +2346,7 @@ if (e.spec.pen == undefined) {
 								}
 							})
 							if (!vid) {
-								WaveHealth -= e.health
+								WaveHealth -= Math.max(0,e.health)
 								e.health = 0
 							}
 						}
@@ -2387,7 +2400,7 @@ if (e.spec.pen == undefined) {
 											Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
 												Pid++
 											}
-											if (zombInWave.includes(eee.id)) WaveHealth -= eee.health
+											if (zombInWave.includes(eee.id)) WaveHealth -= Math.max(0,eee.health)
 											eee.health = 0
 											Dead.push(["Zombies",eee.id])
 										}
@@ -2434,7 +2447,7 @@ if (e.spec.pen == undefined) {
 							canvas.context.fillStyle = "#000000FF"
 						}
 						if (e.spec.poison) {
-							WaveHealth -= Math.min(e.spec.poison,e.health)
+							WaveHealth -= Math.max(0,Math.min(e.spec.poison,e.health))
 							e.health -= e.spec.poison
 							canvas.context.fillStyle = "#5500AA"
 							canvas.context.globalAlpha = e.spec.poison
@@ -2850,7 +2863,7 @@ if (e.spec.pen == undefined) {
 											})
 											Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
 											Pid++
-											WaveHealth -= e.health
+											WaveHealth -= Math.max(0,e.health)
 											e.health = 0
 										}
 										break;
@@ -2978,7 +2991,7 @@ if (e.spec.pen == undefined) {
 									if (e.spec.crush != undefined) {
 										e.stun = e.spec.crush/1000
 										if (e.spec.vehicle && ee.spec.popTire) {
-											if (zombInWave.includes(e.id)) WaveHealth -= e.health
+											if (zombInWave.includes(e.id)) WaveHealth -= Math.max(0,e.health)
 											e.health = 0
 											e.death = ee
 											if (ee.spec.vehicle == undefined) ee.health = 0
@@ -2997,7 +3010,7 @@ if (e.spec.pen == undefined) {
 									} else if ((ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (!ee.spec.in != undefined && Lawn.find(l => l.id == ee.spec.in) != undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 									if (e.spec.steal) {
 										if (e.stun <= 0) {
-											if (zombInWave.includes(e.id)) WaveHealth -= e.health
+											if (zombInWave.includes(e.id)) WaveHealth -= Math.max(0,e.health)
 											ee.health = 0
 											e.health = 0
 										}
@@ -3006,7 +3019,7 @@ if (e.spec.pen == undefined) {
 									if (ee.health <= 0) {
 										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
-												WaveHealth -= e.health
+												WaveHealth -= Math.max(0,e.health)
 											}
 											if ((Level == 14 || Level == 84) && Math.random() < 0.15) {
 												Proj.push({"id":Pid,"x":e.x,"y":e.y,"type":-1,"vx":0,"vy":0,"size":150,"img":preloadedImg[4],"spec":{"sun":true},"value":75})
@@ -3037,7 +3050,7 @@ if (e.spec.pen == undefined) {
 															e.spec.ice = Math.max(e.spec.ice ?? 0,500)
 															break;
 														case("absorb shroom fire"):
-															if (zombInWave.includes(e.id)) WaveHealth -= Math.min(e.health,10)
+															if (zombInWave.includes(e.id)) WaveHealth -= Math.max(0,Math.min(e.health,10))
 															e.health -= 10
 															break;
 														case("absorb shroom elec"):
@@ -3394,20 +3407,26 @@ if (e.spec.pen == undefined) {
 			if (cBelt) setTimeout(convey,MinigameA == 1 && MinigameB == 2 ? 0 : 4000)
 			
 			function convey() {
-				if (selected.length < SeedC && cBelt.length != 0 && (lim > 0 || MinigameA != 1 || MinigameB != 2)) {
+				if (selected.length < SeedC && cBelt.plants.length != 0 && (lim > 0 || MinigameA != 1 || MinigameB != 2)) {
 					let pool = []
-					cBelt.forEach((e) => {
-						if (selected.filter(ee => ee == e).length >= 4) {
-							pool.push(...Array(36).fill(e))
-						} else if (lastPlant == e) {
-							pool.push(...Array(500).fill(e))
-						} else {
-							pool.push(...Array(1000).fill(e))
+					cBelt.plants.forEach((e,ee) => {
+						if ((MinigameA == 1 && MinigameB == 2) || lim[ee] > 0 || lim[ee] == undefined) {
+							if (selected.filter(ee => ee == e).length >= 4) {
+								pool.push(...Array(5).fill([e,ee]))
+							} else if (lastPlant == e) {
+								pool.push(...Array(Math.floor(50*(cBelt.chances[ee]/100))).fill([e,ee]))
+							} else {
+								pool.push(...Array(Math.floor(100*(cBelt.chances[ee]/100))).fill([e,ee]))
+							}
 						}
 					})
 					//Debug.innerHTML = pool.filter(e => e==2).length+","+pool.filter(e => e==3).length
-					lastPlant = pool[Math.floor(Math.random()*pool.length)]
-					if (lastPlant != 3 && lastPlant != 35) lim--
+					const sellld = pool[Math.floor(Math.random()*pool.length)]
+					const ind = sellld[1]
+					lastPlant = sellld[0]
+					if (MinigameA == 1 && MinigameB == 2) {
+						if (ind != 1 && ind != 5) lim--
+					} else if (lim[ind] != undefined) lim[ind]--
 					selected.push(lastPlant)
 					seeds.innerHTML = ""
 					reloadSeed()
