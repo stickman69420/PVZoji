@@ -2762,7 +2762,7 @@ if (e.spec.pen == undefined) {
 					canvas.context.fillText("Bombs: "+(lim+selected.filter(s => special[s].selfD).length),600,550)
 				}
 				canvas.context.setTransform(1,0,0,1,0,0)
-				if (tiptime < 3000*tuttips[leveltip].length) {
+				if (tuttips[leveltip] && tiptime < 3000*tuttips[leveltip].length) {
 					tiptime += 16
 					canvas.context.font = "20px Arial"
 					const text = tuttips[leveltip][Math.floor(tiptime/3000)]
@@ -3406,7 +3406,7 @@ if (e.spec.pen == undefined) {
 						} else if (zSpawn) {
 							WaveTime = (fSpawn[MinigameA] ?? [])[MinigameB] ? 3 : 27
 							//alert(JSON.stringify(zSpawns[Wave]))
-							SpawnWave(Endless+1 ? prevWave : zSpawns[Wave].points,Endless+1 ? ((prevWave+2)%18==0 ? bigWave : []) : zSpawns[Wave].guaranteed,Endless+1 ? endAmbushes : (zSpawns[Wave].ambush ?? []))
+							SpawnWave(Endless+1 ? prevWave : zSpawns[Math.min(Wave,zSpawns.length-1)].points,Endless+1 ? ((prevWave+2)%18==0 ? bigWave : []) : zSpawns[Math.min(Wave,zSpawns.length-1)].guaranteed,Endless+1 ? endAmbushes : (zSpawns[Math.min(Wave,zSpawns.length-1)].ambush ?? []))
 							prevWave += 2
 							Wave++
 						}
