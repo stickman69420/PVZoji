@@ -1165,7 +1165,13 @@ function detectMatches(grid_size) {
 						vlidrows.push(2,3)
 					}
 				} else {
-					vlidrows = [...Array(rows).keys()]
+					if (z == 12) {
+						for (let i=0;i<rows;i++) {
+							if (Obstacles.find(o => o.col == 9 && o.row == i)) vlidrows.push(i)
+						}
+					} else {
+						vlidrows = [...Array(rows).keys()]
+					}
 				}
 				vlidrows.forEach((i) => {
 					if (Mowers[i] || MowerTrigger[i]+3 < Wave) {
@@ -1323,10 +1329,11 @@ function detectMatches(grid_size) {
 					}
 				}
 				//alert(JSON.stringify(ZombsAllowed)+","+JSON.stringify(ZombsAllowed[Level])+","+Level)
+				const minpoints = Math.min(...Points.filter((p,pp) => (Endless+1 ? ZombAllowed : zAllowed).includes(pp)))
 				while (Premain > 0) {
 					WaveDist = []
 					Points.forEach((e,ee) => {
-						if ((e<=Premain || (MinigameA == 1 && MinigameB == 8)) && (Endless+1 ? ZombAllowed : zAllowed).includes(ee)) {
+						if ((e<=Premain+minpoints-1) && (Endless+1 ? ZombAllowed : zAllowed).includes(ee)) {
 							for (let i=0;i<Weight[ee];i++) {
 								WaveDist.push(ee)
 							}
@@ -1721,7 +1728,6 @@ function detectMatches(grid_size) {
 							}
 						}
 					}
-					alert(e.time+","+e.max)
 					if (e.time != undefined && ((MinigameA != 1 || MinigameB != 8 || e.type != 1) || e.time >= e.max)) {
 						e.time++
 						if (e.time >= e.max) {
@@ -2648,6 +2654,7 @@ if (e.spec.pen == undefined) {
 									if (zombInWave.includes(arr[ind].id)) {
 										WaveHealth += Zombies.at(-1).health
 										WaveHealthO += Zombies.at(-1).health
+										zombInWave.push(Zombies.at(-1).id)
 									}
 									Zombies[Zombies.length-1].x += 25*i
 								}
@@ -3283,7 +3290,7 @@ if (e.spec.pen == undefined) {
 				}
 				const winmini = (MinigameA == 1 && MinigameB ==1 && sun >= 2000) || (MinigameA == 1 && (MinigameB ==5 || MinigameB ==6) && matchesc >= 75)
 				if (winmini || WaveTime <= 0) {
-					if (winmini || ((Zombies.length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
+					if (winmini || ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
 						//alert(Wave+","+zSpawns.length)
 						if (winmini || ((Endless == -1 || Endless == 0) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
 						if (winmini || (!vase && Endless == -1 && !["1,1","1,5","1,6"].includes(MinigameA+","+MinigameB))) {
