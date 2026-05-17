@@ -440,6 +440,7 @@ function detectMatches(grid_size) {
 					if (la) la.sel = undefined
 				})
 			}
+			const znzq = MinigameA == 1 && MinigameB == 9
 			let ooff
 			if (MinigameA == 1 && MinigameB == 6) {
 				if (!saveloaded) {
@@ -1187,7 +1188,7 @@ function detectMatches(grid_size) {
 					Zombies[Zombies.length-1].x = Math.floor(Math.random()*5)*100+300
 					Zombies[Zombies.length-1].y = Math.floor(Math.random()*5)*100
 				}
-				if (type == 15) {
+				if (type == 15 || type == 51) {
 					Zombies[Zombies.length-1].spec.threshold = Math.random() < 0.05 ? (4.4+Math.random()*3.14) : (13.22+Math.random()*9.46)
 				}
 				if (type == 19) {
@@ -2773,7 +2774,21 @@ if (e.spec.pen == undefined) {
 					canvas.context.fillStyle = "#FFFFFF"
 					canvas.context.fillText(text,0,600-fs/2)
 				}
-			},16)
+				nextSun += 16
+				//((MinigameA == 1 && MinigameB == 4) ? 5000 : 
+				const sunind = (!cBelt && Level%20 < 10) ? 5000 : Infinity
+				if (nextSun > prevSun + sunind) {
+					prevSun += sunind
+					if (!cBelt && Level%20 < 10) {
+						Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":preloadedImg[4],"spec":{"sun":true,"sky":true,"lifespan":Math.round(Math.random()*500),"Threshold":-900},"value":25})
+						Pid++
+					}
+					if (MinigameA == 1 && MinigameB == 4) {
+						Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":preloadedImg[4],"spec":{"sun":true,"sky":true},"value":25})
+						Pid++
+					}
+				}
+			},16/(znzq ? 2 : 1))
 			
 			setInterval(() => {
 				Zombies.filter(e => e.spec.links != undefined).forEach((e) => {
@@ -2836,6 +2851,10 @@ if (e.spec.pen == undefined) {
 									}
 								})
 								if (e.type == 26) e.spec.action = !e.spec.action
+								if (e.type == 50) {
+									if (zombInWave.includes(e.id)) WaveHealth -= Math.max(0,e.health)
+									e.health = 0
+								}
 								e.crushing = undefined
 							}
 						}
@@ -2888,13 +2907,16 @@ if (e.spec.pen == undefined) {
 					if (e.spec.timer != undefined) {
 							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
 							if (e.spec.timer >= e.spec.threshold) {
+								let exp = l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5
 								switch (e.type) {
+									case (51):
+										exp = l => l.row == r
 									case (15):
 										e.ovx = 0
 										if (e.spec.timer >= e.spec.threshold+1.1) {
 											const c = Math.floor(e.x/100)
 											const r = Math.floor(e.y/100)
-											Lawn.filter(l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5).forEach((eee) => {
+											Lawn.filter(exp).forEach((eee) => {
 												eee.health -= 1800
 											})
 											Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
@@ -3438,7 +3460,7 @@ if (e.spec.pen == undefined) {
 						}*/
 					})
 				})
-			},100)
+			},100/(znzq ? 2 : 1))
 			
 			if (cBelt) setTimeout(convey,MinigameA == 1 && MinigameB == 2 ? 0 : 4000)
 			
@@ -3469,15 +3491,6 @@ if (e.spec.pen == undefined) {
 				}
 				setTimeout(convey,MinigameA == 1 && MinigameB == 2 ? 0 : (4000+(selected.length > 2 ? 500 : 0))) //Idk man I searched for an entire day and didn't find an answer. I tried measuring it manually and it was very inconsistent because of human error so I'm guessing half a second which is so inconsequential that I don't even know why I'm adding it
 			}
-			
-			if (!cBelt && Level%20 < 10) setInterval(() => {
-				Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":preloadedImg[4],"spec":{"sun":true,"sky":true,"lifespan":Math.round(Math.random()*500),"Threshold":-900},"value":25})
-				Pid++
-			},10000)
-			if (MinigameA == 1 && MinigameB == 4) setInterval(() => {
-				Proj.push({"id":Pid,"x":Math.random()*800,"y":0,"type":1,"vx":0,"vy":1,"size":75,"img":preloadedImg[4],"spec":{"sun":true,"sky":true},"value":25})
-				Pid++
-			},5000)
 			}
 		</script>
 	</body>

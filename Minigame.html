@@ -82,7 +82,7 @@
 						}
 					}
 				} else {
-					sessionStorage.setItem("Level",[[4,14,24,34,44,54],[8,8,9,4,9,19,19,19,28],[59]][e][r])
+					sessionStorage.setItem("Level",[[4,14,24,34,44,54],[8,8,9,4,9,19,19,19,28,27],[59]][e][r])
 					sessionStorage.setItem("MinigameA",e)
 					sessionStorage.setItem("MinigameB",r)
 					window.location = "./PVZoji.html"
@@ -126,13 +126,13 @@
 					ee.style.width = 98*sizePerc+"px"
 				})
 			})
-			const minig = [["plants/wall nut","ui/mallet","ui/littlebig","ui/vase","ui/too hd bungee","plants/mortar shroom"],["zombies/peashooter","ui/gamba","plants/cherry bomb","plants/tall nut","ui/heavy weapon","ui/diamond","ui/beghouled twist","ui/portal1","zombies/bobsled team"],["zombies/zombot"]]
+			const minig = [["plants/wall nut","ui/mallet","ui/littlebig","ui/vase","ui/too hd bungee","plants/mortar shroom"],["zombies/peashooter","ui/gamba","plants/cherry bomb","plants/tall nut","ui/heavy weapon","ui/diamond","ui/beghouled twist","ui/portal1","zombies/bobsled team","ui/znzq"],["zombies/zombot"]]
 			const head = ["Hard versions","Original minigames","Boss fights"]
 			let bigi = 0
 			//let heado = 0
 			minig.forEach((e,ee) => {
 				const heado = levels.offsetHeight
-				levels.innerHTML += "<div id='cont"+ee+"' class='head' style='position:relative;height:"+(175+150*Math.floor(e.length/10))+"px' data-height='"+(175+150*Math.floor(e.length/10))+"'><e style='position:absolute;'>"+head[ee]+"</e></div>"
+				levels.innerHTML += "<div id='cont"+ee+"' class='head' style='position:relative;height:"+(175+150*Math.floor((e.length-1)/10))+"px' data-height='"+(175+150*Math.floor((e.length-1)/10))+"'><e style='position:absolute;'>"+head[ee]+"</e></div>"
 				e.forEach((r,rr) => {
 					document.getElementById("cont"+ee).innerHTML += "<button class='seed' onclick='Enter("+ee+","+rr+")' style='left:"+108*(rr%10)+"px;top:"+(25+150*Math.floor(rr/10))+"px;' data-top='"+(25+150*Math.floor(rr/10))+"' data-left='"+108*(rr%10)+"'><img class='disp' src='./images/"+r+".png'></button>"
 					bigi++
