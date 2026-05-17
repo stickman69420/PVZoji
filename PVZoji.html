@@ -129,6 +129,7 @@
 			}
 			const types = ["A","B","C","D","E","F"]
 			const rotpatt = [0,1,3,2]
+			const leveltip = MinigameA+1 ? MinigameA+","+MinigameB : (Math.floor(Level/10)+1)+"-"+(Level%10+1)
 /**
  * UTILITIES
  * =========
@@ -2761,6 +2762,17 @@ if (e.spec.pen == undefined) {
 					canvas.context.fillText("Bombs: "+(lim+selected.filter(s => special[s].selfD).length),600,550)
 				}
 				canvas.context.setTransform(1,0,0,1,0,0)
+				if (tiptime < 3000*tuttips[leveltip].length) {
+					tiptime += 16
+					canvas.context.font = "20px Arial"
+					const text = tuttips[leveltip][Math.floor(tiptime/3000)]
+					const fs = 20*(900/canvas.context.measureText(text).width)
+					canvas.context.font = fs+"px Arial"
+					canvas.context.fillStyle = "#000000AA"
+					canvas.context.fillRect(0,600-fs,900,fs)
+					canvas.context.fillStyle = "#FFFFFF"
+					canvas.context.fillText(text,0,600-fs/2)
+				}
 			},16)
 			
 			setInterval(() => {
