@@ -9,4 +9,4 @@ night roof and side yard (both) too and almost beach day
 All upgrade plants (from the original adventure) are now here AND you can buy them
 There will be upgrade plants for the new plants of course but those will be added after beach and winter
 
-Hard versions of some adventure mode minigames have been added, as well as all the day + night minigames I want to add, and bobsled bonanza
+Hard versions of some adventure mode minigames have been added, as well as all the day, night, and pool minigames I want to except zombotany 2
