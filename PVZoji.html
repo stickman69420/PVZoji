@@ -2432,7 +2432,11 @@ if (e.spec.pen == undefined) {
 								if (lose) {
 									lose = false
 									alert("🧟‍♂️\nYou lost")
-									if (Endless == -1) {
+									if (MinigameA+1) {
+										savedVars.forEach((e) => {
+											localStorage.removeItem("minigame"+MinigameA+","+MinigameB+e)
+										})
+									} else if (Endless == -1) {
 										savedVars.forEach((e) => {
 											localStorage.removeItem(e)
 										})
@@ -2446,12 +2450,14 @@ if (e.spec.pen == undefined) {
 							}
 						}
 						//canvas.context.strokeText(Zombs[e.type].base,e.x,e.y+70)
-						canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y-(75*((e.spec.size ?? 1)-1)/(e.small ? 2 : 1))+25,(75*(e.spec.size ?? 1)/(e.small ? 2 : 1))/(Level == 24 ? 2 : 1),(75*(e.spec.size ?? 1)/(e.small ? 2 : 1))/(Level == 24 ? 2 : 1))
-						if (HpBars > 1) {
-							canvas.context.fillStyle = "#FF0000"
-							canvas.context.fillRect(e.x,e.y,100/(e.small ? 2 : 1),10)
-							canvas.context.fillStyle = "#FFFF00"
-							canvas.context.fillRect(e.x,e.y,100*(e.health/(ZombHealth[e.type]/(e.small ? 2 : 1)))/(e.small ? 2 : 1),10)
+						if (MinigameA != 1 || MinigameB != 11) canvas.context.drawImage(Zombs[e.type].Img,e.x,e.y-(75*((e.spec.size ?? 1)-1)/(e.small ? 2 : 1))+25,(75*(e.spec.size ?? 1)/(e.small ? 2 : 1))/(Level == 24 ? 2 : 1),(75*(e.spec.size ?? 1)/(e.small ? 2 : 1))/(Level == 24 ? 2 : 1))
+						if (MinigameA != 1 || MinigameB != 11) {
+							if (HpBars > 1) {
+								canvas.context.fillStyle = "#FF0000"
+								canvas.context.fillRect(e.x,e.y,100/(e.small ? 2 : 1),10)
+								canvas.context.fillStyle = "#FFFF00"
+								canvas.context.fillRect(e.x,e.y,100*(e.health/(ZombHealth[e.type]/(e.small ? 2 : 1)))/(e.small ? 2 : 1),10)
+							}
 						}
 						/*canvas.context.strokeStyle = "#000000"
 						canvas.context.font = "20px Arial"
@@ -2482,45 +2488,47 @@ if (e.spec.pen == undefined) {
 							canvas.context.drawImage(preloadedImg[14],e.x,e.y+(e.small ? (-25) : 25),75/(e.small ? 2 : 1),75/(e.small ? 2 : 1))
 						}
 						//canvas.context.fillRect(e.x-5,e.y+65,10,10)
-						let going = true
-						Zombs[e.type].stages.forEach((eee) => {
-							if (e.health > eee.health && e.spec.action == eee.action) {
-								if (going) {
-									//Debug.innerHTML += e.health+","+eee.health+"-"
-									//head
-									canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
-									canvas.context.rotate(eee.headRot*Math.PI/180)
-									if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
-									canvas.context.rotate(-eee.headRot*Math.PI/180)
-									canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
-									//canvas.context.drawImage(img2,0,0,75,75)
+						if (MinigameA != 1 || MinigameB != 11) {
+							let going = true
+							Zombs[e.type].stages.forEach((eee) => {
+								if (e.health > eee.health && e.spec.action == eee.action) {
+									if (going) {
+										//Debug.innerHTML += e.health+","+eee.health+"-"
+										//head
+										canvas.context.translate(e.x+25+(eee.headPivot ?? [0,0])[0],e.y+30+(eee.headPivot ?? [0,0])[1])
+										canvas.context.rotate(eee.headRot*Math.PI/180)
+										if (eee.head) canvas.context.drawImage(eee.headImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
+										canvas.context.rotate(-eee.headRot*Math.PI/180)
+										canvas.context.translate(-e.x-25-(eee.headPivot ?? [0,0])[0],-e.y-30-(eee.headPivot ?? [0,0])[1])
+										//canvas.context.drawImage(img2,0,0,75,75)
 									
-									//arm
-									canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])
-									canvas.context.rotate(eee.armRot*Math.PI/180)
-									//canvas.context.strokeText(eee.arm ?? "",-25,0)
-									if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
-									canvas.context.rotate(-eee.armRot*Math.PI/180)
-									canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
+										//arm
+										canvas.context.translate(e.x+60+(eee.armPivot ?? [0,0])[0],e.y+65+(eee.armPivot ?? [0,0])[1])	
+										canvas.context.rotate(eee.armRot*Math.PI/180)
+										//canvas.context.strokeText(eee.arm ?? "",-25,0)
+										if (eee.arm) canvas.context.drawImage(eee.armImg,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
+										canvas.context.rotate(-eee.armRot*Math.PI/180)
+										canvas.context.translate(-e.x-60-(eee.armPivot ?? [0,0])[0],-e.y-65-(eee.armPivot ?? [0,0])[1])
 									
-									if (eee.run) eee.run(e)
-									//alert(e.ovx+","+JSON.stringify(e.spec))
+										if (eee.run) eee.run(e)
+										//alert(e.ovx+","+JSON.stringify(e.spec))
 									
-									going = false
+										going = false
+									}
+								}
+							})
+							if (Zombs[e.type].shields != undefined) {
+							for (const [key, value] of Object.entries(Zombs[e.type].shields)) {
+								if (e.spec.shields[key] > 0) {
+										canvas.context.translate(e.x+0+(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
+										canvas.context.rotate(value.Rot*Math.PI/180)
+										canvas.context.drawImage(value.Img,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
+									canvas.context.rotate(-value.Rot*Math.PI/180)
+									canvas.context.translate(-e.x-0-(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
 								}
 							}
-						})
-						if (Zombs[e.type].shields != undefined) {
-						for (const [key, value] of Object.entries(Zombs[e.type].shields)) {
-							if (e.spec.shields[key] > 0) {
-								canvas.context.translate(e.x+0+(value.Pivot ?? [0,0])[0],e.y+75+(value.Pivot ?? [0,0])[1])
-								canvas.context.rotate(value.Rot*Math.PI/180)
-								canvas.context.drawImage(value.Img,-25,0,75/(Level == 24 ? 2 : 1),75/(Level == 24 ? 2 : 1))
-								canvas.context.rotate(-value.Rot*Math.PI/180)
-								canvas.context.translate(-e.x-0-(value.Pivot ?? [0,0])[0],-e.y-75-(value.Pivot ?? [0,0])[1])
 							}
-						}
-						}
+							}
 					} else {
 						if (!Dead.includes(["Zombies",e.id])) {
 							if ((Level == 14 || Level == 84) && Math.random() < 0.15) {
@@ -2736,7 +2744,7 @@ if (e.spec.pen == undefined) {
 				//Debug.innerHTML = ""
 				//Debug.innerHTML = JSON.stringify(Zombies)+","+WaveHealth
 				//if (Zombies.length > 0) alert(JSON.stringify(Zombies))
-				if (Math.abs(34.5-Level) <= 4.5) {
+				if (Math.abs(34.5-Level) <= 4.5 && (MinigameA != 1 || MinigameB != 11)) {
 					for (let i=0;i<6;i++) {
 						for (let j=8;j>8-fogA[Level%10];j--) {
 							let s = true
@@ -2776,7 +2784,7 @@ if (e.spec.pen == undefined) {
 				}
 				nextSun += 16
 				//((MinigameA == 1 && MinigameB == 4) ? 5000 : 
-				const sunind = (!cBelt && Level%20 < 10) ? 5000 : Infinity
+				const sunind = (!cBelt && Level%20 < 10) ? 6000 : Infinity
 				if (nextSun > prevSun + sunind) {
 					prevSun += sunind
 					if (!cBelt && Level%20 < 10) {
@@ -2907,6 +2915,8 @@ if (e.spec.pen == undefined) {
 					if (e.spec.timer != undefined) {
 							//strokeText(e.spec.timer+","+e.spec.threshold,e.x,e.y)
 							if (e.spec.timer >= e.spec.threshold) {
+								let c
+								let r
 								let exp = l => Math.abs(l.col-c) <= 1.5 && Math.abs(l.row-r) <= 1.5
 								switch (e.type) {
 									case (51):
@@ -2914,12 +2924,12 @@ if (e.spec.pen == undefined) {
 									case (15):
 										e.ovx = 0
 										if (e.spec.timer >= e.spec.threshold+1.1) {
-											const c = Math.floor(e.x/100)
-											const r = Math.floor(e.y/100)
+											c = Math.floor(e.x/100)
+											r = Math.floor(e.y/100)
 											Lawn.filter(exp).forEach((eee) => {
 												eee.health -= 1800
 											})
-											Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":300,"img":preloadedImg[13],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
+											Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+35.5,"y":e.y+35.5,"type":-1,"vx":0,"vy":0,"size":e.type == 15 ? 300 : 100,"img":preloadedImg[e.type == 15 ? 13 : 33],"spec":{"CollBox":[0,0],"lifespan":0,"Threshold":-30},"value":0})
 											Pid++
 											WaveHealth -= Math.max(0,e.health)
 											e.health = 0
@@ -3010,9 +3020,9 @@ if (e.spec.pen == undefined) {
 					} else if (e.spec.shoot) {
 							e.spec.cool = e.spec.shootTime
 							e.spec.ammo--
-							for (let i=0;i<e.spec.count ?? 1;i++) {
+							for (let i=0;i<(e.spec.count ?? 1);i++) {
 								setTimeout((e) => {
-									zombProj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y,"type":-1,"vx":-7.5,"vy":0,"size":25,"img":preloadedImg[e.spec.shoot],"spec":{"CollBox":[25,25],"short":true},"value":e.spec.damage,"health":e.spec.damage})
+									zombProj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x,"y":e.y+50,"type":-1,"vx":-7.5,"vy":0,"size":25,"img":preloadedImg[e.spec.shoot],"spec":{"CollBox":[25,25],"short":true},"value":e.spec.damage,"health":e.spec.damage})
 									Pid++
 								},i*e.spec.indelay,e)
 							}
