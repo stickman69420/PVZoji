@@ -121,7 +121,7 @@
 			}
 			if (!saveloaded && isroof && Level != 54) {
 				for (let i=0;i<rows;i++) {
-					for (let j=0;j<3+(MinigameA == 1 ? 5 : (Level == 40 ? 2 : (Level == 41 ? 1 : 0)));j++) {
+					for (let j=0;j<3+(MinigameA == 1 && MinigameB == 12 ? 5 : (Level == 40 ? 2 : (Level == 41 ? 1 : 0)));j++) {
 						Lawn.push({"id":Lid,"projImg":ProjImg[33],"cost":0,"img":plants[33],"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":i,"col":j,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
 			Lid++
 					}
