@@ -121,7 +121,7 @@
 			}
 			if (!saveloaded && isroof && Level != 54) {
 				for (let i=0;i<rows;i++) {
-					for (let j=0;j<3+(Level == 40 ? 2 : (Level == 41 ? 1 : 0));j++) {
+					for (let j=0;j<3+(MinigameA == 1 ? 5 : (Level == 40 ? 2 : (Level == 41 ? 1 : 0)));j++) {
 						Lawn.push({"id":Lid,"projImg":ProjImg[33],"cost":0,"img":plants[33],"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":i,"col":j,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
 			Lid++
 					}
@@ -528,7 +528,7 @@ function detectMatches(grid_size) {
 								for (let j=3;j<9;j++) {
 								//const isp = Math.random() < 0.1
 									const ty = /*isp ? true : */Math.random() < 0.5
-									Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? (MinigameA ? [62,5,23,65,20] : [0,5,7,12,17])[Math.floor(Math.random()*5)] : (MinigameA ? [22,26,27,22,26,27,0] : [0,4,7,8,0,4,7])[Math.floor(Math.random()*7)]})
+									Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? (MinigameA+1 ? [62,5,23,65,20] : [0,5,7,12,17])[Math.floor(Math.random()*5)] : (MinigameA+1 ? [22,26,27,22,26,27,0] : [0,4,7,8,0,4,7])[Math.floor(Math.random()*7)]})
 									Oid++
 								}
 							}
@@ -969,13 +969,21 @@ function detectMatches(grid_size) {
 							Pid++
 						})
 					} else {
+					const validpre = valid
+					const slecpre = select2
+					const selled = selected[select2]
+					const column = MinigameA == 1 && MinigameB == 12
+					//alert((column ? 0 : mouseLoc[1])+","+(column ? 5 : mouseLoc[1]+1))
+					for (let rwo=(column ? 0 : mouseLoc[1]);rwo<(column ? 5 : mouseLoc[1]+1);rwo++) {
+					valid = validpre
+					select2 = slecpre
 					Lawn.forEach((ee,eee) => {
-						if (ee.row == mouseLoc[1] && ee.col == mouseLoc[0] && !ee.spec.placeUnder && select2 != -1) {
-							if (valid && select2 >= 0 && special[selected[select2]].out && !ee.spec.out) {
+						if (ee.row == rwo && ee.col == mouseLoc[0] && !ee.spec.placeUnder && select2 != -1) {
+							if (valid && select2 >= 0 && special[selled].out && !ee.spec.out) {
 								other = ee.id
 								valid = 4
 							}else{
-							//alert(JSON.stringify(ee.spec.UpgType)+"-"+special[selected[select2]].UpgradeType)
+							//alert(JSON.stringify(ee.spec.UpgType)+"-"+special[selled].UpgradeType)
 							if (select2 == -2 && (ee.spec.above == undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) {
 								if (!Dead.includes(["Lawn",ee.id])) {
 									if (Level == 74) sun += ee.cost
@@ -984,7 +992,7 @@ function detectMatches(grid_size) {
 									document.getElementById("Shov").style.backgroundColor = "#421803"
 									document.getElementById("Shov").style.borderColor = "#93441D"
 								}
-							} else if (selected[select2] == 35) {
+							} else if (selled == 35) {
 								valid = 5
 								if (ee.spec.night && (Level%20 < 10)) {
 									ee.spec.night = false
@@ -993,32 +1001,32 @@ function detectMatches(grid_size) {
 										ee.spec[key] = special[ee.plant][key]
 									}
 								}
-							} else if (ee.spec.UpgType && (select2 >= 0 && special[selected[select2]].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selected[select2]].UpgradeType) && */ee.spec.UpgType.includes(special[selected[select2]].UpgradeType))) {
+							} else if (ee.spec.UpgType && (select2 >= 0 && special[selled].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selled].UpgradeType) && */ee.spec.UpgType.includes(special[selled].UpgradeType))) {
 								valid = false
-								if (((special[selected[select2]].extra ?? 0)+cost[selected[select2]] <= sun) || (MinigameA == 1 && MinigameB ==1)) {
-									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSpec) ?? {})) {
+								if (((special[selled].extra ?? 0)+cost[selled] <= sun) || (MinigameA == 1 && MinigameB ==1)) {
+									for (const [key, value] of Object.entries((special[selled].upgradeSpec) ?? {})) {
 										ee.spec[key] = value
 									}
-									for (const [key, value] of Object.entries((special[selected[select2]].upgradeApp) ?? {})) {
+									for (const [key, value] of Object.entries((special[selled].upgradeApp) ?? {})) {
 										ee[key] += value
 									}
-									for (const [key, value] of Object.entries((special[selected[select2]].upgradePush) ?? {})) {
+									for (const [key, value] of Object.entries((special[selled].upgradePush) ?? {})) {
 										ee[key].push(value)
 									}
-									for (const [key, value] of Object.entries((special[selected[select2]].upgradeSet) ?? {})) {
+									for (const [key, value] of Object.entries((special[selled].upgradeSet) ?? {})) {
 										ee[key] = value
 									}
 									if ((MinigameA == 1 && MinigameB ==1) || cBelt) {
 										if (Level != 84) selected.splice(select2,1)
-										else if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
+										else if (MinigameA != 1 || MinigameB !=1) sun -= cost[selled]+(special[selled].extra ?? 0)
 										seeds.innerHTML = ""
 										reloadSeed()
 									} else {
-										if (Level != 74 && Level != 84) recharge[select2] = (special[selected[select2]].UpgradeRecharge ?? Recharges[selected[select2]])
-										ee.cost += cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
-										if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
+										if (Level != 74 && Level != 84) recharge[select2] = (special[selled].UpgradeRecharge ?? Recharges[selled])
+										ee.cost += cost[selled]+(special[selled].extra ?? 0)
+										if (MinigameA != 1 || MinigameB !=1) sun -= cost[selled]+(special[selled].extra ?? 0)
 									}
-								} else if (select2 >= 0 && ee.spec.UpgType == special[selected[select2]].UpgradeType) {
+								} else if (select2 >= 0 && ee.spec.UpgType == special[selled].UpgradeType) {
 									for (let i=0;i<5;i++) {
 										setTimeout(() => {
 											sunC.style.color = "red"
@@ -1028,10 +1036,10 @@ function detectMatches(grid_size) {
 										},200*i+100)
 									}
 								}
-							} else if (select2 >= 0 && ee.spec.out == true && !special[selected[select2]].out && valid) {
+							} else if (select2 >= 0 && ee.spec.out == true && !special[selled].out && valid) {
 								valid = 3
 								other = ee.id
-							} else if (select2 >= 0 && special[selected[select2]].upgrade != 2 && (ee.spec.under == true && (special[selected[select2]].water != 2 || ee.spec.topWater) && (selected[select2] != 4 || ee.type != 16) && (selected[select2] != 16 || ee.spec.topWater) && ![21,33].includes(selected[select2]))) {
+							} else if (select2 >= 0 && special[selled].upgrade != 2 && (ee.spec.under == true && (special[selled].water != 2 || ee.spec.topWater) && (selled != 4 || ee.type != 16) && (selled != 16 || ee.spec.topWater) && ![21,33].includes(selled))) {
 								valid = 2
 								other = ee.id
 							} else {
@@ -1042,14 +1050,14 @@ function detectMatches(grid_size) {
 					})
 					if (valid && select2 >= 0) {
 						if (Level != 4) {
-							if (valid != 5) Lawn.push({"id":Lid,"cost":cost[selected[select2]],"projImg":ProjImg[selected[select2]],"img":plants[selected[select2]],/*"opacity":[...opacity[selected[select2]]],"size":[...plantSize[selected[select2]]],"Osize":[...plantSize[selected[select2]]],*/"spec":JSON.parse(JSON.stringify(special[selected[select2]])),"plant":selected[select2],"row":mouseLoc[1],"col":mouseLoc[0],"cool":fireRate[selected[select2]]-fireOff[selected[select2]],"health":(Level%20<10&&special[selected[select2]].dayHealth != undefined) ? special[selected[select2]].dayHealth : plantHealth[selected[select2]]})
+							if (valid != 5) Lawn.push({"id":Lid,"cost":cost[selled],"projImg":ProjImg[selled],"img":plants[selled],/*"opacity":[...opacity[selled]],"size":[...plantSize[selled]],"Osize":[...plantSize[selled]],*/"spec":JSON.parse(JSON.stringify(special[selled])),"plant":selled,"row":rwo,"col":mouseLoc[0],"cool":fireRate[selled]-fireOff[selled],"health":(Level%20<10&&special[selled].dayHealth != undefined) ? special[selled].dayHealth : plantHealth[selled]})
 							if (MinigameA == 1 && MinigameB == 7) {
 								["range","negRange","vRange"].forEach((r,rr) => {
-									if (special[selected[select2]][r] != -1) Lawn.at(-1).spec[r] = 20
+									if (special[selled][r] != -1) Lawn.at(-1).spec[r] = 20
 								})
 							}
-							if (Level%20<10&&special[selected[select2]].daySpec != undefined) {
-								for (const [key,value] of Object.entries(special[selected[select2]].daySpec)) {
+							if (Level%20<10&&special[selled].daySpec != undefined) {
+								for (const [key,value] of Object.entries(special[selled].daySpec)) {
 									Lawn[Lawn.length-1].spec[key] = value
 								}
 							}
@@ -1065,19 +1073,23 @@ function detectMatches(grid_size) {
 							}
 							Lid++
 						} else {
-							if (selected[select2] == 2) Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0,{},0],"damageOnce":true},"value":0})
-							else if (selected[select2] == 23) Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[30],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true},"value":10000000})
-							else Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":mouseLoc[1]*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
+							if (selled == 2) Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":rwo*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[0],"spec":{"proj":true,"CollBox":[100,100],"explode":[300,300,1800,0,{},0],"damageOnce":true},"value":0})
+							else if (selled == 23) Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":rwo*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[30],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true},"value":10000000})
+							else Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":mouseLoc[0]*100+50,"y":rwo*100+50,"type":-1,"vx":3,"vy":0,"size":100,"img":preloadedImg[1],"spec":{"proj":true,"CollBox":[100,100],"pen":-1,"damageOnce":true,"bounce":true},"value":434})
 							Pid++
 						}
 						if ((MinigameA == 1 && MinigameB ==1) || cBelt) {
-							if (Level != 84 && (Level != 34 || select2 != 0)) selected.splice(select2,1)
-							else if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]+(special[selected[select2]].extra ?? 0)
-							seeds.innerHTML = ""
-							reloadSeed()
+							if (rwo == (column ? 0 : mouseLoc[1])) {
+								if (Level != 84 && (Level != 34 || select2 != 0)) selected.splice(select2,1)
+								else if (MinigameA != 1 || MinigameB !=1) sun -= cost[selled]+(special[selled].extra ?? 0)
+								seeds.innerHTML = ""
+								reloadSeed()
+							}
 						} else {
-							if (Level != 74) recharge[select2] = Recharges[selected[select2]]
-							if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]
+							if (rwo == (column ? 0 : mouseLoc[1])) {
+								if (Level != 74) recharge[select2] = Recharges[selected[select2]]
+								if (MinigameA != 1 || MinigameB !=1) sun -= cost[selected[select2]]
+							}
 						}
 					}
 					if (select2 >= 0 && !((MinigameA == 1 && MinigameB ==1) || cBelt)) {
@@ -1085,6 +1097,7 @@ function detectMatches(grid_size) {
 						document.getElementById("B"+select2).style.borderColor = "#8EBB9A"
 					}
 					select2 = -1
+					}
 					}
 					}
 				}
@@ -2712,12 +2725,14 @@ if (e.spec.pen == undefined) {
 					if (ind != -1) arr.splice(ind,1)
 				})
 				Dead = []
-				if (Endless == -1) {
-					LevelProg.max = zSpawns.length
-					LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
-				} else {
-					LevelProg.max = 18
-					LevelProg.value = (prevWave-2+(1-WaveHealth/WaveHealthO)*2)%18
+				if (WaveHealthO != 0) {
+					if (Endless == -1) {
+						LevelProg.max = zSpawns.length
+						LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
+					} else {
+						LevelProg.max = 18
+						LevelProg.value = (prevWave-2+(1-WaveHealth/WaveHealthO)*2)%18
+					}
 				}
 				//Debug.innerHTML = 1-WaveHealth/WaveHealthO
 				//Debug.innerHTML = WaveTime+","+WaveHealth+","+WaveHealthO
@@ -3404,7 +3419,7 @@ if (e.spec.pen == undefined) {
 									for (let j=3;j<9;j++) {
 										//const isp = Math.random() < 0.1
 										const ty = /*isp ? true : */Math.random() < 0.5
-									Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? (MinigameA ? [62,5,23,65,20] : [0,5,7,12,17])[Math.floor(Math.random()*5)] : (MinigameA ? [22,26,27,22,26,27,0] : [0,4,7,8,0,4,7])[Math.floor(Math.random()*7)]})
+									Obstacles.push({"img":/*isp ? "plant vase" : */"vase","id":Oid,"col":j,"row":i,"type":2,"sumtype":ty,"summon":ty ? (MinigameA+1 ? [62,5,23,65,20] : [0,5,7,12,17])[Math.floor(Math.random()*5)] : (MinigameA+1 ? [22,26,27,22,26,27,0] : [0,4,7,8,0,4,7])[Math.floor(Math.random()*7)]})
 										Oid++
 									}
 								}
@@ -3476,26 +3491,31 @@ if (e.spec.pen == undefined) {
 			
 			function convey() {
 				if (selected.length < SeedC && cBelt.plants.length != 0 && (lim > 0 || MinigameA != 1 || MinigameB != 2)) {
-					let pool = []
-					cBelt.plants.forEach((e,ee) => {
-						if ((MinigameA == 1 && MinigameB == 2) || lim[ee] > 0 || lim[ee] == undefined) {
-							if (selected.filter(ee => ee == e).length >= 4) {
-								pool.push(...Array(5).fill([e,ee]))
-							} else if (lastPlant == e) {
-								pool.push(...Array(Math.floor(50*(cBelt.chances[ee]/100))).fill([e,ee]))
-							} else {
-								pool.push(...Array(Math.floor(100*(cBelt.chances[ee]/100))).fill([e,ee]))
+					if (cBelt.guaranteed.length <= convind) {
+						let pool = []
+						cBelt.plants.forEach((e,ee) => {
+							if ((MinigameA == 1 && MinigameB == 2) || lim[ee] > 0 || lim[ee] == undefined) {
+								if (selected.filter(ee => ee == e).length >= 4) {
+									pool.push(...Array(5).fill([e,ee]))
+								} else if (lastPlant == e) {
+									pool.push(...Array(Math.floor(50*(cBelt.chances[ee]/100))).fill([e,ee]))
+								} else {
+									pool.push(...Array(Math.floor(100*(cBelt.chances[ee]/100))).fill([e,ee]))
+								}
 							}
-						}
-					})
-					//Debug.innerHTML = pool.filter(e => e==2).length+","+pool.filter(e => e==3).length
-					const sellld = pool[Math.floor(Math.random()*pool.length)]
-					const ind = sellld[1]
-					lastPlant = sellld[0]
-					if (MinigameA == 1 && MinigameB == 2) {
-						if (ind != 1 && ind != 5) lim--
-					} else if (lim[ind] != undefined) lim[ind]--
-					selected.push(lastPlant)
+						})
+						//Debug.innerHTML = pool.filter(e => e==2).length+","+pool.filter(e => e==3).length
+						const sellld = pool[Math.floor(Math.random()*pool.length)]
+						const ind = sellld[1]
+						lastPlant = sellld[0]
+						if (MinigameA == 1 && MinigameB == 2) {
+							if (ind != 1 && ind != 5) lim--
+						} else if (lim[ind] != undefined) lim[ind]--
+						selected.push(lastPlant)
+					} else {
+						selected.push(cBelt.guaranteed[convind])
+					}
+					convind++
 					seeds.innerHTML = ""
 					reloadSeed()
 				}
