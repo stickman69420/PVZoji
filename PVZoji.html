@@ -1402,7 +1402,8 @@ function detectMatches(grid_size) {
 			//SpawnZombie(19,9,1)
 			
 			function Select(plt) {
-				if (MinigameA == 1 && [4,5,6].includes(MinigameB) && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
+				//alert((MinigameA == 1)+"&&"+([4,5,6].includes(Number(MinigameB)))+"&&"+(plt >= 0)+"&&"+(sun >= cost[selected[plt]])+"&&"+(recharge[plt] <= 0)+"&&("+(plt != 5)+"||"+(Lawn.length < 3)+")")
+				if (MinigameA == 1 && [4,5,6].includes(Number(MinigameB)) && plt >= 0 && sun >= cost[selected[plt]] && recharge[plt] <= 0 && (plt != 5 || Lawn.length < 3)) {
 					sun -= cost[selected[plt]]
 					recharge[plt] = Recharges[selected[plt]]
 					switch (Number(MinigameB)) {
@@ -1454,6 +1455,7 @@ function detectMatches(grid_size) {
 								}
 								mod.spec.count = 1
 								mod.spec.fireRate *= 2
+								recharge[5] = Recharges[43]
 								Lid++
 								break;
 						}
@@ -2799,7 +2801,7 @@ if (e.spec.pen == undefined) {
 				}
 				nextSun += 16
 				//((MinigameA == 1 && MinigameB == 4) ? 5000 : 
-				const sunind = (!cBelt && Level%20 < 10) ? 6000 : Infinity
+				const sunind = ((!cBelt && Level%20 < 10) || (MinigameA == 1 && MinigameB == 4)) ? 6000 : Infinity
 				if (nextSun > prevSun + sunind) {
 					prevSun += sunind
 					if (!cBelt && Level%20 < 10) {
