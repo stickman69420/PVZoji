@@ -1867,7 +1867,7 @@ function detectMatches(grid_size) {
 								let tar = {"x":10000}
 								Zombies.forEach((ee) => {
 									const dist = (ee.x+(ee.spec.coll ?? [0])[0]-e.col*100)/100
-									if (!ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
+									if (!ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && (!ee.hidden || e.spec.hitSnork) && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
 											if (ee.spec.flying && e.spec.flight || e.spec.hitFly) {
 												if(tar.x > ee.x || !fly) tar = ee
@@ -2371,7 +2371,7 @@ if (e.spec.pen == undefined) {
 							e.spec.jump = false
 							e.spec.hop = false
 							e.ovx = -e.spec.AfterSpd[0]+Math.random()*(e.spec.AfterSpd[1]-e.spec.AfterSpd[0])
-							
+							e.spec.crush = undefined
 						}
 						if (e.type == 12) {
 							let vid = false
@@ -3493,7 +3493,7 @@ if (e.spec.pen == undefined) {
 			
 			function convey() {
 				if (selected.length < SeedC && cBelt.plants.length != 0 && (lim > 0 || MinigameA != 1 || MinigameB != 2)) {
-					if (cBelt.guaranteed.length <= convind) {
+					if ((cBelt.guaranteed ?? []).length <= convind) {
 						let pool = []
 						cBelt.plants.forEach((e,ee) => {
 							if ((MinigameA == 1 && MinigameB == 2) || lim[ee] > 0 || lim[ee] == undefined) {
