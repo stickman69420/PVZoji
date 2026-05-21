@@ -506,6 +506,19 @@ function detectMatches(grid_size) {
 			
 			canvas.context = canvas.getContext("2d")
 			
+			if (!saveloaded && isbeach && Level%20 >= 10) {
+				let free = []
+				for (let i=0;i<beachA[Level%10];i++) {
+					free.push(...Array(5).fill([]).map((a,aa) => [i,aa]))
+				}
+				for (let i=0;i<(6-beachA[Level%10])*2;i++) {
+					const ind = Math.floor(Math.random()*free.length)
+					Obstacles.push({"img":"egg","id":Oid,"col":free[ind][0],"row":free[ind][1],"type":5})
+					free.splice(ind,1)
+					Oid++
+				}
+			}
+			
 			Shov.style.visibility = (LevsUnlocked.includes(4) && Level != 84 && (MinigameA != 1 || MinigameB != 5)) ? "visible" : "hidden"
 			Glov.style.visibility = (LevsUnlocked.includes(84) && Level != 84 && (MinigameA != 1 || MinigameB != 5)) ? "visible" : "hidden"
 			
@@ -877,23 +890,21 @@ function detectMatches(grid_size) {
 					} else if (select2 >= 0 && isroof) {
 						valid = special[selected[select2]].roof ?? false
 					} else if (selected[select2] >= 0) {
-						valid = !(special[selected[select2]].grave) && (!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5 && (!isbeach || mouseLoc[0]>=beachA[Level%10]))
+						valid = !(special[selected[select2]].grave) && !(special[selected[select2]].egg) && (special[selected[select2]].water == 1 || ((!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5) && (!isbeach || mouseLoc[0]<beachA[Level%10])))
 					} else {
 						valid = true
 					}
 					if (mouseLoc[1] < rows) {
 					ambushes.forEach((ee) => {
 						if (ee.col == mouseLoc[0] && ee.row == mouseLoc[1] && AmbushArea[Math.floor(Level/10)] == true) {
-							if (special[selected[select2]].grave) {
-								valid = true
-							} else {
-								valid = false
-							}
+							if (special[selected[select2]].grave) valid = true
+							else valid = false
 						}
 					})
 					Obstacles.forEach((ee) => {
 						if (ee.col == mouseLoc[0] && ee.row == mouseLoc[1]) {
-							valid = false
+							if (ee.type == 5 && special[selected[select2]].egg) valid = true
+							else valid = false
 						}
 					})
 					if (select2 == -4) {
@@ -909,7 +920,7 @@ function detectMatches(grid_size) {
 							} else {
 								valid2 = !(ee.spec.grave) && (ee.spec.water || ((!ispool || Math.abs(2.5-mouseLoc[1]) > 0.5) && (!isbeach || mouseLoc[0]<beachA[Level%10])))
 								//alert(ee.spec.water)
-								if (!(ee.spec.grave) && !ee.spec.water && ((isbeach && mouseLoc[0]>=beachA[Level%10]) || (ispool && Math.abs(2.5-mouseLoc[1]) < 0.5))&& Lawn.find(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&l.spec.under&&l.spec.above==undefined)) valid2 = true
+								if (!(ee.spec.grave) && !ee.spec.water && ((isbeach && mouseLoc[0]<beachA[Level%10]) || (ispool && Math.abs(2.5-mouseLoc[1]) < 0.5))&& Lawn.find(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&l.spec.under&&l.spec.above==undefined)) valid2 = true
 							}
 					
 							if (valid2 && Lawn.filter(l => l.col==mouseLoc[0]&&l.row==mouseLoc[1]&&(!(l.spec.under||l.spec.above==undefined)==!ee.spec.under)&&(!(l.spec.out||l.spec.in!=undefined)==!ee.spec.in)).length == 0) {
@@ -1954,11 +1965,19 @@ function detectMatches(grid_size) {
 							} else if (e.spec.destroy) {
 								if (!Dead.includes(["Lawn",e.id])) {
 									Dead.push(["Lawn",e.id])
-									ambushes.forEach((ee,eee) => {
-										if (ee.col == e.col && ee.row == e.row) {
-											ambushes.splice(eee,1)
-										}
-									})
+									if (e.spec.grave) {
+										ambushes.forEach((ee,eee) => {
+											if (ee.col == e.col && ee.row == e.row) {
+												Dead.push(["ambushes",ee.id])
+											}
+										})
+									} else {
+										Obstacles.forEach((ee,eee) => {
+											if (ee.col == e.col && ee.row == e.row) {
+												Dead.push(["Obstacles",ee.id])
+											}
+										})
+									}
 								}
 							}
 						}
@@ -2859,7 +2878,7 @@ if (e.spec.pen == undefined) {
 								e.crushing.forEach((ee) => {
 									let eee = Lawn.find((l) => l.id == ee)
 									if (eee && Math.floor(e.x/100) == eee.col && Math.floor(e.y/100) == eee.row) {
-										if ((e.type == 22 || e.type == 28)) {
+										if ((e.type == 22 || e.type == 28 || e.type == 52)) {
 											if (eee.plant == 57) {
 												if (eee.health >= 155) eee.health = 1
 												else eee.health = -1
@@ -2872,7 +2891,7 @@ if (e.spec.pen == undefined) {
 											if (eee.spec.vehicle == undefined) eee.health = 0
 											else eee.health -= (eee.spec.maxHealth ?? plantHealth[eee.plant])/eee.spec.vehicle
 										}
-										if (e.type != 22 && e.type != 28 && !e.spec.vehicle) eee.health = 0
+										if (e.type != 22 && e.type != 28 && e.type != 52 && !e.spec.vehicle) eee.health = 0
 									}
 								})
 								if (e.type == 26) e.spec.action = !e.spec.action
