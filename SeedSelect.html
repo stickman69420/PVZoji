@@ -75,7 +75,12 @@
 				}
 			}
 			document.title = "Select your seeds for PVZ "+(Math.floor(Level/10)+1)+"-"+((Level+1)%10)
-		
+			
+			let surv
+			if (sessionStorage.getItem("Surv")) {
+				surv = JSON.parse(sessionStorage.getItem("Surv"))
+				sessionStorage.removeItem("Surv")
+			}
 			let SSCount = 0
 			let SSs = []
 		
@@ -189,6 +194,11 @@
 				if (SSCount == SeedC) {
 					localStorage.setItem("Selected",JSON.stringify(SSs))
 					localStorage.setItem("SelId",localStorage.getItem("PreSelId"))
+					if (surv) {
+						sessionStorage.setItem("survival"+surv[0]+","+surv[1]+"load",true)
+						sessionStorage.setItem("survival"+surv[0]+","+surv[1]+"resWave",0)
+						localStorage.removeItem("survival"+surv[0]+","+surv[1]+"selling")
+					}
 					window.location = "./PVZoji.html"
 				}
 			}

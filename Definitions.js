@@ -23,6 +23,9 @@
 			let Endless = sessionStorage.getItem("Endless") ?? -1
 			let MinigameA = sessionStorage.getItem("MinigameA") ?? -1
 			let MinigameB = sessionStorage.getItem("MinigameB") ?? -1
+			let SurvivalA = sessionStorage.getItem("SurvivalA") ?? -1
+			let SurvivalB = sessionStorage.getItem("SurvivalB") ?? -1
+			
 			let lastPlant = -1
 			if (localStorage.getItem("Levs")) {
 				LevsUnlocked = JSON.parse(localStorage.getItem("Levs"))
@@ -77,28 +80,44 @@
 			let spal = true
 			let gCool = 0
 			let nTime = Math.random()*10000+5000
+			let resWave = 0
 			
 			let prevWave
 			let perBigWave
 			let bigWave
 			let ZombAllowed
 			let endAmbushes
+			let perBigPoints
 			
 			if (Endless+1) {
 				prevWave = 2
+				perBigPoints = 2
 				bigWave = [[],[24,24,24,24,24,24,24,25]][Endless]
 				ZombAllowed = [[],[0,2,7,24,27,33,34,36,37,38]][Endless]
 				endAmbushes = [0,0][Endless]
 			}
+			SurvivalA = Number(SurvivalA)
+			SurvivalB = Number(SurvivalB)
+			if (SurvivalA+1) {
+				prevWave = (SurvivalA)%2 == 0 ? 1 : 2
+				perBigPoints = (SurvivalA)%2 == 0 ? 1/3 : 2/3
+				bigWave = [0,1,2,3,4,9,10].includes(SurvivalB+1) ? [0,0,0,0,1] : [24,24,24,24,25]
+				ZombAllowed = [0,2,3,4,5,6,7].concat([[8],[8],[8,10],[8,10,11,14,15,16,17,18,20,21],[11,15,16,18,19,20,21],[11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26]][SurvivalB]).concat([[],[22],[],[22]][SurvivalA])
+				endAmbushes = [0,3,3,3,3,3,0,0,9,9][SurvivalB]
+			}
+			
+			const AreaName = ["Day","Night","Pool","Fog","Roof","Approach","Side yard","Breeze","Beach","Hatchery"]
 			
 			//Consts
-			const savedVars = ["Lawn","Proj","Zombies","Hypnos","Obstacles","Mowers","lastPlant","MowerTrigger","selected","recharge","sun","Dead","Pid","Zid","Lid","Aid","Oid","Wave","Level","WaveTime","WaveHealth","WaveHealthO","Hard","zombInWave","ambushes","rows","HpBars","vase","Endless","prevWave","bigWave","ZombAllowed","endAmbushes","gCool","nTime","MinigameA","MinigameB","lim","matchesc","tiptime","convind"]
-			for (ladd of ["",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee))))) {
+			const savedVars = ["Lawn","Proj","Zombies","Hypnos","Obstacles","Mowers","lastPlant","MowerTrigger","selected","recharge","sun","Dead","Pid","Zid","Lid","Aid","Oid","Wave","Level","WaveTime","WaveHealth","WaveHealthO","Hard","zombInWave","ambushes","rows","HpBars","vase","Endless","prevWave","bigWave","ZombAllowed","endAmbushes","gCool","nTime","MinigameA","MinigameB","lim","matchesc","tiptime","convind","SurvivalA","SurvivalB","perBigPoints","resWave"]
+			for (ladd of ["",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
 				if (sessionStorage.getItem(ladd+"load")) {
 					sessionStorage.removeItem(ladd+"load")
 					saveloaded = true
 					savedVars.forEach((e) => {
-						eval(e+" = "+localStorage.getItem(ladd+e))
+						if (!ladd.includes("survival") || e != "selected" || selected.length == 0) {
+							eval(e+" = "+localStorage.getItem(ladd+e))
+						}
 					})
 					Proj.forEach((e) => {
 						if (e.spec.money) {
@@ -111,8 +130,13 @@
 			
 			let ZombBan
 			if (Endless+1) {
-				ZombBan = [[],[10,11,12,13,14,15,17,18,19,20,21,26,30,31,32,41,42,43]][Endless]
+				ZombBan = [[],[10,11,12,13,14,15,17,18,19,20,21,26,30,31,32,41,42,43,44,45,46,47,48,49,50,51,52,53]][Endless]
 				perBigWave = [[],[24,24,24,24,24,24,24,25]][Endless]
+			}
+			if (SurvivalA+1) {
+				//const allowed = [0,2,3,4,5,6,7].concat([[8],[8],[8,10],[8,10,11,14,15,16,17,18,20,21],[11,15,16,18,19,20,21],[11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26]][SurvivalB])
+				ZombBan = Object.keys(Array(55).fill(0)).filter((z,zz) => !ZombAllowed.concat([[],[],[27,28,37,38,39,40],[27,28,37,38,39,40]][SurvivalA]).includes(z))
+				perBigWave = [0,1,2,3,4,9,10].includes(SurvivalB) ? [0,0,0,0] : [24,24,24,24]
 			}
 			
 			if (Level == 34) zSpawn = false

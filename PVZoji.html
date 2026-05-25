@@ -112,7 +112,8 @@
 			function Menu() {
 				if (confirm("(The game is paused)\nDo you want to save and exit?")) {
 					savedVars.forEach((e) => {
-						if (MinigameA != -1) localStorage.setItem("minigame"+MinigameA+","+MinigameB+e,JSON.stringify(eval(e)))
+						if (SurvivalA != -1) localStorage.setItem("survival"+SurvivalA+","+SurvivalB+e,JSON.stringify(eval(e)))
+						else if (MinigameA != -1) localStorage.setItem("minigame"+MinigameA+","+MinigameB+e,JSON.stringify(eval(e)))
 						else if (Endless == -1) localStorage.setItem(e,JSON.stringify(eval(e)))
 						else localStorage.setItem("end"+Endless+e,JSON.stringify(eval(e)))
 					})
@@ -127,6 +128,20 @@
 					}
 				}
 			}
+			
+			if (SurvivalA+1 && saveloaded) {
+				if (localStorage.getItem("survival"+SurvivalA+","+SurvivalB+"selling")) {
+					localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
+					sessionStorage.setItem("Level",Level)
+					sessionStorage.setItem("Surv",JSON.stringify([SurvivalA,SurvivalB]))
+					window.location= "./SeedSelect.html"
+				} else {
+					savedVars.forEach((e) => {
+						localStorage.setItem("survival"+SurvivalA+","+SurvivalB+e,JSON.stringify(eval(e)))
+					})
+				}
+			}
+			
 			const types = ["A","B","C","D","E","F"]
 			const rotpatt = [0,1,3,2]
 			const leveltip = MinigameA+1 ? MinigameA+","+MinigameB : (Math.floor(Level/10)+1)+"-"+(Level%10+1)
@@ -402,10 +417,6 @@ function detectMatches(grid_size) {
 				Proj[0].y = 550
 				mbut = ee.buttons
 			}
-			function bbmove(ee) {
-				const off = [ee.offsetX*1.2/sizePerc,ee.offsetY*1.2/sizePerc]
-				Proj[0].y = Math.min(Math.max(off[1],0),500)
-			}
 			let swap = []
 			if (MinigameA == 1 && MinigameB == 5) {
 				if (!saveloaded) {
@@ -580,14 +591,6 @@ function detectMatches(grid_size) {
 								Lid++
 						}
 						break;
-					case (94):
-						if (!saveloaded) {
-							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":200,"type":-1,"vx":0,"vy":0,"size":100,"img":preloadedImg[36],"spec":{"dir":Math.PI/2},"value":0})
-							Pid++
-							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":200,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[26],"spec":{"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},"value":200})
-							Pid++
-						}
-						break;
 				}
 				if (MinigameA != 1 || (MinigameB != 4 && MinigameB != 5)) {
 					selected.forEach((e,ee) => {
@@ -608,12 +611,6 @@ function detectMatches(grid_size) {
 						Aid++
 					}
 				}
-			}
-			
-			if (Level == 94) {
-				canvas.addEventListener("pointermove",bbmove)
-				canvas.addEventListener("pointerdown",bbmove)
-				canvas.addEventListener("pointerup",bbmove)
 			}
 			
 			if (Level == 74) recharge = [0,0,0,0,0,0,0,0,0,0,0]
@@ -1259,7 +1256,7 @@ function detectMatches(grid_size) {
 				let WaveDist = []			
 				let Premain = points
 				//alert(String(Wave)+","+String((zSpawns.length)-1))
-				const final = Endless == -1 && (Wave == (zSpawns.length)-1)
+				const final = Endless == -1 && SurvivalA == -1 && (Wave == (zSpawns.length)-1)
 				let valid2 = []
 				for (let i=6;i<9;i++) {
 					for (let ii=0;ii<rows;ii++) {
@@ -1277,13 +1274,13 @@ function detectMatches(grid_size) {
 				if (guaranteed.includes(1) || guaranteed.includes(25)) {
 					if (Endless+1) {
 						bigWave.push(...perBigWave)
-						if ((prevWave+2)%54) bigWave.push(...ZombAllowed)
+						if ((Wave+2)%27) bigWave.push(...ZombAllowed)
+					}
+					if (SurvivalA+1) {
+						bigWave.push(...perBigWave)
+						if ((Wave+2)%27) bigWave.push(...ZombAllowed)
 					}
 					if (Level == 74) sun += 1200
-					if (Level == 94) {
-						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":Proj[0].y,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[[31,32,37][Proj.filter(p => p.spec.proj).length-1]],"spec":Object.assign({"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},[{"ice":{"chance":1,"dur":1000},"snow":5000},{"explode":[100,100,150,1,{},0]},{"knock":1}][Proj.filter(p => p.spec.proj).length-1]),"value":Proj.filter(p => p.spec.proj).length == 2 ? 250 : 200})
-						Pid++
-					}
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
 					alarm.style.left = 15*sizePerc+"px"
@@ -1377,11 +1374,11 @@ function detectMatches(grid_size) {
 					}
 				}
 				//alert(JSON.stringify(ZombsAllowed)+","+JSON.stringify(ZombsAllowed[Level])+","+Level)
-				const minpoints = Math.min(...Points.filter((p,pp) => (Endless+1 ? ZombAllowed : zAllowed).includes(pp)))
+				const minpoints = Math.min(...Points.filter((p,pp) => (SurvivalA+1 || Endless+1 ? ZombAllowed : zAllowed).includes(pp)))
 				while (Premain > 0) {
 					WaveDist = []
 					Points.forEach((e,ee) => {
-						if ((e<=Premain+minpoints-1) && (Endless+1 ? ZombAllowed : zAllowed).includes(ee)) {
+						if ((e<=Premain+minpoints-1) && (SurvivalA+1 || Endless+1 ? ZombAllowed : zAllowed).includes(ee)) {
 							for (let i=0;i<Weight[ee];i++) {
 								WaveDist.push(ee)
 							}
@@ -1927,9 +1924,9 @@ function detectMatches(grid_size) {
 								let fly = false
 								let fire = false
 								let tar = {"x":10000}
-								Zombies.filter(z => z.x <= 900).forEach((ee) => {
+								Zombies.forEach((ee) => {
 									const dist = (ee.x+(ee.spec.coll ?? [0])[0]-e.col*100)/100
-									if (!ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && (!ee.hidden || e.spec.hitSnork) && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
+									if (ee.x <= 900 && !ee.spec.noColl && dist <= e.spec.range/*+(ee.spec.coll ?? [75,75,75])[2]/200*/ && dist > -(e.spec.negRange ?? 0)-(ee.spec.coll ?? [75,75,75])[2]/100 && (!ee.hidden || e.spec.hitSnork) && Math.abs(Math.floor(ee.y/100)-e.row+((ee.spec.coll ?? [0,0])[1]/100)) < (e.spec.vRange/2 || 0)+(ee.spec.coll ?? [75,75,75,75])[3]/200) {
 										if (ee.spec.metal || !e.spec.metal) {
 											if (ee.spec.flying && e.spec.flight || e.spec.hitFly) {
 												if(tar.x > ee.x || !fly) tar = ee
@@ -2102,33 +2099,9 @@ function detectMatches(grid_size) {
 							Dead.push(["Proj",e.id])
 						}
 					}
-					if (e.spec.bb) {
-						if (e.x > 900) {
-							e.vx = -Math.abs(e.vx)
-						}
-						if (e.x < -900) {
-							e.vx = Math.abs(e.vx)
-							e.x = 51
-							e.y = Proj[0].y
-						}
-						if (Math.abs(Proj[0].y-e.y) <= 50) {
-							if (Math.abs(Proj[0].x+25-e.x) <= 25) {
-								if (e.vx < 0) {
-									e.vx = Math.abs(e.vx)
-									e.vy -= (Proj[0].y-e.y)/10
-								}
-							}
-						}
-						e.damaged.reverse().forEach((r,rr) => {
-							const other = Zombies.find(z => z.id == r)
-							if (!other || Math.abs(e.x-other.x-(other.spec.coll ?? [75,75,75])[2]/2-(other.spec.coll ?? [0])[0]) > (e.spec.CollBox ?? CollBox[e.type])[0]/2+(other.spec.coll ?? [75,75,75])[2]/2 || (Math.abs(other.y+(other.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(other.spec.coll ?? [0,0])[1] >= (e.spec.CollBox ?? CollBox[e.type])[1]/2+(other.spec.coll ?? [75,75,75,75])[3]/2 && Math.floor(e.y/100) != Math.floor(other.y/100))) e.damaged.splice(e.damaged.indexOf(r),1)
-						})
-					}
 					if ((!e.spec.homing || !t) && !e.spec.reTarget && (e.x > 900 || (e.x < 0 && e.vx < 0) || e.y > 700 || e.y < -100)) {
-						if (!e.spec.bb) {
-							if (!Dead.includes(["Proj",e.id])) {
-								Dead.push(["Proj",e.id])
-							}
+						if (!Dead.includes(["Proj",e.id])) {
+							Dead.push(["Proj",e.id])
 						}
 					} else {
 						if (!Dead.includes(["Proj",e.id])) {
@@ -2538,7 +2511,11 @@ if (e.spec.pen == undefined) {
 								if (lose) {
 									lose = false
 									alert("🧟‍♂️\nYou lost")
-									if (MinigameA+1) {
+									if (SurvivalA+1) {
+										savedVars.forEach((e) => {
+											localStorage.removeItem("survival"+SurvivalA+","+SurvivalB+e)
+										})
+									} else if (MinigameA+1) {
 										savedVars.forEach((e) => {
 											localStorage.removeItem("minigame"+MinigameA+","+MinigameB+e)
 										})
@@ -2819,12 +2796,12 @@ if (e.spec.pen == undefined) {
 				})
 				Dead = []
 				if (WaveHealthO != 0) {
-					if (Endless == -1) {
+					if (Endless == -1 && SurvivalA == -1) {
 						LevelProg.max = zSpawns.length
 						LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
 					} else {
-						LevelProg.max = 18
-						LevelProg.value = (prevWave-2+(1-WaveHealth/WaveHealthO)*2)%18
+						LevelProg.max = (SurvivalA%2 == 0 ? 9 : 18)
+						LevelProg.value = (Wave-1+(1-WaveHealth/WaveHealthO))%(SurvivalA%2 == 0 ? 9 : 18)
 					}
 				}
 				//Debug.innerHTML = 1-WaveHealth/WaveHealthO
@@ -2838,7 +2815,7 @@ if (e.spec.pen == undefined) {
 				}
 				canvas.context.translate(115,0)
 				canvas.context.rotate(Math.PI)
-				if (Endless == -1) {
+				if (Endless == -1 && SurvivalA == -1) {
 					zSpawns.forEach((e,ee,eee) => {
 						if (e.guaranteed.includes(1)) canvas.context.drawImage(preloadedImg[7],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
 						if (e.guaranteed.includes(25)) canvas.context.drawImage(preloadedImg[18],-45-(ee)*(200/eee.length),ee >= Wave ? -75 : -50,75,75)
@@ -2846,6 +2823,10 @@ if (e.spec.pen == undefined) {
 				} else {
 					if (bigWave.includes(1)) canvas.context.drawImage(preloadedImg[7],-245,-50,75,75)
 					if (bigWave.includes(25)) canvas.context.drawImage(preloadedImg[18],-245,-50,75,75)
+					if (SurvivalA%2 == 1) {
+						if (bigWave.includes(1)) canvas.context.drawImage(preloadedImg[7],-145,-50,75,75)
+						if (bigWave.includes(25)) canvas.context.drawImage(preloadedImg[18],-145,-50,75,75)
+					}
 				}
 				canvas.context.rotate(Math.PI)
 				canvas.context.translate(-115,0)
@@ -3125,7 +3106,7 @@ if (e.spec.pen == undefined) {
 							if (e.spec.ammo == 0) e.spec.action = false
 							if (Lawn.filter(l => Math.abs(l.row-target.row) <= 1 && Math.abs(l.col-target.col) <= 1 && l.plant == 37).length == 0) target.health -= 75/(e.small ? 2 : 1)
 						}
-					} else if (e.spec.shoot) {
+					} else if (e.type != 21 && e.spec.shoot) {
 							e.spec.cool = e.spec.shootTime
 							e.spec.ammo--
 							for (let i=0;i<(e.spec.count ?? 1);i++) {
@@ -3442,10 +3423,10 @@ if (e.spec.pen == undefined) {
 				}
 				const winmini = (MinigameA == 1 && MinigameB ==1 && sun >= 2000) || (MinigameA == 1 && (MinigameB ==5 || MinigameB ==6) && matchesc >= 75)
 				if (winmini || WaveTime <= 0) {
-					if (winmini || ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || (Endless != -1 && ((prevWave+2)%18 != 0 || Endless == 0)) || (Endless == -1 && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
+					if (winmini || (SurvivalA != -1 && ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || resWave+1 < (SurvivalA%2 == 0 ? 9 : 18))) || ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || (Endless != -1 && ((Wave+1)%9 != 0 || Endless == 0)) || ((Endless == -1 && SurvivalA == -1) && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
 						//alert(Wave+","+zSpawns.length)
-						if (winmini || ((Endless == -1 || Endless == 0) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
-						if (winmini || (!vase && Endless == -1 && !["1,1","1,5","1,6"].includes(MinigameA+","+MinigameB))) {
+						if (winmini || (SurvivalA != -1 && (Wave)%(SurvivalA%2 == 0 ? 9 : 18) == 0 && resWave != 0) || (((Endless == -1 || Endless == 0) && SurvivalA == -1) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
+						if (winmini || SurvivalA != -1 || (!vase && Endless == -1 && !["1,1","1,5","1,6"].includes(MinigameA+","+MinigameB))) {
 							//Win
 							Wave++
 							WaveTime = 1000
@@ -3467,24 +3448,26 @@ if (e.spec.pen == undefined) {
 							localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 							localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
 							alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically")
-							if (!LevsUnlocked.includes(Number(Level)+1)) {
-								if (Level == 33 || Level == 53) {
-									localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
-									alert("Beating this level gives you $1000")
+							if (SurvivalA == -1) {
+								if (!LevsUnlocked.includes(Number(Level)+1)) {
+									if (Level == 33 || Level == 53) {
+										localStorage.setItem("money",Number(localStorage.getItem("money"))+1000)
+										alert("Beating this level gives you $1000")
+									}
+									LevsUnlocked.push(Number(Level)+1)
+									localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
+									if (Unlocks[Number(Level)+1] >= 0) unlocked.push(Unlocks[Number(Level)+1])
+									if (unlocked.indexOf(Math.max(...unlocked)) != unlocked.length-1) {
+										let t = []
+										let t2 = [...unlocked]
+										unlocked.forEach(() => {
+											t.push(Math.min(...t2))
+											t2.splice(t2.indexOf(t[t.length-1]),1)
+										})
+										unlocked = t
+									}
+									localStorage.setItem("Unlocked",JSON.stringify(unlocked))
 								}
-								LevsUnlocked.push(Number(Level)+1)
-								localStorage.setItem("Levs",JSON.stringify(LevsUnlocked))
-								if (Unlocks[Number(Level)+1] >= 0) unlocked.push(Unlocks[Number(Level)+1])
-								if (unlocked.indexOf(Math.max(...unlocked)) != unlocked.length-1) {
-									let t = []
-									let t2 = [...unlocked]
-									unlocked.forEach(() => {
-										t.push(Math.min(...t2))
-										t2.splice(t2.indexOf(t[t.length-1]),1)
-									})
-									unlocked = t
-								}
-								localStorage.setItem("Unlocked",JSON.stringify(unlocked))
 							}
 							if (MinigameA != -1) {
 								savedVars.forEach((e) => {
@@ -3494,7 +3477,7 @@ if (e.spec.pen == undefined) {
 								savedVars.forEach((e) => {
 									localStorage.removeItem(e)
 								})
-							} else {
+							} else if (SurvivalA == -1) {
 								savedVars.forEach((e) => {
 									localStorage.removeItem("end"+Endless+e)
 								})
@@ -3502,7 +3485,25 @@ if (e.spec.pen == undefined) {
 							sessionStorage.removeItem("MinigameA")
 							sessionStorage.removeItem("MinigameB")
 							sessionStorage.removeItem("Endless")
-							window.location= "./LevelSelect.html"
+							if (SurvivalA == -1 || (SurvivalA < 2 && Wave-1 == (SurvivalA == 0 ? 45 : 90))) {
+								sessionStorage.removeItem("SurvivalA")
+								sessionStorage.removeItem("SurvivalB")
+								if (SurvivalA != -1) {
+									savedVars.forEach((e) => {
+										localStorage.removeItem("survival"+SurvivalA+","+SurvivalB+e)
+									})
+								}
+								window.location= "./LevelSelect.html"
+							} else {
+								savedVars.forEach((e) => {
+									localStorage.setItem("survival"+SurvivalA+","+SurvivalB+e,JSON.stringify(eval(e)))
+								})
+								localStorage.setItem("survival"+SurvivalA+","+SurvivalB+"selling",true)
+								localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
+								sessionStorage.setItem("Level",Level)
+								sessionStorage.setItem("Surv",JSON.stringify([SurvivalA,SurvivalB]))
+								window.location= "./SeedSelect.html"
+							}
 						} else {
 							vase--
 							Lawn = []
@@ -3546,9 +3547,10 @@ if (e.spec.pen == undefined) {
 						} else if (zSpawn) {
 							WaveTime = (fSpawn[MinigameA] ?? [])[MinigameB] ? 3 : 27
 							//alert(JSON.stringify(zSpawns[Wave]))
-							SpawnWave(Endless+1 ? prevWave : zSpawns[Math.min(Wave,zSpawns.length-1)].points,Endless+1 ? ((prevWave+2)%18==0 ? bigWave : []) : zSpawns[Math.min(Wave,zSpawns.length-1)].guaranteed,Endless+1 ? endAmbushes : (zSpawns[Math.min(Wave,zSpawns.length-1)].ambush ?? []))
-							prevWave += 2
+							SpawnWave(Endless+1 || SurvivalA+1 ? Math.floor(Math.round(prevWave*100)/100) : zSpawns[Math.min(Wave,zSpawns.length-1)].points,Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? bigWave : []) : zSpawns[Math.min(Wave,zSpawns.length-1)].guaranteed,Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? endAmbushes : 0) : (zSpawns[Math.min(Wave,zSpawns.length-1)].ambush ?? []))
+							prevWave += perBigPoints
 							Wave++
+							resWave++
 						}
 					}
 				}
