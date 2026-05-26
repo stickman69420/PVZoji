@@ -3,7 +3,7 @@
 	<head>
 		<script>
 			addEventListener("error", (e) => {
-				alert(e.lineno+":"+e.colno+", "+e.message+"\nMain")
+				alert(e.lineno+":"+e.colno+", "+e.message+"\nSurv")
 			});
 		</script>
 		<meta charset="utf-8">
@@ -31,6 +31,7 @@
 	<body>
 		<a id="returnn" href="./index.html">Return</a>
 		<div id="Sel"></div>
+		<button id="stco" onclick="Enter(4,0)" style="text-shadow: 0 0 2px black,0 0 2px black;font-size:25px"><b>ROGUELITE MODE</b></button>
 		<!--button id="stco" style="text-shadow: 0 0 1px black"><b>START</b></button-->
 		<script src="Definitions.js"></script>
 		<script>

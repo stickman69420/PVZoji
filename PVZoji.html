@@ -134,6 +134,7 @@
 					localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
 					sessionStorage.setItem("Level",Level)
 					sessionStorage.setItem("Surv",JSON.stringify([SurvivalA,SurvivalB]))
+					if (SurvivalA == 4) sessionStorage.setItem("rog",true)
 					window.location= "./SeedSelect.html"
 				} else {
 					savedVars.forEach((e) => {
@@ -400,6 +401,7 @@ function detectMatches(grid_size) {
 				selected = unlocked
 			} else if (selected.length < SeedC && !["1,1"].includes(MinigameA+","+MinigameB)) {
 				localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
+				if (SurvivalA == 4) sessionStorage.setItem("rog",true)
 				window.location = "./SeedSelect.html"
 			} else {
 				localStorage.setItem("PreSelId",0)
@@ -1019,8 +1021,8 @@ function detectMatches(grid_size) {
 									document.getElementById("Shov").style.borderColor = "#93441D"
 								}
 							} else if (selled == 35) {
-								valid = 5
 								if (ee.spec.night && (Level%20 < 10)) {
+									valid = 5
 									ee.spec.night = false
 									if (ee.spec.dayHealth) ee.health = plantHealth[ee.plant]
 									if (ee.spec.daySpec) for (const [key,value] of Object.entries(ee.spec.daySpec)) {
@@ -1082,9 +1084,13 @@ function detectMatches(grid_size) {
 									if (special[selled][r] != -1) Lawn.at(-1).spec[r] = 20
 								})
 							}
-							if (Level%20<10&&special[selled].daySpec != undefined) {
-								for (const [key,value] of Object.entries(special[selled].daySpec)) {
-									Lawn[Lawn.length-1].spec[key] = value
+							if (mods.some(m => m[0]==1 && m[1]==0)) {
+								Lawn.at(-1).spec.night = false
+							} else {
+								if (Level%20<10&&special[selled].daySpec != undefined) {
+									for (const [key,value] of Object.entries(special[selled].daySpec)) {
+										Lawn[Lawn.length-1].spec[key] = value
+									}
 								}
 							}
 							if (valid === 2) Lawn.find(ee => ee.id === other).spec.above = Lid
@@ -1278,7 +1284,6 @@ function detectMatches(grid_size) {
 					}
 					if (SurvivalA+1) {
 						bigWave.push(...perBigWave)
-						if ((Wave+2)%27) bigWave.push(...ZombAllowed)
 					}
 					if (Level == 74) sun += 1200
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
@@ -2800,8 +2805,8 @@ if (e.spec.pen == undefined) {
 						LevelProg.max = zSpawns.length
 						LevelProg.value = Wave-1+(1-WaveHealth/WaveHealthO)
 					} else {
-						LevelProg.max = (SurvivalA%2 == 0 ? 9 : 18)
-						LevelProg.value = (Wave-1+(1-WaveHealth/WaveHealthO))%(SurvivalA%2 == 0 ? 9 : 18)
+						LevelProg.max = (SurvivalA%2 == 0 && SurvivalA != 4 ? 9 : 18)
+						LevelProg.value = (Wave-1+(1-WaveHealth/WaveHealthO))%(SurvivalA%2 == 0 && SurvivalA != 4 ? 9 : 18)
 					}
 				}
 				//Debug.innerHTML = 1-WaveHealth/WaveHealthO
@@ -2823,7 +2828,7 @@ if (e.spec.pen == undefined) {
 				} else {
 					if (bigWave.includes(1)) canvas.context.drawImage(preloadedImg[7],-245,-50,75,75)
 					if (bigWave.includes(25)) canvas.context.drawImage(preloadedImg[18],-245,-50,75,75)
-					if (SurvivalA%2 == 1) {
+					if (SurvivalA%2 == 1 || SurvivalA == 4) {
 						if (bigWave.includes(1)) canvas.context.drawImage(preloadedImg[7],-145,-50,75,75)
 						if (bigWave.includes(25)) canvas.context.drawImage(preloadedImg[18],-145,-50,75,75)
 					}
@@ -3423,9 +3428,9 @@ if (e.spec.pen == undefined) {
 				}
 				const winmini = (MinigameA == 1 && MinigameB ==1 && sun >= 2000) || (MinigameA == 1 && (MinigameB ==5 || MinigameB ==6) && matchesc >= 75)
 				if (winmini || WaveTime <= 0) {
-					if (winmini || (SurvivalA != -1 && ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || resWave+1 < (SurvivalA%2 == 0 ? 9 : 18))) || ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || (Endless != -1 && ((Wave+1)%9 != 0 || Endless == 0)) || ((Endless == -1 && SurvivalA == -1) && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
+					if (winmini || (SurvivalA != -1 && ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || resWave+1 < (SurvivalA%2 && SurvivalA != 4 == 0 ? 9 : 18))) || ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || (Endless != -1 && ((Wave+1)%9 != 0 || Endless == 0)) || ((Endless == -1 && SurvivalA == -1) && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25)))))) {
 						//alert(Wave+","+zSpawns.length)
-						if (winmini || (SurvivalA != -1 && (Wave)%(SurvivalA%2 == 0 ? 9 : 18) == 0 && resWave != 0) || (((Endless == -1 || Endless == 0) && SurvivalA == -1) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
+						if (winmini || (SurvivalA != -1 && (Wave)%(SurvivalA%2 == 0 && SurvivalA != 4 ? 9 : 18) == 0 && resWave != 0) || (((Endless == -1 || Endless == 0) && SurvivalA == -1) && ((zSpawn && Wave == zSpawns.length) || (Zombies.length==0 && !Obstacles.find(o => o.type == 2) && !zSpawn)))) {
 						if (winmini || SurvivalA != -1 || (!vase && Endless == -1 && !["1,1","1,5","1,6"].includes(MinigameA+","+MinigameB))) {
 							//Win
 							Wave++
@@ -3495,6 +3500,31 @@ if (e.spec.pen == undefined) {
 								}
 								window.location= "./LevelSelect.html"
 							} else {
+								if (SurvivalA == 4) {
+									Level = (Level+10)%(10*AreaBg.length)
+									Lawn.filter(l => l.spec.under && !l.spec.topWater).forEach((e) => {
+										e.health = 0
+									})
+									if (Math.abs(29.5-Level) <= 9.5) {
+										Lawn.filter(l => Math.abs(2.5-l.row) <= 0.5 && l.spec.above == undefined && !l.spec.water && !l.spec.under).forEach((n,nn) => {
+											Lawn.splice(0,0,{"id":Lid,"projImg":ProjImg[16],"img":plants[16],"cost":0,"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":n.row,"col":n.col,"cool":fireRate[16]-fireOff[16],"health": plantHealth[16]})
+											Lawn[0].spec.under = n.id
+											Lid++
+										})
+									} else if (Math.abs(49.5-Level) <= 9.5) {
+										Lawn.filter(l => l.spec.above == undefined && !l.spec.under && !l.spec.roof).forEach((n,nn) => {
+											Lawn.splice(0,0,{"id":Lid,"projImg":ProjImg[33],"img":plants[33],"cost":0,"spec":JSON.parse(JSON.stringify(special[33])),"plant":33,"row":n.row,"col":n.col,"cool":fireRate[33]-fireOff[33],"health": plantHealth[33]})
+											Lawn[0].spec.under = n.id
+											Lid++
+										})
+									} else if (Math.abs(89.5-Level) <= 9.5) {
+										Lawn.filter(l => l.col >= beachA[Level] && l.spec.above == undefined && !l.spec.under && !l.spec.water).forEach((n,nn) => {
+											Lawn.splice(0,0,{"id":Lid,"projImg":ProjImg[16],"img":plants[16],"cost":0,"spec":JSON.parse(JSON.stringify(special[16])),"plant":16,"row":n.row,"col":n.col,"cool":fireRate[16]-fireOff[16],"health": plantHealth[16]})
+											Lawn[0].spec.under = n.id
+											Lid++
+										})
+									}
+								}
 								savedVars.forEach((e) => {
 									localStorage.setItem("survival"+SurvivalA+","+SurvivalB+e,JSON.stringify(eval(e)))
 								})
@@ -3502,7 +3532,12 @@ if (e.spec.pen == undefined) {
 								localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
 								sessionStorage.setItem("Level",Level)
 								sessionStorage.setItem("Surv",JSON.stringify([SurvivalA,SurvivalB]))
-								window.location= "./SeedSelect.html"
+								if (SurvivalA == 4) {
+									sessionStorage.setItem("rog",true)
+									window.location= "./ModSel.html"
+								} else {
+									window.location= "./SeedSelect.html"
+								}
 							}
 						} else {
 							vase--
@@ -3547,7 +3582,7 @@ if (e.spec.pen == undefined) {
 						} else if (zSpawn) {
 							WaveTime = (fSpawn[MinigameA] ?? [])[MinigameB] ? 3 : 27
 							//alert(JSON.stringify(zSpawns[Wave]))
-							SpawnWave(Endless+1 || SurvivalA+1 ? Math.floor(Math.round(prevWave*100)/100) : zSpawns[Math.min(Wave,zSpawns.length-1)].points,Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? bigWave : []) : zSpawns[Math.min(Wave,zSpawns.length-1)].guaranteed,Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? endAmbushes : 0) : (zSpawns[Math.min(Wave,zSpawns.length-1)].ambush ?? []))
+							SpawnWave(Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? 5 : 1)*Math.floor(Math.round(prevWave*100)/100) : zSpawns[Math.min(Wave,zSpawns.length-1)].points,Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? bigWave.concat((Wave+1)%(27)==0 ? ZombAllowed : []) : []) : zSpawns[Math.min(Wave,zSpawns.length-1)].guaranteed,Endless+1 || SurvivalA+1 ? ((Wave+1)%(9)==0 ? endAmbushes : 0) : (zSpawns[Math.min(Wave,zSpawns.length-1)].ambush ?? []))
 							prevWave += perBigPoints
 							Wave++
 							resWave++

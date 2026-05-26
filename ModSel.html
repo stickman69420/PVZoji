@@ -1,0 +1,58 @@
+<!doctype HTML>
+<html>
+	<head>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+":"+e.colno+", "+e.message+"\nMod")
+			});
+		</script>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div id="modif"></div>
+		<script src="Definitions.js"></script>
+		<script>
+			mods = JSON.parse(localStorage.getItem("survival4,0mods")) || []
+			let choosing = sessionStorage.getItem("choosing") ?? []
+			if (choosing.length == 0) {
+				let chooseables = []
+				for (let i=0;i<roguemods.length;i++) {
+					for (let j=0;j<(i==0 ? (AreaName.length/2)-1 : roguemods[i].length);j++) {
+						if (!mods.some(m => m[0] == i && m[1] == j)) chooseables.push(...Array(((roguemods[i] ?? [])[j] ?? []).chance ?? 5).fill([i,j]))
+					}
+				}
+				for (let i=0;i<3;i++) {
+					if (chooseables.length != 0) {
+						const ind = Math.floor(Math.random()*chooseables.length)
+						choosing.push(chooseables[ind])
+						chooseables = chooseables.filter(c => c != chooseables[ind])
+					}
+				}
+				sessionStorage.setItem("choosing",JSON.stringify(choosing))
+			} else {
+				choosing = JSON.parse(choosing)
+			}
+			choosing.forEach((e,ee) => {
+				modif.insertAdjacentHTML("beforeend","<button onclick='Sel(["+e+"])'>"+(e[0]==0 ? "Unlock "+AreaName[e[1]*2+2]+" plants" : roguemods[e[0]][e[1]].name)+"</button>")
+			})
+			if (choosing.length == 0) {
+				alert("You have all modifiers already unlocked")
+				sessionStorage.setItem("survival4,0load",true)
+				sessionStorage.setItem("Level",Level)
+				sessionStorage.setItem("Surv",JSON.stringify([4,0]))
+				sessionStorage.setItem("rog",true)
+				window.location = "./SeedSelect.html"
+			}
+			function Sel(seld) {
+				sessionStorage.removeItem("choosing")
+				mods.push(seld)
+				localStorage.setItem("survival4,0mods",JSON.stringify(mods))
+				sessionStorage.setItem("survival4,0load",true)
+				sessionStorage.setItem("Level",Level)
+				sessionStorage.setItem("Surv",JSON.stringify([4,0]))
+				sessionStorage.setItem("rog",true)
+				window.location = "./SeedSelect.html"
+			}
+		</script>
+	</body>
+</html>

@@ -38,7 +38,7 @@
 				rows = 1
 			} else if (Level <= 2) {
 				rows = 3
-			} else if (Level%40 >= 20) {
+			} else if (Level%40 >= 20 || SurvivalA == 4) {
 				rows = 6
 			}
 			let Mowers = Array(rows).fill(true)
@@ -81,6 +81,7 @@
 			let gCool = 0
 			let nTime = Math.random()*10000+5000
 			let resWave = 0
+			let mods = []
 			
 			let prevWave
 			let perBigWave
@@ -102,15 +103,15 @@
 				prevWave = (SurvivalA)%2 == 0 ? 1 : 2
 				perBigPoints = (SurvivalA)%2 == 0 ? 1/3 : 2/3
 				bigWave = [0,1,2,3,4,9,10].includes(SurvivalB+1) ? [0,0,0,0,1] : [24,24,24,24,25]
-				ZombAllowed = [0,2,3,4,5,6,7].concat([[8],[8],[8,10],[8,10,11,14,15,16,17,18,20,21],[11,15,16,18,19,20,21],[11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26]][SurvivalB]).concat([[],[22],[],[22]][SurvivalA])
+				ZombAllowed = [0,2,3,4,5,6,7].concat([[8],[8],[8,10],[8,10,11,14,15,16,17,18,20,21],[11,15,16,18,19,20,21],[11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26]][SurvivalB]).concat([[],[22],[],[22],[]][SurvivalA])
 				endAmbushes = [0,3,3,3,3,3,0,0,9,9][SurvivalB]
 			}
 			
 			const AreaName = ["Day","Night","Pool","Fog","Roof","Approach","Side yard","Breeze","Beach","Hatchery"]
 			
 			//Consts
-			const savedVars = ["Lawn","Proj","Zombies","Hypnos","Obstacles","Mowers","lastPlant","MowerTrigger","selected","recharge","sun","Dead","Pid","Zid","Lid","Aid","Oid","Wave","Level","WaveTime","WaveHealth","WaveHealthO","Hard","zombInWave","ambushes","rows","HpBars","vase","Endless","prevWave","bigWave","ZombAllowed","endAmbushes","gCool","nTime","MinigameA","MinigameB","lim","matchesc","tiptime","convind","SurvivalA","SurvivalB","perBigPoints","resWave"]
-			for (ladd of ["",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
+			const savedVars = ["Lawn","Proj","Zombies","Hypnos","Obstacles","Mowers","lastPlant","MowerTrigger","selected","recharge","sun","Dead","Pid","Zid","Lid","Aid","Oid","Wave","Level","WaveTime","WaveHealth","WaveHealthO","Hard","zombInWave","ambushes","rows","HpBars","vase","Endless","prevWave","bigWave","ZombAllowed","endAmbushes","gCool","nTime","MinigameA","MinigameB","lim","matchesc","tiptime","convind","SurvivalA","SurvivalB","perBigPoints","resWave","mods"]
+			for (ladd of ["","survival4,0",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
 				if (sessionStorage.getItem(ladd+"load")) {
 					sessionStorage.removeItem(ladd+"load")
 					saveloaded = true
@@ -120,9 +121,7 @@
 						}
 					})
 					Proj.forEach((e) => {
-						if (e.spec.money) {
-							Dead.push(["Proj",e.id])
-						}
+						if (e.spec.money || e.spec.gift) Dead.push(["Proj",e.id])
 					})
 					break;
 				}
@@ -135,7 +134,7 @@
 			}
 			if (SurvivalA+1) {
 				//const allowed = [0,2,3,4,5,6,7].concat([[8],[8],[8,10],[8,10,11,14,15,16,17,18,20,21],[11,15,16,18,19,20,21],[11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26],[8,11,15,16,18,19,20,21,24,26]][SurvivalB])
-				ZombBan = Object.keys(Array(55).fill(0)).filter((z,zz) => !ZombAllowed.concat([[],[],[27,28,37,38,39,40],[27,28,37,38,39,40]][SurvivalA]).includes(z))
+				ZombBan = Object.keys(Array(55).fill(0)).filter((z,zz) => !ZombAllowed.concat([[],[],[27,28,37,38,39,40],[27,28,37,38,39,40],[22,27,28,37,38,39,40]][SurvivalA]).includes(z))
 				perBigWave = [0,1,2,3,4,9,10].includes(SurvivalB) ? [0,0,0,0] : [24,24,24,24]
 			}
 			
@@ -163,7 +162,8 @@
 				preloadedImg.push(new Image())
 				preloadedImg[preloadedImg.length-1].src = "./images/"+e+".png"
 			})
-			
+				//Roguelite
+			const roguemods = [,[{"name":"No coffee bean","chance":1},{"name":"Upgrade plants","chance":1}]]
 				//Levels
 			const Unlocks = [0,1,2,3,-2,4,5,6,7,-1,8,9,10,11,-3,12,13,14,15,-1,16,17,18,19,-4,20,21,22,23,-1,24,25,26,27,-5,28,29,30,31,-1,32,33,34,35,-6,36,37,38,39,-1,48,49,50,51,-7,52,53,54,55,-1,56,57,58,59,-8,60,61,62,63,-1,64,65,66,67,-9,68,69,70,71,-1,72,73,74,75,-10,76,77,78,79,-1,80,81,82,83,-11,84,85,86,87,-1]
 			const AreaBg = [["#00DD33","#00CC22","#00BB55","#00AA44"],["#00AA00","#009900","#008822","#007711"],["#00DD33","#00CC22","#00BB55","#00AA44","#0BD0FC"],["#00AA00","#009900","#008822","#007711","#08A0C9"],["#D6723B","#73402F","#A44921","#73402F"],["#A34008","#40100C","#711600","#40100C"],["#00DD33","#00CC22","#00BB55","#00AA44"],["#00AA00","#009900","#008822","#007711"],["#FFF000","#FFD000","#EEE000","#EEC000","#0BD0FC"],["#CCC000","#CCA000","#BBB000","#BB9000","#08A0C9"]]

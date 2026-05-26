@@ -81,6 +81,14 @@
 				surv = JSON.parse(sessionStorage.getItem("Surv"))
 				sessionStorage.removeItem("Surv")
 			}
+			
+			let rog
+			if (sessionStorage.getItem("rog")) {
+				rog = JSON.parse(sessionStorage.getItem("rog"))
+				sessionStorage.removeItem("rog")
+				mods = JSON.parse(localStorage.getItem("survival4,0mods")) || []
+			}
+			
 			let SSCount = 0
 			let SSs = []
 		
@@ -155,11 +163,17 @@
 			for (let e=0;e<SeedC;e++) {
 				seedSeled.innerHTML += '<button class="seed" data-t="true" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SSed'+e+'" onClick="Deselect('+e+')"></button>'
 			}
-		
+			
+			const uhb = mods.filter(m => m[0]==0).map(m => m[1])
+			const upb = mods.some(m => m[0]==1 && m[1]==1)
 			unlocked.forEach((e) => {
-				if (spal || (!special[e].sun && cost[e] > 0)) seedSel.innerHTML += '<button class="seed" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
+				try {
+					if ((spal || (!special[e].sun && cost[e] > 0)) && (e < 16 || !rog || (e>=40 && e<48 && upb) ||((e<40 || e>=48) && uhb.includes(Math.floor((e-(e >= 48 ? 8 : 0))/16)-1)))) seedSel.innerHTML += '<button class="seed" data-index="'+e+'" style="left:'+98.75*e+'px;" id="SS'+e+'" onClick="Select('+e+')">'+CreatePacket(e)+'</button>'
+				} catch(err) {
+					Debug.innerHTML += err.message
+				}
 			})
-		
+			
 			function Deselect(ind) {
 				if (ind < SSCount) {
 					document.getElementById("SSed"+ind).innerHTML = ""
@@ -172,6 +186,7 @@
 					SSCount--
 				}
 			}
+			
 			function Select(e) {
 				if (!SSs.includes(e) && SSCount < SeedC) {
 					document.getElementById("SSed"+SSCount).innerHTML = CreatePacket(e)
