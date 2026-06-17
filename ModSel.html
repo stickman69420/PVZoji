@@ -9,7 +9,7 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<div id="modif"></div>
+		<div style="display: grid;text-align: left;grid-template-columns: 33% 33% 33%;" id="modif"></div>
 		<script src="Definitions.js"></script>
 		<script>
 			mods = JSON.parse(localStorage.getItem("survival4,0mods")) || []
@@ -33,7 +33,7 @@
 				choosing = JSON.parse(choosing)
 			}
 			choosing.forEach((e,ee) => {
-				modif.insertAdjacentHTML("beforeend","<button onclick='Sel(["+e+"])'>"+(e[0]==0 ? "Unlock "+AreaName[e[1]*2+2]+" plants" : roguemods[e[0]][e[1]].name)+"</button>")
+				modif.insertAdjacentHTML("beforeend","<button onclick='Sel(["+e+"])'>"+(e[0]==0 ? "Unlock "+AreaName[e[1]*2+2]+" plants" : roguemods[e[0]][e[1]].name)+"<p>"+(e[0]==0 ? "Gain access to plants from "+AreaName[e[1]*2+2]+" that you have already unlocked in adventure mode" : roguemods[e[0]][e[1]].desc)+"</p></button>")
 			})
 			if (choosing.length == 0) {
 				alert("You have all modifiers already unlocked")
