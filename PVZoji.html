@@ -85,7 +85,7 @@
 		<canvas style="background-color:#976B42;" id="canvas" width="900" height="600"></canvas>
 		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
-		<e style="line-height:20px;" id="Debug"></e><br>
+		<e style="line-height:20px;font-size:10px;" id="Debug"></e><br>
 		<input placeholder="just do stuff" id="cons" onchange="subcons()">
 		<button id="sand" onclick="sand()">Sandbox Mode</button><button id="next" onclick="WaveTime = 0">Next Wave</button><button id="nomore" onclick="WaveTime = Infinity;WaveHealthO = -10">No Waves</button>
 		<input placeholder="plant id, column, row" id="spz" onchange='Lawn.push({"id":Lid,"projImg":ProjImg[spz.value.split(",")[0]],"cost":0,"img":plants[spz.value.split(",")[0]],"spec":JSON.parse(JSON.stringify(special[spz.value.split(",")[0]])),"plant":spz.value.split(",")[0],"row":spz.value.split(",")[2],"col":spz.value.split(",")[1],"cool":fireRate[spz.value.split(",")[0]]-fireOff[spz.value.split(",")[0]],"health": plantHealth[spz.value.split(",")[0]]});Lid++'>
@@ -423,6 +423,10 @@ function detectMatches(grid_size) {
 				Proj[0].y = 550
 				mbut = ee.buttons
 			}
+			function bbmove(ee) {
+				const off = [ee.offsetX*1.2/sizePerc,ee.offsetY*1.2/sizePerc]
+				Proj[0].y = Math.min(Math.max(off[1],0),500)
+			}
 			let swap = []
 			if (MinigameA == 1 && MinigameB == 5) {
 				if (!saveloaded) {
@@ -597,6 +601,14 @@ function detectMatches(grid_size) {
 								Lid++
 						}
 						break;
+						case (94):
+						if (!saveloaded) {
+							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":200,"type":-1,"vx":0,"vy":0,"size":100,"img":preloadedImg[36],"spec":{"dir":Math.PI/2},"value":0})
+							Pid++
+							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":200,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[26],"spec":{"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},"value":200})
+							Pid++
+						}
+						break;
 				}
 				if (MinigameA != 1 || (MinigameB != 4 && MinigameB != 5)) {
 					selected.forEach((e,ee) => {
@@ -617,6 +629,12 @@ function detectMatches(grid_size) {
 						Aid++
 					}
 				}
+			}
+			
+			if (Level == 94) {
+				canvas.addEventListener("pointermove",bbmove)
+				canvas.addEventListener("pointerdown",bbmove)
+				canvas.addEventListener("pointerup",bbmove)
 			}
 			
 			if (Level == 74) recharge = [0,0,0,0,0,0,0,0,0,0,0]
@@ -1087,7 +1105,7 @@ function detectMatches(grid_size) {
 										ee.projImg += " cryo"
 										break;
 									case (22):
-										ee.spec.explode = [100,100,45,1,{},0]
+										ee.spec.explode = [150,150,45,1,{"explode":[25,25,20,1,{},0,true]},0]
 										ee.value = 120
 										ee.spec.count = 16
 										ee.spec.InDelay = 50
@@ -1109,10 +1127,11 @@ function detectMatches(grid_size) {
 										ee.spec.fireRate = 0.05
 										ee.spec.projSpdV = {"min":-2,"max":2}
 										ee.spec.vRange = 3
-										//ee.value = 5
+										ee.value = 0
 										ee.spec.pen = 5
 										ee.spec.damageOnce = true
 										ee.spec.poison = 0.05
+										ee.spec.sideBounce = true
 										ee.img += " corr"
 										ee.projImg += " corr"
 										break;
@@ -1353,6 +1372,10 @@ function detectMatches(grid_size) {
 						bigWave.push(...perBigWave)
 					}
 					if (Level == 74) sun += 1200
+					if (Level == 94) {
+						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":Proj[0].y,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[[31,32,37][Proj.filter(p => p.spec.proj).length-1]],"spec":Object.assign({"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},[{"ice":{"chance":1,"dur":1000},"snow":5000},{"explode":[100,100,150,1,{},0]},{"knock":1}][Proj.filter(p => p.spec.proj).length-1]),"value":Proj.filter(p => p.spec.proj).length == 2 ? 250 : 200})
+						Pid++
+					}
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
 					alarm.style.left = 15*sizePerc+"px"
@@ -1862,7 +1885,7 @@ function detectMatches(grid_size) {
 				}
 				if (isbeach) {
 					canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][4]
-					canvas.context.fillRect(beachA[Level%10]*100,0,900-beachA[Level%10]*100,600)
+					canvas.context.fillRect(beachA[Level%10]*100,0,900-beachA[Level%10]*100,100*rows)
 				}
 				canvas.context.fillStyle = "#000000"
 				canvas.context.textBaseline = "middle"
@@ -2109,7 +2132,8 @@ function detectMatches(grid_size) {
 				canvas.context.globalAlpha = 1
 				Proj.forEach((e,eee) => {
 					if (!e.origincol) e.origincol = Math.floor(e.x/100)
-					if (((isroof && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) || (isside && ((e.y <= 400 && e.x > 400 && e.origincol < 4) || (e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400)))) && !e.spec.pult) Dead.push(["Proj",e.id])
+					if (!e.originrow) e.originrow = Math.floor(e.y/100)
+					if (((isroof && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) || (isside && ((e.y <= 400 && e.x > 400 && e.origincol < 4 && e.originrow < 4) || (e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400 && !(e.spec.sideBounce || e.spec.bounce))))) && !e.spec.pult) Dead.push(["Proj",e.id])
 					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
 					const finds = Obstacles.filter(o => o.type == 4 && o.row == Math.floor(e.y/100))
@@ -2171,9 +2195,33 @@ function detectMatches(grid_size) {
 							Dead.push(["Proj",e.id])
 						}
 					}
+if (e.spec.bb) {
+						if (e.x > 900) {
+							e.vx = -Math.abs(e.vx)
+						}
+						if (e.x < -900) {
+							e.vx = Math.abs(e.vx)
+							e.x = 51
+							e.y = Proj[0].y
+						}
+						if (Math.abs(Proj[0].y-e.y) <= 50) {
+							if (Math.abs(Proj[0].x+25-e.x) <= 25) {
+								if (e.vx < 0) {
+									e.vx = Math.abs(e.vx)
+									e.vy -= (Proj[0].y-e.y)/10
+								}
+							}
+						}
+						e.damaged.reverse().forEach((r,rr) => {
+							const other = Zombies.find(z => z.id == r)
+							if (!other || Math.abs(e.x-other.x-(other.spec.coll ?? [75,75,75])[2]/2-(other.spec.coll ?? [0])[0]) > (e.spec.CollBox ?? CollBox[e.type])[0]/2+(other.spec.coll ?? [75,75,75])[2]/2 || (Math.abs(other.y+(other.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(other.spec.coll ?? [0,0])[1] >= (e.spec.CollBox ?? CollBox[e.type])[1]/2+(other.spec.coll ?? [75,75,75,75])[3]/2 && Math.floor(e.y/100) != Math.floor(other.y/100))) e.damaged.splice(e.damaged.indexOf(r),1)
+						})
+					}
 					if ((!e.spec.homing || !t) && !e.spec.reTarget && (e.x > 900 || (e.x < 0 && e.vx < 0) || e.y > 700 || e.y < -100)) {
-						if (!isDead("Proj",e.id)) {
-							Dead.push(["Proj",e.id])
+						if (!e.spec.bb) {
+							if (!Dead.includes(["Proj",e.id])) {
+								Dead.push(["Proj",e.id])
+							}
 						}
 					} else {
 						if (!isDead("Proj",e.id)) {
@@ -2283,7 +2331,7 @@ function detectMatches(grid_size) {
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
@@ -2333,7 +2381,7 @@ function detectMatches(grid_size) {
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.top -= e.value
@@ -2365,7 +2413,7 @@ function detectMatches(grid_size) {
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":e.x+e.spec.explode[5],"y":e.y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
@@ -2905,7 +2953,7 @@ if (e.spec.pen == undefined) {
 				//Debug.innerHTML = ""
 				//Debug.innerHTML = JSON.stringify(Zombies)+","+WaveHealth
 				//if (Zombies.length > 0) alert(JSON.stringify(Zombies))
-				if (Math.abs(34.5-Level) <= 4.5 && (MinigameA != 1 || MinigameB != 11)) {
+				if (!mods.some(m => m[0]==1 && m[1]==3) && Math.abs(34.5-Level) <= 4.5 && (MinigameA != 1 || MinigameB != 11)) {
 					for (let i=0;i<6;i++) {
 						for (let j=8;j>8-fogA[Level%10];j--) {
 							let s = true
@@ -2932,7 +2980,7 @@ if (e.spec.pen == undefined) {
 					canvas.context.fillText("Bombs: "+(lim+selected.filter(s => special[s].selfD).length),600,550)
 				}
 				canvas.context.setTransform(1,0,0,1,0,0)
-				if (tuttips[leveltip] && tiptime < 3000*tuttips[leveltip].length) {
+				if (SurvivalA == -1 && tuttips[leveltip] && tiptime < 3000*tuttips[leveltip].length) {
 					tiptime += 16
 					canvas.context.font = "20px Arial"
 					const text = tuttips[leveltip][Math.floor(tiptime/3000)]
@@ -3246,7 +3294,12 @@ if (e.spec.pen == undefined) {
 									} else {
 									if ((ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
 									if (ee.health <= 0) {
-										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
+										if (ee.plant == 84) {
+											ee.health = 1000
+											ee.spec.noColl = true
+											ee.spec.override = true
+											ee.spec.transform = {"count":100,"reqTar":false,"spec":{"range":-1,"override":true}}
+										} if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
 												WaveHealth -= Math.max(0,e.health)
 											}
@@ -3517,9 +3570,15 @@ if (e.spec.pen == undefined) {
 									zgard++
 								}
 							})
+
+							const stron = SurvivalA == 4 && Level+10 >= 10*AreaBg.length
 							localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 							localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
-							alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically")
+							alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically"+(stron ? "\nZombies are getting stronger" : ""))
+							if (stron) {
+								ZombAllowed.push(22,28)
+								zlvl += 0.1
+							}
 							if (SurvivalA == -1) {
 								if (!LevsUnlocked.includes(Number(Level)+1)) {
 									if (Level == 33 || Level == 53) {
