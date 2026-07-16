@@ -5,8 +5,8 @@ doesn't use any emojis anymore but the images it uses are comprised only of emoj
 almanac lacking the funny descriptions for a lot of the zombies, most of shop, and a decent portion of zen garden is added
 
 All of original adventure is now complete
-approach and side yard (both) too and beach day with most of hatchery
+approach and side yard (both) and beach (both) are completed too
 All upgrade plants (from the original adventure) are now here AND you can buy them
-There will be upgrade plants for the new plants of course but those will be added after hatchery and winter
+There will be upgrade plants for the new plants of course but those will be added after winter
 
 Hard versions of some adventure mode minigames have been added, as well as all the original minigames I want (including the platform exclusives)
