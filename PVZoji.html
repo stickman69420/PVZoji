@@ -725,7 +725,7 @@ function detectMatches(grid_size) {
 						const spd = ee.spec.projSpd ?? Lspeed[ee.plant]
 						const vSpd = ee.spec.projSpdV ?? Vspeed[ee.plant]
 						const poff = e.spec.projOff ?? projOff[e.plant]
-						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]),"y": eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(vSpd) ? vSpd[j] : (vSpd.min ? Math.random()*(vSpd.max-vSpd.min)+vSpd.min : vSpd)),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
+						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":poff.absolute ? (Array.isArray(poff.pos[0]) ? poff.pos[0][j] : poff.pos[0]) : (eee ? tar.x+(Array.isArray(poff[0]) ? poff[0][j] : poff[0]) : (e.col*100+50)+(Array.isArray(poff[0]) ? poff[0][j] : poff[0])),"y": poff.absolute ? (Array.isArray(poff.pos[1]) ? poff.pos[1][j] : poff.pos[1]) : (eee ? tar.y+(Array.isArray(poff[1]) ? poff[1][j] : poff[1]) : ((ee.row+1)*100-50)+(Array.isArray(poff[1]) ? poff[1][j] : poff[1])),"type":ee.plant,"vx":(Array.isArray(spd) ? spd[j] : spd),"vy":(Array.isArray(vSpd) ? vSpd[j] : (vSpd.min ? Math.random()*(vSpd.max-vSpd.min)+vSpd.min : vSpd)),"size":(ee.projSize != undefined) ? ee.projSize : ProjSize[ee.plant],"img":img,"spec":JSON.parse(JSON.stringify(ee.spec)),"value":(ee.value != undefined) ? ee.value : value[ee.plant]})
 						Pid++
 						if (e.plant == 15) {
 							Lawn.forEach((o) => {
@@ -2014,7 +2014,7 @@ function detectMatches(grid_size) {
 								e.cool = (e.spec.fireRate ?? fireRate[e.plant])/((e.spec.in != undefined && Lawn.find(l => l.id == e.spec.in) != undefined && Lawn.find(l => l.id == e.spec.in).plant == 60) ? 2 : 1)
 								e.health -= e.spec.selfD ?? 0
 								if (e.plant == 59) Lawn.filter(l => Math.abs(l.col-e.col) <= 1.5 && l.row==e.row).forEach((ee)=>{ee.health = Math.max(ee.health,Math.min(ee.health+400,(ee.spec.maxHealth ?? plantHealth[ee.plant])))})
-								plantFires(e,undefined)
+								if (e.spec.proj || e.spec.sun) plantFires(e,undefined)
 							} else if (e.spec.proj || e.spec.sun || e.plant == 6 || e.plant == 31) {
 								let fly = false
 								let fire = false
@@ -2136,6 +2136,7 @@ function detectMatches(grid_size) {
 					if (((isroof && Math.floor(e.x/100) > e.origincol+1 && e.origincol < 4) || (isside && ((e.y <= 400 && e.x > 400 && e.origincol < 4 && e.originrow < 4) || (e.y <= 400 && e.y-e.vy/60*100 >= 400 && e.x >= 400 && !(e.spec.sideBounce || e.spec.bounce))))) && !e.spec.pult) Dead.push(["Proj",e.id])
 					else e.x += e.vx/60*100
 					e.y += e.vy/60*100
+					if (e.spec.angVel) e.spec.dir += e.spec.angVel/60
 					const finds = Obstacles.filter(o => o.type == 4 && o.row == Math.floor(e.y/100))
 					const dists = finds.map(f => Math.abs(f.col*100+50-e.x))
 					const findP = finds[dists.indexOf(Math.min(...dists))]
@@ -2157,7 +2158,7 @@ function detectMatches(grid_size) {
 						e.img.src = e.imgsrc
 					}
 					
-					if (e.spec.dir) e.ang = e.spec.dir
+					if (e.spec.dir != undefined) e.ang = e.spec.dir
 					if (e.spec.homing || e.spec.dir) {
 						canvas.context.translate(e.x/*-e.size*(e.img.width/e.img.height)/2*/,e.y/*-e.size/2*/)
 						canvas.context.rotate(e.ang ?? 0)
@@ -2217,9 +2218,9 @@ if (e.spec.bb) {
 							if (!other || Math.abs(e.x-other.x-(other.spec.coll ?? [75,75,75])[2]/2-(other.spec.coll ?? [0])[0]) > (e.spec.CollBox ?? CollBox[e.type])[0]/2+(other.spec.coll ?? [75,75,75])[2]/2 || (Math.abs(other.y+(other.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(other.spec.coll ?? [0,0])[1] >= (e.spec.CollBox ?? CollBox[e.type])[1]/2+(other.spec.coll ?? [75,75,75,75])[3]/2 && Math.floor(e.y/100) != Math.floor(other.y/100))) e.damaged.splice(e.damaged.indexOf(r),1)
 						})
 					}
-					if ((!e.spec.homing || !t) && !e.spec.reTarget && (e.x > 900 || (e.x < 0 && e.vx < 0) || e.y > 700 || e.y < -100)) {
+					if ((!e.spec.homing || !t) && !e.spec.reTarget && (e.x > 900 || (e.x < 0 && e.vx < 0) || (e.y > 700 && e.vy > 0) || (e.y < -100 && e.vy < 0))) {
 						if (!e.spec.bb) {
-							if (!Dead.includes(["Proj",e.id])) {
+							if (!isDead("Proj",e.id)) {
 								Dead.push(["Proj",e.id])
 							}
 						}
@@ -2475,6 +2476,33 @@ if (e.spec.pen == undefined) {
 						}
 						//if (e.spec.proj) alert(e.spec.lifespan+","+e.spec.Threshold+","+(e.spec.lifespan <= e.spec.Threshold))
 						if (e.spec.lifespan <= e.spec.Threshold) {
+							if (e.spec.meteor) {
+								const speed = Math.hypot(e.vx,e.vy)
+								for (let j=0;j<e.spec.meteorRing;j++) {
+									const off = j/e.spec.meteor/e.spec.meteorRing*Math.PI*4
+									for (let i=0;i<e.spec.meteor;i++) {
+										let met = JSON.parse(JSON.stringify(e))
+										met.size /= e.spec.meteor
+										met.value /= e.spec.meteor
+										met.vx = Math.cos(i/e.spec.meteor*Math.PI*2+off)*speed
+										met.vy = Math.sin(i/e.spec.meteor*Math.PI*2+off)*speed
+										met.x -= met.vx*j*1
+										met.y -= met.vy*j*1
+										met.spec.meteor = undefined
+										met.spec.lifespan = undefined
+										met.spec.Threshold = undefined
+										met.id = Pid
+										Pid++
+										for (const [key,value] of Object.entries(e.spec.meteorStat)) {
+											met[key] = value
+										}
+										for (const [key,value] of Object.entries(e.spec.meteorSpec)) {
+											met.spec[key] = value
+										}
+										Proj.push(met)
+									}
+								}
+							}
 							if (!isDead("Proj",e.id)) {
 								Dead.push(["Proj",e.id])
 							}
@@ -3295,10 +3323,10 @@ if (e.spec.pen == undefined) {
 									if ((ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
 									if (ee.health <= 0) {
 										if (ee.plant == 84) {
-											ee.health = 1000
+											ee.health = 1
 											ee.spec.noColl = true
 											ee.spec.override = true
-											ee.spec.transform = {"count":100,"reqTar":false,"spec":{"range":-1,"override":true}}
+											ee.spec.transform = {"count":100,"reqTar":false,"health":1000,"spec":{"range":-1,"override":true}}
 										} if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
 												WaveHealth -= Math.max(0,e.health)
