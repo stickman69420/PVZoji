@@ -1051,6 +1051,8 @@ function detectMatches(grid_size) {
 										ee.spec[key] = special[ee.plant][key]
 									}
 								}
+							} else if (selled == 88) {
+								if (ee.spec.frozen) ee.spec.frozen = undefined
 							} else if (ee.spec.UpgType && (select2 >= 0 && special[selled].upgrade > 0 && /*(ee.spec.under != true || ee.spec.UpgType == special[selled].UpgradeType) && */ee.spec.UpgType.includes(special[selled].UpgradeType))) {
 								valid = false
 								if (((special[selled].extra ?? 0)+cost[selled] <= sun) || (MinigameA == 1 && MinigameB ==1)) {
@@ -1375,6 +1377,15 @@ function detectMatches(grid_size) {
 					if (Level == 94) {
 						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":Proj[0].y,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[[31,32,37][Proj.filter(p => p.spec.proj).length-1]],"spec":Object.assign({"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},[{"ice":{"chance":1,"dur":1000},"snow":5000},{"explode":[100,100,150,1,{},0]},{"knock":1}][Proj.filter(p => p.spec.proj).length-1]),"value":Proj.filter(p => p.spec.proj).length == 2 ? 250 : 200})
 						Pid++
+					}
+					if (isice) {
+						for (let i=0;i<3;i++) {
+							setTimeout(() => {
+								Lawn.forEach((e) => {
+									if (!e.spec.freezeImm) e.spec.frozen = Math.min((e.spec.frozen ?? 0),2)+1
+								})
+							},1000+i*500)
+						}
 					}
 					alarm.innerHTML = "A HUGE WAVE OF ZOMBIES IS APPROACHING"
 					alarm.style.fontSize = 35*sizePerc+"px"
@@ -1951,6 +1962,7 @@ function detectMatches(grid_size) {
 							e.previmg = e.img
 						}
 						canvas.context.drawImage(e.Img,e.col*100+(100-e.size)/2,e.row*100+(100-e.size)/2,e.size,e.size)
+						if (e.spec.frozen) canvas.context.drawImage(preloadedImg[37+e.spec.frozen],e.col*100+(100-e.size)/2,e.row*100+(100-e.size)/2,e.size,e.size)
 						if (HpBars%2 == 1) {
 							canvas.context.fillStyle = "#FF0000"
 							canvas.context.fillRect(e.col*100,e.row*100,100,10)
@@ -1964,10 +1976,15 @@ function detectMatches(grid_size) {
 						canvas.context.strokeText(Math.floor(e.cool*100)/100,e.col*100,e.row*100)*/
 					}
 					if(e.health <= 0) {
-						if (!isDead("Lawn",e.id)) {
+						if (e.plant == 84) {
+							e.health = 1
+							e.spec.noColl = true
+							e.spec.override = true
+							e.spec.transform = {"count":100,"reqTar":false,"health":1000,"spec":{"range":-1,"override":true}}
+						} else if (!isDead("Lawn",e.id)) {
 							Dead.push(["Lawn",e.id])
 						}
-					} else {
+					} else if (!e.spec.frozen) {
 					canvas.context.fillStyle = "#FFFFFF"
 					if (e.spec.night && (Level%20 < 10)) canvas.context.fillText("Z",e.col*100+25,e.row*100+50)
 					if (!e.spec.night || (Level%20 > 9)) {
@@ -3322,12 +3339,7 @@ if (e.spec.pen == undefined) {
 									} else {
 									if ((ee.spec.above==undefined || Lawn.findIndex(eee => eee.id === ee.spec.above) === -1) && (ee.spec.in == undefined || Lawn.findIndex(eee => eee.id === ee.spec.in) === -1)) ee.health -= (e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1)
 									if (ee.health <= 0) {
-										if (ee.plant == 84) {
-											ee.health = 1
-											ee.spec.noColl = true
-											ee.spec.override = true
-											ee.spec.transform = {"count":100,"reqTar":false,"health":1000,"spec":{"range":-1,"override":true}}
-										} if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
+										if (ee.spec.hypno && (!ee.spec.night || Level%20 > 9)) {
 											if (zombInWave.includes(e.id)) {
 												WaveHealth -= Math.max(0,e.health)
 											}
