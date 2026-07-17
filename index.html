@@ -1,5 +1,12 @@
 <!doctype HTML>
 <html>
+	<head>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+":"+e.colno+", "+e.message+"\nIndex")
+			});
+		</script>
+	</head>
 	<body>
 		<p>This page is very WI<s style="color:grey;">P</s></p>
 		<a href="./LevelSelect.html">Start</a><br>
@@ -9,16 +16,119 @@
 		<a id="Endles" href="">Endless modes</a><br>
 		<a id="Surv" href="">Survival</a><br>
 		<a id="Minig" href="">Minigames</a><br>
+		<button onclick='exportS()'>Export save data</button><br>
+		<button onclick="loadS()">Load save data</button><br>
 		<!----><button id="buttonthatdeletesallyourdatabecauseitsevil" style="height:500px;width:500px;" onclick="clearEverything()">Delete all save data</button>
 		<button id="buttonthatallowsyoutomodifyyourdatabecauseitsnice" style="height:500px;width:500px;" onclick="modify()">Modify some save data</button>-->
 		<script src="Definitions.js"></script>
 		<script>
+			//localStorage.removeItem("Unlocked")
+			
 			if (LevsUnlocked.includes(14)) almanac.href = "./almanac.html"
 			if (LevsUnlocked.includes(24)) shopp.href = "./Shop.html"
 			if (LevsUnlocked.includes(44)) Zeng.href = "./ZenGarden.html"
 			if (LevsUnlocked.includes(74)) Endles.href = "./Endless.html"
 			if (LevsUnlocked.includes(94)) Surv.href = "./Survival.html"
 			if (shop.mini) Minig.href = "./Minigame.html"
+			
+			async function loadJSON(url,func) {
+				const request = new Request(url);
+				const response = await fetch(request);
+				const done = await response.json()
+				func(done)
+				return(done)
+			}
+			
+			let loadSInp
+			
+			function loadS() {
+				// Source - https://stackoverflow.com/a/40971885
+				// Posted by user4602228, modified by community. See post 'Timeline' for change history
+				// Retrieved 2026-07-17, License - CC BY-SA 4.0
+				
+				let input = document.createElement('input');
+				input.type = 'file';
+				input.accept = ".json"
+				input.click();
+				loadSInp = input
+				input.addEventListener('change', async (event) => {
+					const file = event.target.files[0]; // Get the first selected file
+					if (!file) return;
+					try {
+						const text = await file.text(); // Read file content as text
+						const saveData = JSON.parse(text)
+						for (ladd of ["","survival4,0",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
+							savedVars.forEach((e) => {
+								if (saveData[ladd+e] && (!ladd.includes("survival") || e != "selected" || selected.length == 0)) {
+									localStorage.setItem(ladd+e,typeof saveData[ladd+e] == "object" ?JSON.stringify(saveData[ladd+e]) : saveData[ladd+e])
+								}
+							})
+						}
+						const saveables = ["shop","Levs","Unlocked","money","ZenGarden"]
+						saveables.forEach((e) => {
+							localStorage.setItem(e,e == "money" ? saveData[e] : JSON.stringify(saveData[e]))
+						})
+						location.reload()
+					} catch (error) {
+						alert(error.message)
+					}
+				});
+			}
+			
+			function exportS() {
+				let saveData = {}
+				for (ladd of ["","survival4,0",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
+					savedVars.forEach((e) => {
+						if (localStorage.getItem(ladd+e) && (!ladd.includes("survival") || e != "selected" || selected.length == 0)) {
+							saveData[ladd+e] = localStorage.getItem(ladd+e) != "undefined" && typeof JSON.parse(localStorage.getItem(ladd+e)) == "object" ? JSON.parse(localStorage.getItem(ladd+e),null,"\t") : localStorage.getItem(ladd+e)
+						}
+					})
+				}
+				const saveables = ["shop","Levs","Unlocked","money","ZenGarden"]
+				saveables.forEach((e) => {
+					saveData[e] = typeof JSON.parse(localStorage.getItem(e)) == "object" ? JSON.parse(localStorage.getItem(e)) : localStorage.getItem(e)
+				})
+				saveTemplateAsFile("saveData.json",saveData)
+			}
+			
+// Source - https://stackoverflow.com/a/65939108
+// Posted by MSOACC, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-07-17, License - CC BY-SA 4.0
+
+const saveTemplateAsFile = (filename, dataObjToWrite) => {
+    const blob = new Blob([JSON.stringify(dataObjToWrite,null,"\t")], { type: "text/json" });
+    const link = document.createElement("a");
+
+    link.download = filename;
+    link.href = window.URL.createObjectURL(blob);
+    link.dataset.downloadurl = ["text/json", link.download, link.href].join(":");
+
+    const evt = new MouseEvent("click", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+    });
+
+    link.dispatchEvent(evt);
+    link.remove()
+
+//My additions
+document.body.insertAdjacentHTML("beforeend","<button id='fallbackCopy' style='position:fixed;left:20%;top:20vh;width:60%;height:60vh;' onclick='copySave("+JSON.stringify(dataObjToWrite,null,"\t")+")'>If the download failed click here<button id='closer' style='position:fixed;left:25%;top:60vh;width:50%;height:20vh;' onclick='fallbackCopy.remove();closer.remove()'>Close this window</button></button>")
+};
+			function copySave(data) {
+				navigator.clipboard.writeText(JSON.stringify(data,null,"\t")).then(
+					() => {
+						alert("Saved to clipboard")
+						fallbackCopy.remove();closer.remove()
+					},
+					() => {
+						alert("Copy failed\nattempting alternate solution")
+						fallbackCopy.innerHTML = data
+						fallbackCopy.select();
+						document.execCommand("copy");
+					},
+				)
+			}
 			
 			document.querySelectorAll("a").forEach((e) => {
 				if (e.href == window.location.href) {
@@ -36,7 +146,7 @@
 				localStorage.setItem("Levs",prompt("Levels Unlocked",JSON.stringify(LevsUnlocked)) || JSON.stringify(LevsUnlocked))
 				localStorage.setItem("Unlocked",prompt("Unlocked Plants",/*JSON.stringify(unlocked)*/localStorage.getItem("Unlocked")) || localStorage.getItem("Unlocked"))
 				localStorage.setItem("money",prompt("money",localStorage.getItem("money")) || localStorage.getItem("money"))
-				window.location = "./LevelSelect.html"
+				location.reload()
 			}
 		</script>
 	</body>
