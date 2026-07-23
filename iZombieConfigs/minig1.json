@@ -1,0 +1,865 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1,
+				"in": 27
+			},
+			"plant": 10,
+			"row": 4,
+			"col": 0,
+			"cool": -83.78000000000134,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 1,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1,
+				"in": 28
+			},
+			"plant": 10,
+			"row": 2,
+			"col": 0,
+			"cool": -83.54000000000126,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 2,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1,
+				"in": 29
+			},
+			"plant": 10,
+			"row": 0,
+			"col": 0,
+			"cool": -83.28400000000117,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 3,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1
+			},
+			"plant": 10,
+			"row": 0,
+			"col": 2,
+			"cool": -82.86800000000103,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 4,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1
+			},
+			"plant": 10,
+			"row": 2,
+			"col": 2,
+			"cool": -82.59600000000094,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 5,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1
+			},
+			"plant": 10,
+			"row": 4,
+			"col": 2,
+			"cool": -82.35600000000086,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 6,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1
+			},
+			"plant": 10,
+			"row": 4,
+			"col": 3,
+			"cool": -81.95600000000073,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 7,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1
+			},
+			"plant": 10,
+			"row": 2,
+			"col": 3,
+			"cool": -81.73200000000065,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 8,
+			"cost": 225,
+			"projImg": "gloom",
+			"img": "gloom shroom",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"range": 2,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -10,
+				"pen": -1,
+				"damageOnce": true,
+				"count": 4,
+				"InDelay": 250,
+				"projSpd": 0,
+				"CollBox": [
+					300,
+					300
+				],
+				"projOff": [
+					0,
+					0
+				],
+				"vRange": 3,
+				"negRange": 1
+			},
+			"plant": 10,
+			"row": 0,
+			"col": 3,
+			"cool": -81.52400000000058,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gloom shroom",
+			"projSize": 300
+		},
+		{
+			"id": 9,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 4,
+			"col": 1,
+			"cool": 21.136000000000315,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 10,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 3,
+			"col": 1,
+			"cool": 21.36000000000029,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 11,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 3,
+			"col": 0,
+			"cool": 21.55200000000027,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 12,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 2,
+			"col": 1,
+			"cool": 21.776000000000245,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 13,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 1,
+			"col": 1,
+			"cool": 22.01600000000022,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 14,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 1,
+			"col": 0,
+			"cool": 22.224000000000196,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 15,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 0,
+			"col": 1,
+			"cool": 22.416000000000174,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 16,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 1,
+			"col": 2,
+			"cool": 22.656000000000148,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 17,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 3,
+			"col": 2,
+			"cool": 22.89600000000012,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 18,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 21
+			},
+			"plant": 59,
+			"row": 4,
+			"col": 4,
+			"cool": 2.856,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 19,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 22
+			},
+			"plant": 59,
+			"row": 2,
+			"col": 4,
+			"cool": 0.1839999999999975,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 20,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 23
+			},
+			"plant": 59,
+			"row": 0,
+			"col": 4,
+			"cool": 0.37599999999999767,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 21,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 4,
+			"col": 4,
+			"cool": -73.35199999999786,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 22,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 2,
+			"col": 4,
+			"cool": -73.07999999999777,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 23,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 0,
+			"col": 4,
+			"cool": -72.8719999999977,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 24,
+			"cost": 50,
+			"projImg": "",
+			"img": "garlic",
+			"spec": {},
+			"plant": 36,
+			"row": 4,
+			"col": 5,
+			"cool": 926.8640000001704,
+			"health": 210,
+			"size": 100,
+			"Img": {},
+			"previmg": "garlic"
+		},
+		{
+			"id": 25,
+			"cost": 50,
+			"projImg": "",
+			"img": "garlic",
+			"spec": {},
+			"plant": 36,
+			"row": 2,
+			"col": 5,
+			"cool": 927.2000000001697,
+			"health": 210,
+			"size": 100,
+			"Img": {},
+			"previmg": "garlic"
+		},
+		{
+			"id": 26,
+			"cost": 50,
+			"projImg": "",
+			"img": "garlic",
+			"spec": {},
+			"plant": 36,
+			"row": 0,
+			"col": 5,
+			"cool": 927.4560000001691,
+			"health": 210,
+			"size": 100,
+			"Img": {},
+			"previmg": "garlic"
+		},
+		{
+			"id": 27,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 4,
+			"col": 0,
+			"cool": 938.8480000001425,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 28,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 2,
+			"col": 0,
+			"cool": 939.1520000001418,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 29,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 0,
+			"col": 0,
+			"cool": 939.4720000001411,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		}
+	]
+}

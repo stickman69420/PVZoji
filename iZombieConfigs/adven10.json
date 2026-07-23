@@ -1,0 +1,1680 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 50,
+			"projImg": "",
+			"img": "water pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [],
+				"topWater": true,
+				"above": 7,
+				"frozen": 0
+			},
+			"plant": 33,
+			"row": 5,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "water pot"
+		},
+		{
+			"id": 2,
+			"cost": 50,
+			"projImg": "",
+			"img": "water pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [],
+				"topWater": true,
+				"above": 8,
+				"frozen": 0
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "water pot"
+		},
+		{
+			"id": 7,
+			"cost": 250,
+			"projImg": "spike",
+			"img": "cattail",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [],
+				"short": true,
+				"count": 2,
+				"InDelay": 100,
+				"fireRate": 1.5,
+				"CollBox": [
+					25,
+					25
+				],
+				"range": 9,
+				"vRange": 20,
+				"negRange": 9,
+				"homing": true,
+				"maxTurn": 0.10471975511965977,
+				"damageOnce": true,
+				"projSpd": 3.25,
+				"pult": true,
+				"flight": 1,
+				"proj": true,
+				"frozen": 0,
+				"flying": false
+			},
+			"plant": 16,
+			"row": 5,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "cattail",
+			"projSize": 25,
+			"value": 20,
+			"restore": true
+		},
+		{
+			"id": 8,
+			"cost": 250,
+			"projImg": "spike",
+			"img": "cattail",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [],
+				"short": true,
+				"count": 2,
+				"InDelay": 100,
+				"fireRate": 1.5,
+				"CollBox": [
+					25,
+					25
+				],
+				"range": 9,
+				"vRange": 20,
+				"negRange": 9,
+				"homing": true,
+				"maxTurn": 0.10471975511965977,
+				"damageOnce": true,
+				"projSpd": 3.25,
+				"pult": true,
+				"flight": 1,
+				"proj": true,
+				"frozen": 0,
+				"flying": false
+			},
+			"plant": 16,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "cattail",
+			"projSize": 25,
+			"value": 20,
+			"restore": true
+		},
+		{
+			"id": 9,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1,
+				"frozen": 0
+			},
+			"plant": 80,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 10,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1,
+				"frozen": 0
+			},
+			"plant": 80,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 11,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1,
+				"frozen": 0
+			},
+			"plant": 80,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 12,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1,
+				"frozen": 0
+			},
+			"plant": 80,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 35,
+			"cost": 150,
+			"projImg": "",
+			"img": "guard shroom",
+			"spec": {
+				"night": false,
+				"water": 1,
+				"dayHealth": 300,
+				"bounceP": 1,
+				"freezeImm": true
+			},
+			"plant": 86,
+			"row": 0,
+			"col": 4,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "guard shroom"
+		},
+		{
+			"id": 36,
+			"cost": 150,
+			"projImg": "",
+			"img": "guard shroom",
+			"spec": {
+				"night": false,
+				"water": 1,
+				"dayHealth": 300,
+				"bounceP": 1,
+				"freezeImm": true
+			},
+			"plant": 86,
+			"row": 1,
+			"col": 4,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "guard shroom"
+		},
+		{
+			"id": 37,
+			"cost": 150,
+			"projImg": "",
+			"img": "guard shroom",
+			"spec": {
+				"night": false,
+				"water": 1,
+				"dayHealth": 300,
+				"bounceP": 1,
+				"freezeImm": true
+			},
+			"plant": 86,
+			"row": 2,
+			"col": 4,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "guard shroom"
+		},
+		{
+			"id": 38,
+			"cost": 150,
+			"projImg": "",
+			"img": "guard shroom",
+			"spec": {
+				"night": false,
+				"water": 1,
+				"dayHealth": 300,
+				"bounceP": 1,
+				"freezeImm": true
+			},
+			"plant": 86,
+			"row": 3,
+			"col": 4,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "guard shroom"
+		},
+		{
+			"id": 39,
+			"cost": 150,
+			"projImg": "",
+			"img": "guard shroom",
+			"spec": {
+				"night": false,
+				"water": 1,
+				"dayHealth": 300,
+				"bounceP": 1,
+				"freezeImm": true
+			},
+			"plant": 86,
+			"row": 4,
+			"col": 4,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "guard shroom"
+		},
+		{
+			"id": 40,
+			"cost": 150,
+			"projImg": "",
+			"img": "guard shroom",
+			"spec": {
+				"night": false,
+				"water": 1,
+				"dayHealth": 300,
+				"bounceP": 1,
+				"freezeImm": true
+			},
+			"plant": 86,
+			"row": 5,
+			"col": 4,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "guard shroom"
+		},
+		{
+			"id": 41,
+			"cost": 75,
+			"projImg": "",
+			"img": "cluster shroom",
+			"spec": {
+				"range": -1,
+				"override": true,
+				"night": false
+			},
+			"plant": 84,
+			"row": 5,
+			"col": 5,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "cluster shroom"
+		},
+		{
+			"id": 42,
+			"cost": 75,
+			"projImg": "",
+			"img": "cluster shroom",
+			"spec": {
+				"range": -1,
+				"override": true,
+				"night": false
+			},
+			"plant": 84,
+			"row": 4,
+			"col": 5,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "cluster shroom"
+		},
+		{
+			"id": 43,
+			"cost": 75,
+			"projImg": "",
+			"img": "cluster shroom",
+			"spec": {
+				"range": -1,
+				"override": true,
+				"night": false
+			},
+			"plant": 84,
+			"row": 3,
+			"col": 5,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "cluster shroom"
+		},
+		{
+			"id": 44,
+			"cost": 75,
+			"projImg": "",
+			"img": "cluster shroom",
+			"spec": {
+				"range": -1,
+				"override": true,
+				"night": false
+			},
+			"plant": 84,
+			"row": 2,
+			"col": 5,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "cluster shroom"
+		},
+		{
+			"id": 45,
+			"cost": 75,
+			"projImg": "",
+			"img": "cluster shroom",
+			"spec": {
+				"range": -1,
+				"override": true,
+				"night": false
+			},
+			"plant": 84,
+			"row": 1,
+			"col": 5,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "cluster shroom"
+		},
+		{
+			"id": 46,
+			"cost": 75,
+			"projImg": "",
+			"img": "cluster shroom",
+			"spec": {
+				"range": -1,
+				"override": true,
+				"night": false
+			},
+			"plant": 84,
+			"row": 0,
+			"col": 5,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "cluster shroom"
+		},
+		{
+			"id": 59,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				},
+				"frozen": 0
+			},
+			"plant": 83,
+			"row": 5,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 60,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				},
+				"frozen": 0
+			},
+			"plant": 83,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 61,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				},
+				"frozen": 0
+			},
+			"plant": 83,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 62,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				},
+				"frozen": 0
+			},
+			"plant": 83,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 63,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 64,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 65,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 66,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 67,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 68,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 69,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 70,
+			"cost": 75,
+			"projImg": "kiwi seed",
+			"img": "kiwi fruit",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"count": 0,
+				"InDelay": 500,
+				"fireRate": 2,
+				"transform": {
+					"reqTar": true,
+					"repeat": 19,
+					"count": 1
+				},
+				"transformSpecMod": {
+					"count": 1
+				},
+				"transformSpecMul": {
+					"InDelay": 0.8,
+					"fireRate": 0.9
+				},
+				"transformAft": {
+					"projImg": "kiwi full",
+					"projSize": 100,
+					"value": 150,
+					"spec": {
+						"proj": true,
+						"range": 9,
+						"count": 1,
+						"selfD": 3000,
+						"CollBox": [
+							100,
+							100
+						],
+						"explode": [
+							300,
+							300,
+							100,
+							6,
+							{},
+							0
+						]
+					}
+				}
+			},
+			"plant": 83,
+			"row": 5,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kiwi fruit"
+		},
+		{
+			"id": 71,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 5,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 72,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 4,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 73,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 3,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 74,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 2,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 75,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 1,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 76,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 0,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 77,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 0,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 78,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 0,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 79,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 1,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 80,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 1,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 81,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 2,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 82,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 2,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 83,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 3,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 84,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 3,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 85,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 4,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 86,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 4,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 87,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 5,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 88,
+			"cost": 0,
+			"projImg": "amphibious spore",
+			"img": "amphibious shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": false,
+				"short": true,
+				"water": 1
+			},
+			"plant": 80,
+			"row": 5,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "amphibious shroom"
+		},
+		{
+			"id": 107,
+			"cost": 75,
+			"projImg": "sun",
+			"img": "burning sunflower",
+			"spec": {
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"selfD": 30,
+				"melt": [
+					3,
+					3,
+					39
+				],
+				"freezeImm": true,
+				"frozen": 0
+			},
+			"plant": 90,
+			"row": 5,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "burning sunflower"
+		},
+		{
+			"id": 108,
+			"cost": 75,
+			"projImg": "sun",
+			"img": "burning sunflower",
+			"spec": {
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"selfD": 30,
+				"melt": [
+					3,
+					3,
+					23
+				],
+				"freezeImm": true,
+				"frozen": 0
+			},
+			"plant": 90,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "burning sunflower"
+		},
+		{
+			"id": 109,
+			"cost": 75,
+			"projImg": "sun",
+			"img": "burning sunflower",
+			"spec": {
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"selfD": 30,
+				"melt": [
+					3,
+					3,
+					8
+				],
+				"freezeImm": true,
+				"frozen": 0
+			},
+			"plant": 90,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "burning sunflower"
+		},
+		{
+			"id": 110,
+			"cost": 75,
+			"projImg": "sun",
+			"img": "burning sunflower",
+			"spec": {
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"selfD": 30,
+				"melt": [
+					3,
+					3,
+					54
+				],
+				"freezeImm": true,
+				"frozen": 0
+			},
+			"plant": 90,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "burning sunflower"
+		},
+		{
+			"id": 111,
+			"cost": 75,
+			"projImg": "sun",
+			"img": "burning sunflower",
+			"spec": {
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"selfD": 30,
+				"melt": [
+					3,
+					3,
+					38
+				],
+				"freezeImm": true
+			},
+			"plant": 90,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "burning sunflower"
+		},
+		{
+			"id": 112,
+			"cost": 75,
+			"projImg": "sun",
+			"img": "burning sunflower",
+			"spec": {
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"selfD": 30,
+				"melt": [
+					3,
+					3,
+					24
+				],
+				"freezeImm": true
+			},
+			"plant": 90,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "burning sunflower"
+		}
+	]
+}

@@ -1,0 +1,1024 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 1,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 2,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 3,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 4,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 5,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 6,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 7,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 8,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 9,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 10,
+			"cost": 525,
+			"projImg": "pea tox",
+			"img": "gatling pea tox",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"poison": 0.04
+			},
+			"plant": 7,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea tox",
+			"value": 5
+		},
+		{
+			"id": 11,
+			"cost": 525,
+			"projImg": "pea tox",
+			"img": "gatling pea tox",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"poison": 0.04
+			},
+			"plant": 7,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea tox",
+			"value": 5
+		},
+		{
+			"id": 12,
+			"cost": 525,
+			"projImg": "pea snow",
+			"img": "gatling pea snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 7,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea snow"
+		},
+		{
+			"id": 13,
+			"cost": 525,
+			"projImg": "pea snow",
+			"img": "gatling pea snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 7,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea snow"
+		},
+		{
+			"id": 15,
+			"cost": 525,
+			"projImg": "pea tox",
+			"img": "gatling pea tox",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"poison": 0.04
+			},
+			"plant": 7,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea tox",
+			"value": 5
+		},
+		{
+			"id": 16,
+			"cost": 525,
+			"projImg": "pea tox",
+			"img": "gatling pea tox",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"poison": 0.04
+			},
+			"plant": 7,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea tox",
+			"value": 5
+		},
+		{
+			"id": 17,
+			"cost": 525,
+			"projImg": "pea tox",
+			"img": "gatling pea tox",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"poison": 0.04
+			},
+			"plant": 7,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea tox",
+			"value": 5
+		},
+		{
+			"id": 18,
+			"cost": 525,
+			"projImg": "pea snow",
+			"img": "gatling pea snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 7,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea snow"
+		},
+		{
+			"id": 19,
+			"cost": 525,
+			"projImg": "pea snow",
+			"img": "gatling pea snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 7,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea snow"
+		},
+		{
+			"id": 20,
+			"cost": 525,
+			"projImg": "pea snow",
+			"img": "gatling pea snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"count": 4,
+				"InDelay": 100,
+				"first": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 7,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "gatling pea snow"
+		},
+		{
+			"id": 21,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 4,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 22,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 3,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 23,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 2,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 24,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 1,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 25,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 0,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 26,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"in": 35
+			},
+			"plant": 23,
+			"row": 0,
+			"col": 5,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 27,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"in": 34
+			},
+			"plant": 23,
+			"row": 1,
+			"col": 5,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 28,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"in": 32
+			},
+			"plant": 23,
+			"row": 3,
+			"col": 5,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 29,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"in": 33
+			},
+			"plant": 23,
+			"row": 2,
+			"col": 5,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 30,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"in": 31
+			},
+			"plant": 23,
+			"row": 4,
+			"col": 5,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 31,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 4,
+			"col": 5,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 32,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 3,
+			"col": 5,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 33,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 2,
+			"col": 5,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 34,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 1,
+			"col": 5,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 35,
+			"cost": 175,
+			"projImg": "",
+			"img": "gourd",
+			"spec": {
+				"out": true,
+				"garg": 10
+			},
+			"plant": 70,
+			"row": 0,
+			"col": 5,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "gourd"
+		},
+		{
+			"id": 41,
+			"cost": 100,
+			"projImg": "hurrikale",
+			"img": "hurrikale",
+			"spec": {
+				"light": [
+					20,
+					1
+				],
+				"flying": true,
+				"knock": 6,
+				"flight": 2,
+				"proj": true,
+				"snow": 8000,
+				"pen": -1,
+				"lifespan": 0,
+				"damageOnce": true,
+				"Threshold": -180,
+				"noColl": true,
+				"range": -1,
+				"selfD": 15001,
+				"pult": true,
+				"freezeImm": true,
+				"transform": {
+					"count": 1,
+					"value": 0
+				},
+				"double": true,
+				"transformSpec": {
+					"flight": 0,
+					"flying": false,
+					"double": false
+				}
+			},
+			"plant": 65,
+			"row": 0,
+			"col": 6,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "hurrikale"
+		},
+		{
+			"id": 42,
+			"cost": 100,
+			"projImg": "hurrikale",
+			"img": "hurrikale",
+			"spec": {
+				"light": [
+					20,
+					1
+				],
+				"flying": true,
+				"knock": 6,
+				"flight": 2,
+				"proj": true,
+				"snow": 8000,
+				"pen": -1,
+				"lifespan": 0,
+				"damageOnce": true,
+				"Threshold": -180,
+				"noColl": true,
+				"range": -1,
+				"selfD": 15001,
+				"pult": true,
+				"freezeImm": true,
+				"transform": {
+					"count": 1,
+					"value": 0
+				},
+				"double": true,
+				"transformSpec": {
+					"flight": 0,
+					"flying": false,
+					"double": false
+				}
+			},
+			"plant": 65,
+			"row": 1,
+			"col": 6,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "hurrikale"
+		},
+		{
+			"id": 43,
+			"cost": 100,
+			"projImg": "hurrikale",
+			"img": "hurrikale",
+			"spec": {
+				"light": [
+					20,
+					1
+				],
+				"flying": true,
+				"knock": 6,
+				"flight": 2,
+				"proj": true,
+				"snow": 8000,
+				"pen": -1,
+				"lifespan": 0,
+				"damageOnce": true,
+				"Threshold": -180,
+				"noColl": true,
+				"range": -1,
+				"selfD": 15001,
+				"pult": true,
+				"freezeImm": true,
+				"transform": {
+					"count": 1,
+					"value": 0
+				},
+				"double": true,
+				"transformSpec": {
+					"flight": 0,
+					"flying": false,
+					"double": false
+				}
+			},
+			"plant": 65,
+			"row": 2,
+			"col": 6,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "hurrikale"
+		},
+		{
+			"id": 44,
+			"cost": 100,
+			"projImg": "hurrikale",
+			"img": "hurrikale",
+			"spec": {
+				"light": [
+					20,
+					1
+				],
+				"flying": true,
+				"knock": 6,
+				"flight": 2,
+				"proj": true,
+				"snow": 8000,
+				"pen": -1,
+				"lifespan": 0,
+				"damageOnce": true,
+				"Threshold": -180,
+				"noColl": true,
+				"range": -1,
+				"selfD": 15001,
+				"pult": true,
+				"freezeImm": true,
+				"transform": {
+					"count": 1,
+					"value": 0
+				},
+				"double": true,
+				"transformSpec": {
+					"flight": 0,
+					"flying": false,
+					"double": false
+				}
+			},
+			"plant": 65,
+			"row": 3,
+			"col": 6,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "hurrikale"
+		},
+		{
+			"id": 45,
+			"cost": 100,
+			"projImg": "hurrikale",
+			"img": "hurrikale",
+			"spec": {
+				"light": [
+					20,
+					1
+				],
+				"flying": true,
+				"knock": 6,
+				"flight": 2,
+				"proj": true,
+				"snow": 8000,
+				"pen": -1,
+				"lifespan": 0,
+				"damageOnce": true,
+				"Threshold": -180,
+				"noColl": true,
+				"range": -1,
+				"selfD": 15001,
+				"pult": true,
+				"freezeImm": true,
+				"transform": {
+					"count": 1,
+					"value": 0
+				},
+				"double": true,
+				"transformSpec": {
+					"flight": 0,
+					"flying": false,
+					"double": false
+				}
+			},
+			"plant": 65,
+			"row": 4,
+			"col": 6,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "hurrikale"
+		}
+	]
+}
