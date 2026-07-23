@@ -65,8 +65,9 @@
 		let slect = -1
 		let mov
 		let mGhosts = []
-		const zGard = ["ui/water drop","ui/"+(shop.dcan ? "diamond water verb" : (shop.gcan ? "golden water verb" : "water verb")),"ui/"+(shop.dfert ? "diamond fertiliser" : (shop.gfert ? "golden fertiliser" : "fertiliser")),"","","ui/sell","ui/glove"]
-		const btns = [1,2,3,4,5,6]
+		const zGard = ["ui/water drop","ui/"+(shop.dcan ? "diamond water verb" : (shop.gcan ? "golden water verb" : "water verb")),"ui/"+(shop.dfert ? "diamond fertiliser" : (shop.gfert ? "golden fertiliser" : "fertiliser")),"","","ui/sell","ui/glove","ui/sellAll"]
+		let btns = [1,2,3,4,5,6]
+		if (shop.sellAll) btns.push(7)
 		let zGardImg = []
 		zGard.forEach((e) => {
 			zGardImg.push(new Image())
@@ -136,6 +137,18 @@
 								mov = JSON.stringify(Zengg[pnt])
 								Zengg[pnt] = undefined
 								slect = -2
+								break;
+							case (6):
+								for (let i=0;i<16;i++) {
+									for (let j=0;j<8;j++) {
+										if ((Zengg[[i,j]] ?? [,0])[1] == 3) {
+											incMon(8000,[i*100+150,j*100+150])
+											Zengg[[i,j]] = undefined
+										}
+									}
+								}
+								save()
+								slect = -1
 								break;
 						}
 					}
