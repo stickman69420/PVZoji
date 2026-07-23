@@ -10,3 +10,5 @@ All upgrade plants (from the original adventure) are now here AND you can buy th
 There will be upgrade plants for the new plants of course but those will be added after winter
 
 Hard versions of some adventure mode minigames have been added, as well as all the original minigames I want (including the platform exclusives)
+
+I, Zombie is here now. Some of the levels are very hard have fun
