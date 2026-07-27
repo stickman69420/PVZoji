@@ -57,7 +57,7 @@
 					try {
 						const text = await file.text(); // Read file content as text
 						const saveData = JSON.parse(text)
-						for (ladd of ["","survival4,0",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
+						for (ladd of levSave) {
 							savedVars.forEach((e) => {
 								if (saveData[ladd+e] && (!ladd.includes("survival") || e != "selected" || selected.length == 0)) {
 									localStorage.setItem(ladd+e,typeof saveData[ladd+e] == "object" ?JSON.stringify(saveData[ladd+e]) : saveData[ladd+e])
@@ -77,7 +77,7 @@
 			
 			function exportS() {
 				let saveData = {}
-				for (ladd of ["","survival4,0",...Array(2).fill(0).map((e,ee) => "end"+ee)].concat(...([6,14,1,1].map((r,rr) => Array(r).fill(0).map((e,ee) => "minigame"+rr+","+ee)))).concat(...(Array(4).fill([]).map((r,rr) => Array(AreaName.length).fill(0).map((e,ee) => "survival"+rr+","+ee))))) {
+				for (ladd of levSave) {
 					savedVars.forEach((e) => {
 						if (localStorage.getItem(ladd+e) && (!ladd.includes("survival") || e != "selected" || selected.length == 0)) {
 							saveData[ladd+e] = localStorage.getItem(ladd+e) != "undefined" && typeof JSON.parse(localStorage.getItem(ladd+e)) == "object" ? JSON.parse(localStorage.getItem(ladd+e),null,"\t") : localStorage.getItem(ladd+e)

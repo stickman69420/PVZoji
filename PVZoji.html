@@ -544,6 +544,8 @@ function detectMatches(grid_size) {
 				}
 			} else if (unlocked.length <= SeedC) {
 				selected = unlocked
+			} else if (isZombie && zAllowed.length <= SeedC) {
+				selected = zAllowed
 			} else if (selected.length < SeedC && !["1,1"].includes(MinigameA+","+MinigameB)) {
 				localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
 				if (SurvivalA == 4) sessionStorage.setItem("rog",true)
@@ -553,7 +555,7 @@ function detectMatches(grid_size) {
 			}
 			
 			if (isZombie && !saveloaded) {
-				loadJSON("./iZombieConfigs/"+(Level == 104 ? "adven1" : "minig"+MinigameB)+".json",e => {Lawn = e.Lawn;next = e.next})
+				loadJSON("./iZombieConfigs/"+(Level == 104 ? "adven1" : "minig"+MinigameB)+".json",e => {Lawn = e.Lawn;next = e.next;start = e.start},e => {alert("Level failed to load\n"+e);window.location = "./index.html"})
 				sun = 300
 			}
 			
@@ -1023,7 +1025,7 @@ function detectMatches(grid_size) {
 							Wave++
 							Zombies.find(z => z.id == pzid).y = mouseLoc[1]*100
 						} else {
-							SpawnZombie(selected[select2],selected[select2] == 19 ? Math.floor(mouseLoc[0]) : Math.max(Math.floor(mouseLoc[0]),5),Math.floor(mouseLoc[1]))
+							SpawnZombie(selected[select2],selected[select2] == 19 ? Math.floor(mouseLoc[0]) : Math.max(Math.floor(mouseLoc[0]),start ?? 5),Math.floor(mouseLoc[1]))
 						}
 						//recharge[select2] = zRech[selected[select2]]
 						sun -= zCost[selected[select2]]
@@ -1908,7 +1910,7 @@ function detectMatches(grid_size) {
 			setInterval(() => {
 				/*recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				*/
-				if (isZombie && Zombies.length == 0 && !Proj.some(p => p.spec.sun) && selected.length != 0 && sun < Math.min(...selected.map(s => zCost[s]))) losefn()
+				if (isZombie && Mowers.includes(true) && Zombies.length == 0 && !Proj.some(p => p.spec.sun) && selected.length != 0 && sun < Math.min(...selected.map(s => zCost[s]))) losefn()
 				Obstacles.filter(o => o.type == 4).forEach((e,ee) => {
 					e.timer += 0.016
 					if (e.timer >= 60) {
@@ -2083,6 +2085,10 @@ function detectMatches(grid_size) {
 				if (isbeach) {
 					canvas.context.fillStyle = AreaBg[Math.floor(Level/10)][4]
 					canvas.context.fillRect(beachA[Level%10]*100,0,900-beachA[Level%10]*100,100*rows)
+				}
+				if (isZombie) {
+					canvas.context.fillStyle = "#FF0000"
+					canvas.context.fillRect((start ?? 5)*100+45,0,10,100*rows)
 				}
 				canvas.context.fillStyle = "#000000"
 				canvas.context.textBaseline = "middle"
@@ -2763,7 +2769,7 @@ if (e.spec.pen == undefined) {
 						if (ispool && shop.pclean && Math.abs(2.5-i) == 0.5) {
 							canvas.context.drawImage(mowerImg[1],-30,i*100+25,50,50)
 						} else if (isroof) { 
-							if (shop.rclean) canvas.context.drawImage(mowerImg[2],-30,i*100+25,50,50)
+							if (shop.rclean || isZombie) canvas.context.drawImage(mowerImg[2],-30,i*100+25,50,50)
 						} else if (isside && shop.sbclean && i < 4) {
 							canvas.context.drawImage(mowerImg[3],-30,i*100+25,50,50)
 						} else if (isbeach && shop.aclean) {
@@ -2850,8 +2856,8 @@ if (e.spec.pen == undefined) {
 								e.stun = 2
 							} else if (Mowers[Math.floor(e.y/100)]) {
 								Mowers[Math.floor(e.y/100)] = false
+								MowerTrigger[Math.floor(e.y/100)] = Wave
 								if (!isZombie) {
-									MowerTrigger[Math.floor(e.y/100)] = Wave
 									if ((!ispool || shop.pclean || Math.abs(2.5-Math.floor(e.y/100)) != 0.5) && (!isroof || shop.rclean)) {
 										Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":e.y+50,"type":-1,"vx":(isside && shop.sbclean && e.y <= 300) ? 4 : 2,"vy":0,"size":50,"img":ispool && shop.pclean && Math.abs(2.5-Math.floor(e.y/100)) == 0.5 ? mowerImg[1] : isroof && shop.rclean ? mowerImg[2] : (isbeach && shop.aclean ? mowerImg[4] : mowerImg[0]),"spec":{"pen":-1,"proj":true,"CollBox":[50,100],"pult":(isroof && shop.rclean) || (isside && shop.sbclean && e.y <= 300),"mower":true,"hitFly":true},"value":10000000})
 										Pid++
@@ -3410,6 +3416,7 @@ if (e.spec.pen == undefined) {
 												e.spec.threshold += 2
 												e.spec.size = 10
 												e.y = 400
+												e.x = 700
 												e.mode = 0
 												break;
 											default:
@@ -3492,6 +3499,7 @@ if (e.spec.pen == undefined) {
 						if (e.spec.hide) e.hidden = (!isbeach || e.x > beachA[Level%10]*100)
 						if (e.spec.noColl) e.hidden = true
 						if (!e.spec.noColl) {
+						e.hidden = false
 						Lawn.filter(l => l.health > 0 && l.spec.frozen != 3).forEach((ee) => {
 							if(Math.floor(e.x/100)==ee.col && !ee.spec.ladder && (ee.spec.in == undefined || Lawn.find(l => l.id == ee.spec.in) == undefined || !Lawn.find(l => l.id == ee.spec.in).spec.ladder) && (ee.spec.under == undefined || Lawn.find(l => l.id == ee.spec.under) == undefined || !Lawn.find(l => l.id == ee.spec.under).spec.ladder) && Math.floor(e.y/100)==ee.row && (!ee.spec.noColl || (ee.spec.crush && e.spec.crush != undefined)) && (!e.spec.flying || ee.spec.flight == 2)) {
 								//alert(JSON.stringify(ee)+"\n"+JSON.stringify(e))
@@ -3814,7 +3822,7 @@ if (e.spec.pen == undefined) {
 				if (isZombie) {
 					if (!Mowers.includes(true)) {
 						if (next == undefined) winfn()
-						else loadJSON("./iZombieConfigs/"+next+".json",e => {Mowers.fill(true);Lawn = e.Lawn;next = e.next;Zombies = [];zombProj = []})
+						else loadJSON("./iZombieConfigs/"+next+".json",e => {Mowers.fill(true);Lawn = e.Lawn;next = e.next;start = e.start;Zombies = [];zombProj = []},e => {alert("Level failed to load\n"+e);window.location = "./index.html"})
 					}
 				} else if (winmini || WaveTime <= 0) {
 					if (winmini || (SurvivalA != -1 && ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || resWave+1 < (SurvivalA%2 && SurvivalA != 4 == 0 ? 9 : 18))) || ((Zombies.filter(z => (z.type != 12 && z.type != 13) || zombInWave.includes(z.id)).length == 0) || (Endless != -1 && ((Wave+1)%9 != 0 || Endless == 0)) || ((Endless == -1 && SurvivalA == -1) && (!(Wave == zSpawns.length || zSpawns[Wave].guaranteed.includes(1) || zSpawns[Wave].guaranteed.includes(25) || zSpawns[Wave].guaranteed.includes(58)))))) {
