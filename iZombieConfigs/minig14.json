@@ -1,0 +1,1442 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 1,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 1,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 4,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 2,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 5,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 3,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 4,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 4,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 5,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 5,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 0,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 6,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 0,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 8,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 0,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 9,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 1,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 10,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 4,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 11,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 5,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 14,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 20
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 15,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 21
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 16,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 22
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 17,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 23
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 19,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 25
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 20,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 2,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 21,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 3,
+			"col": 6,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 22,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 2,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 23,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 3,
+			"col": 7,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 25,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 3,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 27,
+			"cost": 100,
+			"projImg": "",
+			"img": "magnet shroom",
+			"spec": {
+				"range": 4,
+				"negRange": 3,
+				"vRange": 5,
+				"metal": true,
+				"night": true,
+				"flight": 1,
+				"UpgType": [
+					8
+				],
+				"in": 26,
+				"frozen": 0
+			},
+			"plant": 31,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "magnet shroom"
+		},
+		{
+			"id": 26,
+			"cost": 125,
+			"projImg": "",
+			"img": "pumpkin",
+			"spec": {
+				"out": true,
+				"frozen": 0
+			},
+			"plant": 30,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "pumpkin"
+		},
+		{
+			"id": 28,
+			"cost": 125,
+			"projImg": "star",
+			"img": "starfruit",
+			"spec": {
+				"range": -1,
+				"proj": true,
+				"count": 5,
+				"frozen": 0
+			},
+			"plant": 29,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "starfruit",
+			"restore": true
+		},
+		{
+			"id": 29,
+			"cost": 125,
+			"projImg": "star",
+			"img": "starfruit",
+			"spec": {
+				"range": -1,
+				"proj": true,
+				"count": 5,
+				"frozen": 0
+			},
+			"plant": 29,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "starfruit",
+			"restore": true
+		},
+		{
+			"id": 30,
+			"cost": 200,
+			"projImg": "pea fire",
+			"img": "split pea fire",
+			"spec": {
+				"UpgType": [],
+				"negRange": 10,
+				"range": 10,
+				"proj": true,
+				"count": 3,
+				"InDelay": 100,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					27
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"frozen": 0
+			},
+			"plant": 28,
+			"row": 5,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "split pea fire",
+			"value": 25
+		},
+		{
+			"id": 31,
+			"cost": 200,
+			"projImg": "pea fire",
+			"img": "split pea fire",
+			"spec": {
+				"UpgType": [],
+				"negRange": 10,
+				"range": 10,
+				"proj": true,
+				"count": 3,
+				"InDelay": 100,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					39
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"frozen": 0
+			},
+			"plant": 28,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "split pea fire",
+			"value": 25
+		},
+		{
+			"id": 32,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				},
+				"frozen": 0
+			},
+			"plant": 9,
+			"row": 5,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 33,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				},
+				"frozen": 0
+			},
+			"plant": 9,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 34,
+			"cost": 125,
+			"projImg": "star",
+			"img": "starfruit",
+			"spec": {
+				"range": -1,
+				"proj": true,
+				"count": 5,
+				"frozen": 0,
+				"in": 44
+			},
+			"plant": 29,
+			"row": 5,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "starfruit",
+			"restore": true
+		},
+		{
+			"id": 35,
+			"cost": 125,
+			"projImg": "spike",
+			"img": "cactus",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"pen": 3,
+				"flight": 1,
+				"damageOnce": true,
+				"frozen": 0
+			},
+			"plant": 26,
+			"row": 5,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "cactus"
+		},
+		{
+			"id": 36,
+			"cost": 125,
+			"projImg": "spike",
+			"img": "cactus",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"pen": 3,
+				"flight": 1,
+				"damageOnce": true,
+				"frozen": 0,
+				"in": 43
+			},
+			"plant": 26,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "cactus"
+		},
+		{
+			"id": 37,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				},
+				"frozen": 0
+			},
+			"plant": 9,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 38,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				},
+				"frozen": 0
+			},
+			"plant": 9,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 39,
+			"cost": 125,
+			"projImg": "star",
+			"img": "starfruit",
+			"spec": {
+				"range": -1,
+				"proj": true,
+				"count": 5,
+				"frozen": 0
+			},
+			"plant": 29,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "starfruit",
+			"restore": true
+		},
+		{
+			"id": 40,
+			"cost": 200,
+			"projImg": "pea fire",
+			"img": "split pea fire",
+			"spec": {
+				"UpgType": [],
+				"negRange": 10,
+				"range": 10,
+				"proj": true,
+				"count": 3,
+				"InDelay": 100,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					42
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"frozen": 0
+			},
+			"plant": 28,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "split pea fire",
+			"value": 25,
+			"restore": true
+		},
+		{
+			"id": 41,
+			"cost": 200,
+			"projImg": "pea fire",
+			"img": "split pea fire",
+			"spec": {
+				"UpgType": [],
+				"negRange": 10,
+				"range": 10,
+				"proj": true,
+				"count": 3,
+				"InDelay": 100,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					1
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"in": 42,
+				"frozen": 0
+			},
+			"plant": 28,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "split pea fire",
+			"value": 25
+		},
+		{
+			"id": 42,
+			"cost": 125,
+			"projImg": "",
+			"img": "pumpkin",
+			"spec": {
+				"out": true,
+				"frozen": 0
+			},
+			"plant": 30,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "pumpkin"
+		},
+		{
+			"id": 43,
+			"cost": 125,
+			"projImg": "",
+			"img": "pumpkin",
+			"spec": {
+				"out": true,
+				"frozen": 0
+			},
+			"plant": 30,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "pumpkin"
+		},
+		{
+			"id": 44,
+			"cost": 125,
+			"projImg": "",
+			"img": "pumpkin",
+			"spec": {
+				"out": true,
+				"frozen": 0
+			},
+			"plant": 30,
+			"row": 5,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "pumpkin"
+		},
+		{
+			"id": 45,
+			"cost": 125,
+			"projImg": "spike",
+			"img": "cactus",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"pen": 3,
+				"flight": 1,
+				"damageOnce": true,
+				"frozen": 0
+			},
+			"plant": 26,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "cactus"
+		},
+		{
+			"id": 46,
+			"cost": 0,
+			"projImg": "sea spore",
+			"img": "sea shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"water": 2,
+				"short": true
+			},
+			"plant": 24,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sea shroom"
+		},
+		{
+			"id": 47,
+			"cost": 0,
+			"projImg": "sea spore",
+			"img": "sea shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"water": 2,
+				"short": true
+			},
+			"plant": 24,
+			"row": 2,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sea shroom"
+		},
+		{
+			"id": 48,
+			"cost": 0,
+			"projImg": "sea spore",
+			"img": "sea shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"water": 2,
+				"short": true
+			},
+			"plant": 24,
+			"row": 3,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sea shroom"
+		},
+		{
+			"id": 49,
+			"cost": 0,
+			"projImg": "sea spore",
+			"img": "sea shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"water": 2,
+				"short": true
+			},
+			"plant": 24,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sea shroom"
+		},
+		{
+			"id": 50,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"frozen": 0,
+				"above": 54
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 51,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"frozen": 0,
+				"above": 58
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 52,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"frozen": 0,
+				"above": 53
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 53,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				},
+				"frozen": 0
+			},
+			"plant": 9,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 54,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				},
+				"frozen": 0
+			},
+			"plant": 9,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 55,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"frozen": 0,
+				"above": 60
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 56,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"frozen": 0,
+				"above": 61
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 57,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"frozen": 0,
+				"above": 62
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 58,
+			"cost": 100,
+			"projImg": "",
+			"img": "magnet shroom",
+			"spec": {
+				"range": 4,
+				"negRange": 3,
+				"vRange": 5,
+				"metal": true,
+				"night": true,
+				"flight": 1,
+				"UpgType": [
+					8
+				],
+				"frozen": 0,
+				"in": 59
+			},
+			"plant": 31,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "magnet shroom"
+		},
+		{
+			"id": 59,
+			"cost": 125,
+			"projImg": "",
+			"img": "pumpkin",
+			"spec": {
+				"out": true,
+				"frozen": 0
+			},
+			"plant": 30,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "pumpkin"
+		},
+		{
+			"id": 60,
+			"cost": 125,
+			"projImg": "star",
+			"img": "starfruit",
+			"spec": {
+				"range": -1,
+				"proj": true,
+				"count": 5,
+				"frozen": 0
+			},
+			"plant": 29,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "starfruit",
+			"restore": true
+		},
+		{
+			"id": 61,
+			"cost": 125,
+			"projImg": "star",
+			"img": "starfruit",
+			"spec": {
+				"range": -1,
+				"proj": true,
+				"count": 5,
+				"frozen": 0
+			},
+			"plant": 29,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "starfruit",
+			"restore": true
+		},
+		{
+			"id": 62,
+			"cost": 125,
+			"projImg": "spike",
+			"img": "cactus",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"pen": 3,
+				"flight": 1,
+				"damageOnce": true,
+				"frozen": 0,
+				"flying": false
+			},
+			"plant": 26,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "cactus",
+			"restore": true
+		},
+		{
+			"id": 63,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 1,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		},
+		{
+			"id": 64,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 65
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 65,
+			"cost": 25,
+			"projImg": "",
+			"img": "plantern",
+			"spec": {
+				"light": [
+					7,
+					5
+				]
+			},
+			"plant": 25,
+			"row": 2,
+			"col": 8,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "plantern"
+		}
+	]
+}

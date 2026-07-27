@@ -1,0 +1,1596 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 78
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 1,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 28
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 2,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 29
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 3,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 77
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 4,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 27
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 5,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 30
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 6,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 76
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 7,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 26
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 8,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 31
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 9,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 75
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 10,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 79
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 11,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 32
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 12,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 74
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 13,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 24
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 14,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 33
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 15,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 73
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 16,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 72
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 17,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 71
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 18,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 70
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 19,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 69
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 24,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 59
+			},
+			"plant": 39,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 26,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 61
+			},
+			"plant": 39,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon",
+			"restore": true
+		},
+		{
+			"id": 27,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 62
+			},
+			"plant": 39,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 28,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 63
+			},
+			"plant": 39,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 29,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 64
+			},
+			"plant": 39,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 30,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 65
+			},
+			"plant": 39,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 31,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 67
+			},
+			"plant": 39,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon",
+			"restore": true
+		},
+		{
+			"id": 32,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 66
+			},
+			"plant": 39,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 33,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true,
+				"in": 68
+			},
+			"plant": 39,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		},
+		{
+			"id": 34,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 53
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 35,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 52
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 36,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 51
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 37,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 50
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 38,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 49
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 39,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 48
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 5,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 40,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 47
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 5,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 41,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 46
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 5,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 42,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 44
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 5,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 43,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 45
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 5,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 44,
+			"cost": 50,
+			"projImg": "",
+			"img": "deco bamboo",
+			"spec": {
+				"regen": 1.25
+			},
+			"plant": 57,
+			"row": 4,
+			"col": 5,
+			"cool":0,
+			"health": 1000,
+			"size": 100,
+			"Img": {},
+			"previmg": "deco bamboo"
+		},
+		{
+			"id": 45,
+			"cost": 50,
+			"projImg": "",
+			"img": "deco bamboo",
+			"spec": {
+				"regen": 1.25
+			},
+			"plant": 57,
+			"row": 3,
+			"col": 5,
+			"cool":0,
+			"health": 1000,
+			"size": 100,
+			"Img": {},
+			"previmg": "deco bamboo"
+		},
+		{
+			"id": 46,
+			"cost": 50,
+			"projImg": "",
+			"img": "deco bamboo",
+			"spec": {
+				"regen": 1.25
+			},
+			"plant": 57,
+			"row": 2,
+			"col": 5,
+			"cool":0,
+			"health": 1000,
+			"size": 100,
+			"Img": {},
+			"previmg": "deco bamboo"
+		},
+		{
+			"id": 47,
+			"cost": 50,
+			"projImg": "",
+			"img": "deco bamboo",
+			"spec": {
+				"regen": 1.25
+			},
+			"plant": 57,
+			"row": 1,
+			"col": 5,
+			"cool":0,
+			"health": 1000,
+			"size": 100,
+			"Img": {},
+			"previmg": "deco bamboo"
+		},
+		{
+			"id": 48,
+			"cost": 50,
+			"projImg": "",
+			"img": "deco bamboo",
+			"spec": {
+				"regen": 1.25
+			},
+			"plant": 57,
+			"row": 0,
+			"col": 5,
+			"cool":0,
+			"health": 1000,
+			"size": 100,
+			"Img": {},
+			"previmg": "deco bamboo"
+		},
+		{
+			"id": 49,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 54
+			},
+			"plant": 59,
+			"row": 0,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 50,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 55
+			},
+			"plant": 59,
+			"row": 1,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 51,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 57
+			},
+			"plant": 59,
+			"row": 2,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 52,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 56
+			},
+			"plant": 59,
+			"row": 3,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 53,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 58
+			},
+			"plant": 59,
+			"row": 4,
+			"col": 4,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 54,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 0,
+			"col": 4,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 55,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 1,
+			"col": 4,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 56,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 3,
+			"col": 4,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 57,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 2,
+			"col": 4,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 58,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 4,
+			"col": 4,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 69,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 70,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 71,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 72,
+			"cost": 250,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 73,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125,
+			"restore": true
+		},
+		{
+			"id": 74,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 75,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 76,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil",
+			"restore": true
+		},
+		{
+			"id": 77,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 78,
+			"cost": 100,
+			"projImg": "draft",
+			"img": "draftodil",
+			"spec": {
+				"flying": true,
+				"knock": 0.25,
+				"flight": 2,
+				"proj": true,
+				"damageOnce": true,
+				"range": 10,
+				"pult": true
+			},
+			"plant": 67,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "draftodil"
+		},
+		{
+			"id": 79,
+			"cost": 500,
+			"projImg": "winter melon",
+			"img": "winter melon",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					3,
+					{
+						"snow": 4500,
+						"ice": {
+							"dur": 3250,
+							"chance": 0.1
+						}
+					},
+					75
+				],
+				"UpgType": [],
+				"freezeImm": true
+			},
+			"plant": 39,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "winter melon"
+		}
+	]
+}

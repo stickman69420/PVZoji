@@ -1,0 +1,306 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 5,
+			"col": 0,
+			"cool": 0.3759999999999941,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 1,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 4,
+			"col": 0,
+			"cool": 0.5679999999999943,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 2,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 0,
+			"cool": 0.7759999999999945,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 3,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 0,
+			"cool": 1.0159999999999947,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 4,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 1,
+			"col": 0,
+			"cool": 1.2399999999999949,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 5,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 0,
+			"cool": 1.431999999999995,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 6,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 5,
+			"col": 1,
+			"cool": 0.3759999999999941,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 7,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 4,
+			"col": 1,
+			"cool": 0.5679999999999943,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 8,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 1,
+			"cool": 0.7759999999999945,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 9,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 1,
+			"cool": 1.0159999999999947,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 10,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 1,
+			"col": 1,
+			"cool": 1.2399999999999949,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 11,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 1,
+			"cool": 1.431999999999995,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"value": 50,
+			"projSize": 125
+		}
+	],
+	"next":"minig10,1",
+	"start":1
+}

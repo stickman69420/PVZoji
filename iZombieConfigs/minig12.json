@@ -1,0 +1,525 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 1,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 2,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 3,
+			"cost": 50,
+			"projImg": "",
+			"img": "wall nut",
+			"spec": {},
+			"plant": 3,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "wall nut"
+		},
+		{
+			"id": 4,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 5,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 6,
+			"cost": 75,
+			"projImg": "",
+			"img": "hypno shroom",
+			"spec": {
+				"hypno": true,
+				"night": true,
+				"dayHealth": 300
+			},
+			"plant": 12,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 25,
+			"size": 100,
+			"Img": {},
+			"previmg": "hypno shroom"
+		},
+		{
+			"id": 7,
+			"cost": 75,
+			"projImg": "",
+			"img": "hypno shroom",
+			"spec": {
+				"hypno": true,
+				"night": true,
+				"dayHealth": 300
+			},
+			"plant": 12,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 25,
+			"size": 100,
+			"Img": {},
+			"previmg": "hypno shroom"
+		},
+		{
+			"id": 8,
+			"cost": 75,
+			"projImg": "fume",
+			"img": "fume shroom",
+			"spec": {
+				"UpgType": [
+					3
+				],
+				"night": true,
+				"range": 5,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -20,
+				"pen": -1,
+				"damageOnce": true
+			},
+			"plant": 10,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "fume shroom"
+		},
+		{
+			"id": 9,
+			"cost": 75,
+			"projImg": "fume",
+			"img": "fume shroom",
+			"spec": {
+				"UpgType": [
+					3
+				],
+				"night": true,
+				"range": 5,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -20,
+				"pen": -1,
+				"damageOnce": true
+			},
+			"plant": 10,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "fume shroom"
+		},
+		{
+			"id": 10,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 11,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 13,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 14,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 15,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 16,
+			"cost": 25,
+			"projImg": "spore",
+			"img": "scaredy shroom",
+			"spec": {
+				"night": true,
+				"range": 10,
+				"proj": true,
+				"hide": {
+					"size": [
+						2,
+						3
+					],
+					"transform": {
+						"img": "scaredy shroom hidden"
+					},
+					"reset": {
+						"img": "scaredy shroom"
+					}
+				}
+			},
+			"plant": 13,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "scaredy shroom"
+		},
+		{
+			"id": 17,
+			"cost": 50,
+			"projImg": "",
+			"img": "wall nut",
+			"spec": {},
+			"plant": 3,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "wall nut"
+		},
+		{
+			"id": 18,
+			"cost": 75,
+			"projImg": "fume",
+			"img": "fume shroom",
+			"spec": {
+				"UpgType": [
+					3
+				],
+				"night": true,
+				"range": 5,
+				"proj": true,
+				"lifespan": 0,
+				"Threshold": -20,
+				"pen": -1,
+				"damageOnce": true
+			},
+			"plant": 10,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "fume shroom"
+		},
+		{
+			"id": 19,
+			"cost": 50,
+			"projImg": "",
+			"img": "wall nut",
+			"spec": {},
+			"plant": 3,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "wall nut"
+		},
+		{
+			"id": 20,
+			"cost": 75,
+			"projImg": "",
+			"img": "hypno shroom",
+			"spec": {
+				"hypno": true,
+				"night": true,
+				"dayHealth": 300
+			},
+			"plant": 12,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 25,
+			"size": 100,
+			"Img": {},
+			"previmg": "hypno shroom"
+		}
+	]
+}

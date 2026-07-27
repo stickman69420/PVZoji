@@ -1,0 +1,788 @@
+{
+	"Lawn": [
+		{
+			"id": 2,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"frozen": 0
+			},
+			"plant": 1,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 3,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"frozen": 0
+			},
+			"plant": 1,
+			"row": 5,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 4,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"frozen": 0
+			},
+			"plant": 1,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 5,
+			"cost": 400,
+			"projImg": "pea fire",
+			"img": "threepeater fire",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"InDelay": 0,
+				"count": 3,
+				"lifespan": 16,
+				"Threshold": -10000000000,
+				"vRange": 3,
+				"UpgType": [],
+				"sideBounce": true,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					6
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"frozen": 0
+			},
+			"plant": 18,
+			"row": 5,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "threepeater fire",
+			"value": 25
+		},
+		{
+			"id": 6,
+			"cost": 100,
+			"projImg": "spikes",
+			"img": "spikeweed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"UpgType": [
+					4
+				],
+				"lifespan": 0,
+				"Threshold": -5,
+				"pen": -1,
+				"damageOnce": true,
+				"short": true,
+				"popTire": true,
+				"noColl": true,
+				"negRange": 0.5,
+				"crush": true,
+				"frozen": 0
+			},
+			"plant": 21,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "spikeweed"
+		},
+		{
+			"id": 7,
+			"cost": 50,
+			"projImg": "squash",
+			"img": "squash",
+			"spec": {
+				"proj": true,
+				"selfD": 30001,
+				"lifespan": 0,
+				"pen": -1,
+				"Threshold": -30,
+				"damageOnce": true,
+				"range": 1.5,
+				"negRange": 0.5,
+				"delay": 1000,
+				"goto": true,
+				"hitSnork": true,
+				"noColl": true,
+				"frozen": 0
+			},
+			"plant": 17,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "squash"
+		},
+		{
+			"id": 8,
+			"cost": 400,
+			"projImg": "pea fire",
+			"img": "threepeater fire",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"InDelay": 0,
+				"count": 3,
+				"lifespan": 16,
+				"Threshold": -10000000000,
+				"vRange": 3,
+				"UpgType": [],
+				"sideBounce": true,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					22
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"frozen": 0
+			},
+			"plant": 18,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "threepeater fire",
+			"value": 25
+		},
+		{
+			"id": 9,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"frozen": 0
+			},
+			"plant": 23,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 10,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true
+			},
+			"plant": 23,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 11,
+			"cost": 325,
+			"projImg": "pea",
+			"img": "threepeater",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"InDelay": 0,
+				"count": 3,
+				"lifespan": 16,
+				"Threshold": -10000000000,
+				"vRange": 3,
+				"UpgType": [
+					0
+				],
+				"sideBounce": true
+			},
+			"plant": 18,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "threepeater"
+		},
+		{
+			"id": 12,
+			"cost": 100,
+			"projImg": "spikes",
+			"img": "spikeweed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"UpgType": [
+					4
+				],
+				"lifespan": 0,
+				"Threshold": -5,
+				"pen": -1,
+				"damageOnce": true,
+				"short": true,
+				"popTire": true,
+				"noColl": true,
+				"negRange": 0.5,
+				"crush": true,
+				"frozen": 0
+			},
+			"plant": 21,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "spikeweed"
+		},
+		{
+			"id": 13,
+			"cost": 100,
+			"projImg": "spikes",
+			"img": "spikeweed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"UpgType": [
+					4
+				],
+				"lifespan": 0,
+				"Threshold": -5,
+				"pen": -1,
+				"damageOnce": true,
+				"short": true,
+				"popTire": true,
+				"noColl": true,
+				"negRange": 0.5,
+				"crush": true
+			},
+			"plant": 21,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "spikeweed"
+		},
+		{
+			"id": 14,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600,
+				"frozen": 0
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 16,
+			"cost": 100,
+			"projImg": "spikes",
+			"img": "spikeweed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"UpgType": [
+					4
+				],
+				"lifespan": 0,
+				"Threshold": -5,
+				"pen": -1,
+				"damageOnce": true,
+				"short": true,
+				"popTire": true,
+				"noColl": true,
+				"negRange": 0.5,
+				"crush": true,
+				"frozen": 0
+			},
+			"plant": 21,
+			"row": 5,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "spikeweed"
+		},
+		{
+			"id": 17,
+			"cost": 100,
+			"projImg": "spikes",
+			"img": "spikeweed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"UpgType": [
+					4
+				],
+				"lifespan": 0,
+				"Threshold": -5,
+				"pen": -1,
+				"damageOnce": true,
+				"short": true,
+				"popTire": true,
+				"noColl": true,
+				"negRange": 0.5,
+				"crush": true
+			},
+			"plant": 21,
+			"row": 5,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "spikeweed"
+		},
+		{
+			"id": 18,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true,
+				"frozen": 0
+			},
+			"plant": 23,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 19,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 29,
+				"frozen": 0
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 20,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 27,
+				"frozen": 0
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 21,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 28
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 22,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 31
+			},
+			"plant": 16,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 23,
+			"cost": 25,
+			"projImg": "",
+			"img": "lily pad",
+			"spec": {
+				"water": 2,
+				"under": true,
+				"UpgType": [
+					5
+				],
+				"short": true,
+				"above": 30
+			},
+			"plant": 16,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "lily pad"
+		},
+		{
+			"id": 24,
+			"cost": 25,
+			"projImg": "kelp",
+			"img": "tangle kelp",
+			"spec": {
+				"proj": true,
+				"selfD": 30001,
+				"range": 1,
+				"lifespan": 0,
+				"Threshold": -6,
+				"water": 2,
+				"hitSnork": true,
+				"noColl": true,
+				"frozen": 0
+			},
+			"plant": 19,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "tangle kelp"
+		},
+		{
+			"id": 25,
+			"cost": 25,
+			"projImg": "kelp",
+			"img": "tangle kelp",
+			"spec": {
+				"proj": true,
+				"selfD": 30001,
+				"range": 1,
+				"lifespan": 0,
+				"Threshold": -6,
+				"water": 2,
+				"hitSnork": true,
+				"noColl": true
+			},
+			"plant": 19,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "tangle kelp"
+		},
+		{
+			"id": 26,
+			"cost": 25,
+			"projImg": "kelp",
+			"img": "tangle kelp",
+			"spec": {
+				"proj": true,
+				"selfD": 30001,
+				"range": 1,
+				"lifespan": 0,
+				"Threshold": -6,
+				"water": 2,
+				"hitSnork": true,
+				"noColl": true,
+				"frozen": 0
+			},
+			"plant": 19,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "tangle kelp"
+		},
+		{
+			"id": 27,
+			"cost": 50,
+			"projImg": "squash",
+			"img": "squash",
+			"spec": {
+				"proj": true,
+				"selfD": 30001,
+				"lifespan": 0,
+				"pen": -1,
+				"Threshold": -30,
+				"damageOnce": true,
+				"range": 1.5,
+				"negRange": 0.5,
+				"delay": 1000,
+				"goto": true,
+				"hitSnork": true,
+				"noColl": true,
+				"frozen": 0
+			},
+			"plant": 17,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "squash"
+		},
+		{
+			"id": 28,
+			"cost": 50,
+			"projImg": "squash",
+			"img": "squash",
+			"spec": {
+				"proj": true,
+				"selfD": 30001,
+				"lifespan": 0,
+				"pen": -1,
+				"Threshold": -30,
+				"damageOnce": true,
+				"range": 1.5,
+				"negRange": 0.5,
+				"delay": 1000,
+				"goto": true,
+				"hitSnork": true,
+				"noColl": true
+			},
+			"plant": 17,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "squash"
+		},
+		{
+			"id": 29,
+			"cost": 400,
+			"projImg": "pea fire",
+			"img": "threepeater fire",
+			"spec": {
+				"proj": true,
+				"range": 10,
+				"InDelay": 0,
+				"count": 3,
+				"lifespan": 16,
+				"Threshold": -10000000000,
+				"vRange": 3,
+				"UpgType": [],
+				"sideBounce": true,
+				"incend": true,
+				"freezeImm": true,
+				"melt": [
+					3,
+					3,
+					56
+				],
+				"explode": [
+					100,
+					100,
+					15,
+					1,
+					{},
+					0
+				],
+				"frozen": 0
+			},
+			"plant": 18,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "threepeater fire",
+			"value": 25
+		},
+		{
+			"id": 30,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 31,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		}
+	]
+}

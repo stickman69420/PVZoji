@@ -1,0 +1,567 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"cost": 25,
+			"projImg": "explosion",
+			"img": "potato mine armed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"selfD": 30001,
+				"lifespan": 0,
+				"Threshold": -6,
+				"pen": -1,
+				"delay": 500,
+				"short": true,
+				"incend": true,
+				"transform": {
+					"img": "potato mine armed",
+					"health": 30001,
+					"noColl": true
+				},
+				"transformSpec": {
+					"maxHealth": 30001
+				},
+				"damageOnce": true,
+				"maxHealth": 30001
+			},
+			"plant": 4,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "potato mine armed",
+			"noColl": true
+		},
+		{
+			"id": 1,
+			"cost": 25,
+			"projImg": "explosion",
+			"img": "potato mine armed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"selfD": 30001,
+				"lifespan": 0,
+				"Threshold": -6,
+				"pen": -1,
+				"delay": 500,
+				"short": true,
+				"incend": true,
+				"transform": {
+					"img": "potato mine armed",
+					"health": 30001,
+					"noColl": true
+				},
+				"transformSpec": {
+					"maxHealth": 30001
+				},
+				"damageOnce": true,
+				"maxHealth": 30001
+			},
+			"plant": 4,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "potato mine armed",
+			"noColl": true
+		},
+		{
+			"id": 2,
+			"cost": 25,
+			"projImg": "explosion",
+			"img": "potato mine armed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"selfD": 30001,
+				"lifespan": 0,
+				"Threshold": -6,
+				"pen": -1,
+				"delay": 500,
+				"short": true,
+				"incend": true,
+				"transform": {
+					"img": "potato mine armed",
+					"health": 30001,
+					"noColl": true
+				},
+				"transformSpec": {
+					"maxHealth": 30001
+				},
+				"damageOnce": true,
+				"maxHealth": 30001
+			},
+			"plant": 4,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "potato mine armed",
+			"noColl": true
+		},
+		{
+			"id": 4,
+			"cost": 125,
+			"projImg": "",
+			"img": "tall nut",
+			"spec": {
+				"tall": true
+			},
+			"plant": 23,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 8000,
+			"size": 100,
+			"Img": {},
+			"previmg": "tall nut"
+		},
+		{
+			"id": 5,
+			"cost": 125,
+			"projImg": "heal",
+			"img": "healing hyacinth",
+			"spec": {
+				"proj": true,
+				"range": -1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -60,
+				"in": 6
+			},
+			"plant": 59,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "healing hyacinth",
+			"restore": true
+		},
+		{
+			"id": 6,
+			"cost": 200,
+			"projImg": "grass",
+			"img": "grass",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"pen": -1,
+				"lifespan": 0,
+				"Threshold": -10,
+				"out": true,
+				"damageOnce": true
+			},
+			"plant": 60,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "grass"
+		},
+		{
+			"id": 7,
+			"cost": 25,
+			"projImg": "explosion",
+			"img": "potato mine armed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"selfD": 30001,
+				"lifespan": 0,
+				"Threshold": -6,
+				"pen": -1,
+				"delay": 500,
+				"short": true,
+				"incend": true,
+				"transform": {
+					"img": "potato mine armed",
+					"health": 30001,
+					"noColl": true
+				},
+				"transformSpec": {
+					"maxHealth": 30001
+				},
+				"damageOnce": true,
+				"maxHealth": 30001
+			},
+			"plant": 4,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "potato mine armed",
+			"noColl": true
+		},
+		{
+			"id": 8,
+			"cost": 175,
+			"projImg": "pea snow",
+			"img": "peashooter snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 0,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter snow"
+		},
+		{
+			"id": 9,
+			"cost": 50,
+			"projImg": "",
+			"img": "wall nut",
+			"spec": {},
+			"plant": 3,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "wall nut"
+		},
+		{
+			"id": 10,
+			"cost": 175,
+			"projImg": "pea snow",
+			"img": "peashooter snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 0,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter snow",
+			"restore": true
+		},
+		{
+			"id": 11,
+			"cost": 175,
+			"projImg": "pea snow",
+			"img": "peashooter snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 0,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter snow",
+			"restore": true
+		},
+		{
+			"id": 12,
+			"cost": 175,
+			"projImg": "pea snow",
+			"img": "peashooter snow",
+			"spec": {
+				"UpgType": [],
+				"range": 10,
+				"proj": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 0,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter snow",
+			"restore": true
+		},
+		{
+			"id": 13,
+			"cost": 50,
+			"projImg": "",
+			"img": "wall nut",
+			"spec": {},
+			"plant": 3,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 4000,
+			"size": 100,
+			"Img": {},
+			"previmg": "wall nut"
+		},
+		{
+			"id": 14,
+			"cost": 25,
+			"projImg": "explosion",
+			"img": "potato mine armed",
+			"spec": {
+				"proj": true,
+				"range": 1,
+				"selfD": 30001,
+				"lifespan": 0,
+				"Threshold": -6,
+				"pen": -1,
+				"delay": 500,
+				"short": true,
+				"incend": true,
+				"transform": {
+					"img": "potato mine armed",
+					"health": 30001,
+					"noColl": true
+				},
+				"transformSpec": {
+					"maxHealth": 30001
+				},
+				"damageOnce": true,
+				"maxHealth": 30001
+			},
+			"plant": 4,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "potato mine armed",
+			"noColl": true
+		},
+		{
+			"id": 15,
+			"cost": 100,
+			"projImg": "pea",
+			"img": "peashooter",
+			"spec": {
+				"UpgType": [
+					0
+				],
+				"range": 10,
+				"proj": true
+			},
+			"plant": 0,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter"
+		},
+		{
+			"id": 16,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"restore": true,
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 17,
+			"cost": 150,
+			"projImg": "sun",
+			"img": "twin sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "twin sunflower",
+			"restore": true,
+			"value": 50,
+			"projSize": 125
+		},
+		{
+			"id": 18,
+			"cost": 100,
+			"projImg": "pea",
+			"img": "peashooter",
+			"spec": {
+				"UpgType": [
+					0
+				],
+				"range": 10,
+				"proj": true
+			},
+			"plant": 0,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter"
+		},
+		{
+			"id": 19,
+			"cost": 100,
+			"projImg": "pea",
+			"img": "peashooter",
+			"spec": {
+				"UpgType": [
+					0
+				],
+				"range": 10,
+				"proj": true
+			},
+			"plant": 0,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "peashooter"
+		},
+		{
+			"id": 20,
+			"cost": 0,
+			"projImg": "ice",
+			"img": "iceberg lettuce",
+			"spec": {
+				"extra": 75,
+				"noColl": true,
+				"ice": {
+					"chance": 1,
+					"dur": 10000
+				},
+				"pen": -1,
+				"snow": 4500,
+				"proj": true,
+				"freezeImm": true,
+				"hitSnork": true,
+				"negRange": 0.5,
+				"range": 1,
+				"selfD": 30001,
+				"lifespan": 0,
+				"Threshold": -6,
+				"upgrade": 1,
+				"upgradeApp": {
+					"img": " snow",
+					"projImg": " snow"
+				},
+				"UpgradeRecharge": 7.5,
+				"UpgradeType": 0,
+				"short": true,
+				"upgradeSpec": {
+					"UpgType": [],
+					"freezeImm": true,
+					"snow": 4500,
+					"ice": {
+						"chance": 0.1,
+						"dur": 3250
+					}
+				}
+			},
+			"plant": 5,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 30001,
+			"size": 100,
+			"Img": {},
+			"previmg": "iceberg lettuce"
+		},
+		{
+			"id": 21,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower"
+		}
+	]
+}
