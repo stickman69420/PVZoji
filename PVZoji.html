@@ -1804,6 +1804,7 @@ function detectMatches(grid_size) {
 							case (4):
 								Lawn.push({"id":Lid,"projImg":ProjImg[15],"img":plants[15],"spec":JSON.parse(JSON.stringify(special[15])),"plant":15,"row":2,"col":4,"cool":fireRate[15]-fireOff[15],"health": plantHealth[15]})
 								Lawn.at(-1).spec.night = false
+								recharge[4]=50
 								Lid++
 								break;
 							case (5):
