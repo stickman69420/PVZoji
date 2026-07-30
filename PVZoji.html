@@ -367,18 +367,20 @@ function detectMatches(grid_size) {
 
 			addEventListener("keydown",function(e) {
 				const kb = keybinds[e.key]
-				if (kb.slice(0,2) == "ss") {
-					const toInt = parseInt()
-					if (toInt != -5 || gCool <= 0) Select(toInt)
-				} else {
-					switch (kb) {
-						case ("pause"):
-							Menu()
-							break;
-						case ("hb"):
-							HpBars = (HpBars+1)%4
-							break
+				if (kb) {
+					if (kb.slice(0,2) == "ss") {
+						const toInt = Number(kb.slice(2))
+						if (toInt != -5 || gCool <= 0) Select(toInt)
+					} else {
+						switch (kb) {
+							case ("pause"):
+								Menu()
+								break;
+							case ("hb"):
+								HpBars = (HpBars+1)%4
+								break
 						
+						}
 					}
 				}
 			})
@@ -1291,11 +1293,11 @@ function detectMatches(grid_size) {
 										},200*i+100)
 									}
 								}
-								if (mods.some(m => m[0]==1 && m[1]==2) && special[selled].UpgradeType == 0 && ee.spec.first) {
+								if (special[selled].UpgradeType == 0 && ee.spec.first) {
 									ee.spec.first = false
 									ee.spec.UpgType = [-1]
 								}
-							} else if (select2 >= 0 && ee.spec.UpgType && special[selled].UpgradeType == 0 && ee.spec.UpgType.includes(-1)) {
+							} else if (mods.some(m => m[0]==1 && m[1]==2) && select2 >= 0 && ee.spec.UpgType && special[selled].UpgradeType == 0 && ee.spec.UpgType.includes(-1)) {
 								valid = false
 								ee.spec.UpgType = []
 								switch (selled) {
