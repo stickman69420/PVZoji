@@ -268,6 +268,6 @@
 						fail(response.status+": "+response.statusText)
 					}
 				} catch (err) {
-					fail(err.message)
+					fail(err.lineNo+": "+err.message)
 				}
 			}

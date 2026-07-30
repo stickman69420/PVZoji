@@ -549,6 +549,8 @@ function detectMatches(grid_size) {
 				}
 			}
 			
+			let redir
+			
 			if (cBelt) {
 				if (!saveloaded) {
 					selected = []
@@ -569,14 +571,10 @@ function detectMatches(grid_size) {
 			} else if (selected.length < SeedC && !["1,1"].includes(MinigameA+","+MinigameB)) {
 				localStorage.setItem("PreSelId",(Number(localStorage.getItem("SelId") ?? 0))+1)
 				if (SurvivalA == 4) sessionStorage.setItem("rog",true)
+				redir = true
 				window.location = isZombie ? "./ZombieSelect.html" : "./SeedSelect.html"
 			} else {
 				localStorage.setItem("PreSelId",0)
-			}
-			
-			if (isZombie && !saveloaded) {
-				loadJSON("./iZombieConfigs/"+(Level == 104 ? "adven1" : "minig"+MinigameB)+".json",e => {Lawn = e.Lawn;next = e.next;start = e.start},e => {alert("Level failed to load\n"+e);alert();window.location = "./index.html"})
-				sun = 300
 			}
 			
 			let mbut = 0
@@ -881,6 +879,7 @@ function detectMatches(grid_size) {
 			}
 			
 			//Main
+			
 			function plantFires(e,tar) {
 				if (e.spec.collHide) e.spec.noColl = false
 				if (e.spec.switch && (e.restore ?? true)) {
@@ -1928,6 +1927,12 @@ function detectMatches(grid_size) {
 			let checkBoard = true
 			let combo = 0
 			const checkmatch = detectMatches(8)
+			
+			if (isZombie && !saveloaded && !redir) {
+				loadJSON("./iZombieConfigs/"+(Level == 104 ? "adven1" : "minig"+MinigameB)+".json",e => {Lawn = e.Lawn;next = e.next;start = e.start},e => {alert("Level failed to load\n"+e);window.location = "./index.html"})
+				sun = 300
+			}
+			
 			setInterval(() => {
 				/*recharge = [0,0,0,0,0,0,0,0,0,0,0]
 				*/
