@@ -1,0 +1,68 @@
+<!doctype HTML>
+<html>
+	<head>
+		<script>
+			addEventListener("error", (e) => {
+				alert(e.lineno+":"+e.colno+", "+e.message+"\nKbind")
+			});
+		</script>
+		<style>
+			a {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				display: block;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: auto;
+				align-content: center;
+				text-align: center;
+				color:#00AF0F;
+				background-color:#45426A;
+				border-color:#222137;
+				border-top-color:#8184B8;
+				border-style:solid;
+				border-width:5px;
+			}
+		</style>
+	</head>
+	<body>
+		<a id="returnn" href="./index.html">Return</a>
+		<script src="Definitions.js"></script>
+		<div id="kebist">
+		</div>
+		<button onclick="localStorage.setItem('keybinds',JSON.stringify(keybinds))">Save changes</button>
+		<script>
+			const realOpt = {"ss0":"Seed 1","ss1":"Seed 2","ss2":"Seed 3","ss3":"Seed 4","ss4":"Seed 5","ss5":"Seed 6","ss6":"Seed 7","ss7":"Seed 8","ss8":"Seed 9","ss9":"Seed 10","pause":"Pause","ss-1":"Shovel","ss-5":"Glove","hb":"Health Bars"}
+			let i=0
+			for (const [key,value] of Object.entries(keybinds)) {
+				let opt = ""
+				for (const [key2,value2] of Object.entries(realOpt)) {
+					opt += "<option "+(key2 == value ? "selected" : "")+" value='"+key2+"'>"+value2+"</option>"
+				}
+				kebist.insertAdjacentHTML("beforeend","<div data-key='"+key+"' onchange='mod("+i+")' id='kb"+i+"'>"+key+"<select id='kbs"+i+"'>"+opt+"</select><button onclick='del("+i+")'>-</button></div>")
+				i++
+			}
+			function del(id) {
+				const kb = document.getElementById("kb"+id)
+				keybinds[kb.dataset.key] = undefined
+				kb.remove()
+			}
+			function mod(id) {
+				keybinds[document.getElementById("kb"+id).dataset.key] = document.getElementById("kbs"+id).value
+			}
+			addEventListener("keydown",function (e) {
+				if (!keybinds[e.key]) {
+					let opt = ""
+					for (const [key2,value2] of Object.entries(realOpt)) {
+						opt += "<option value='"+key2+"'>"+value2+"</option>"
+					}
+					kebist.insertAdjacentHTML("beforeend","<div data-key='"+e.key+"' onchange='mod("+i+")' id='kb"+i+"'>"+e.key+"<select id='kbs"+i+"'>"+opt+"</select><button onclick='del("+i+")'>-</button></div>")
+					i++
+					keybinds[e.key]="ss1"
+				}
+			})
+		</script>
+	</body>
+</html>

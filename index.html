@@ -10,6 +10,7 @@
 	<body>
 		<p>This page is very WI<s style="color:grey;">P</s></p>
 		<a href="./LevelSelect.html">Start</a><br>
+		<a href="./Keybind.html">Change keybinds</a><br>
 		<a id="almanac" href="">Almanac</a><br>
 		<a id="shopp" href="">Shop</a><br>
 		<a id="Zeng" href="">Zen garden</a><br>
@@ -64,7 +65,7 @@
 								}
 							})
 						}
-						const saveables = ["shop","Levs","Unlocked","money","ZenGarden"]
+						const saveables = ["shop","Levs","Unlocked","money","ZenGarden","keybinds"]
 						saveables.forEach((e) => {
 							localStorage.setItem(e,e == "money" ? saveData[e] : JSON.stringify(saveData[e]))
 						})
@@ -84,7 +85,7 @@
 						}
 					})
 				}
-				const saveables = ["shop","Levs","Unlocked","money","ZenGarden"]
+				const saveables = ["shop","Levs","Unlocked","money","ZenGarden","keybinds"]
 				saveables.forEach((e) => {
 					saveData[e] = typeof JSON.parse(localStorage.getItem(e)) == "object" ? JSON.parse(localStorage.getItem(e)) : localStorage.getItem(e)
 				})

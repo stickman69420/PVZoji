@@ -364,6 +364,24 @@ function detectMatches(grid_size) {
   const extractIndicesMatchesCol = ExtractIndicesMatchesColCreator(grid_size);
   return([regExMatchesRow,regExMatchesCol,regexPotentialMatchesRow,regexPotentialMatchesCol])
 }
+
+			addEventListener("keydown",function(e) {
+				const kb = keybinds[e.key]
+				if (kb.slice(0,2) == "ss") {
+					const toInt = parseInt()
+					if (toInt != -5 || gCool <= 0) Select(toInt)
+				} else {
+					switch (kb) {
+						case ("pause"):
+							Menu()
+							break;
+						case ("hb"):
+							HpBars = (HpBars+1)%4
+							break
+						
+					}
+				}
+			})
 			
 			function losefn() {
 				if (lose) {
@@ -555,7 +573,7 @@ function detectMatches(grid_size) {
 			}
 			
 			if (isZombie && !saveloaded) {
-				loadJSON("./iZombieConfigs/"+(Level == 104 ? "adven1" : "minig"+MinigameB)+".json",e => {Lawn = e.Lawn;next = e.next;start = e.start},e => {alert("Level failed to load\n"+e);window.location = "./index.html"})
+				loadJSON("./iZombieConfigs/"+(Level == 104 ? "adven1" : "minig"+MinigameB)+".json",e => {Lawn = e.Lawn;next = e.next;start = e.start},e => {alert("Level failed to load\n"+e);alert();window.location = "./index.html"})
 				sun = 300
 			}
 			
@@ -658,7 +676,7 @@ function detectMatches(grid_size) {
 					Obstacles = []
 					for (let j=4;j<10;j++) {
 						for (let i=0;i<4;i++) {
-							Obstacles.push({"img":"ice trail","id":Oid,"col":j,"row":[0,1,4,5][i],"type":1,"time":0,"max":2700,"last":0})
+							Obstacles.push({"img":"ice trail","id":Oid,"col":j,"row":[0,1,4,5][i],"type":1,"time":0,"max":2700,"last":0,"spawnType":12})
 							Oid++
 						}
 					}
@@ -1488,7 +1506,7 @@ function detectMatches(grid_size) {
 				} else {
 					if (z == 12) {
 						for (let i=0;i<rows;i++) {
-							if (Obstacles.find(o => o.col == 9 && o.row == i)) vlidrows.push(i)
+							if (Obstacles.find(o => o.col == 9 && o.row == i && o.type == 1 && o.spawnType == z)) vlidrows.push(i)
 						}
 					} else {
 						vlidrows = [...Array(rows).keys()]
@@ -2110,7 +2128,7 @@ function detectMatches(grid_size) {
 						if (e.type == 1 && e.col == 8) {
 							if (e.realTime >= e.last+780) {
 								e.last += 780
-								SpawnZombie(12,9,e.row)
+								SpawnZombie(e.spawnType,9,e.row)
 							}
 						}
 					}
@@ -2647,6 +2665,7 @@ if (e.spec.bb) {
 															ee.spec.ice = 0
 														}
 														if (e.spec.snow != undefined) ee.spec.snow = e.spec.snow
+														if (e.spec.stun != undefined) ee.spec.stun = e.spec.stun
 														if (e.spec.slow != undefined) ee.spec.slow = e.spec.slow
 														if (e.spec.poison != undefined) ee.spec.poison = (ee.spec.poison ?? 0)+e.spec.poison
 														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = Math.max(e.spec.ice.dur,ee.spec.ice ?? 0)
@@ -2819,9 +2838,27 @@ if (e.spec.pen == undefined) {
 								e.health = 0
 							}
 						}
+						if (e.type == 62) {
+							let vid = false
+							Obstacles.forEach((eee) => {
+								if (eee.type == 1 && eee.col == Math.floor(e.x/100) && eee.row == Math.floor(e.y/100)) {
+									vid = true
+								}
+							})
+							if (!vid) {
+								WaveHealth -= Math.max(0,e.health)
+								e.health = 0
+							}
+						}
 						if (e.type == 11 && (e.spec.last == undefined || e.x+0 <= e.spec.last)) {
 							e.spec.last = (e.spec.last ?? 1000)-100
-							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0})
+							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0,"spawnType":12})
+							//alert(JSON.stringify(Obstacles))
+							Oid++
+						}
+						if (e.type == 61 && (e.spec.last == undefined || e.x+0 <= e.spec.last)) {
+							e.spec.last = (e.spec.last ?? 1000)-100
+							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0,"spawnType":62})
 							//alert(JSON.stringify(Obstacles))
 							Oid++
 						}
@@ -2988,7 +3025,7 @@ if (e.spec.pen == undefined) {
 						}
 						if (e.type == 11 && (e.spec.last == undefined || e.x+0 <= e.spec.last)) {
 							e.spec.last = (e.spec.last ?? 1000)-100
-							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0})
+							Obstacles.push({"img":"ice trail","id":Oid,"col":Math.round(e.spec.last/100)+1,"row":Math.floor(e.y/100),"type":1,"time":0,"max":2700,"realTime":0,"last":0,"spawnType":12})
 							Oid++
 						}
 						if (e.spec.iceImm) e.spec.ice = 0
@@ -3124,6 +3161,18 @@ if (e.spec.pen == undefined) {
 										row = arr[ind].y/100+i%3-1
 									} while (row < 0 || row >= rows)
 									SpawnZombie(60,arr[ind].x/100+i/30,row)
+								}
+								break;
+							case (62):
+								if (zombInWave.includes(arr[ind].id)) WaveHealthO -= ZombHealth[12]
+								for (let i=0;i<4;i++) {
+									SpawnZombie(63,Math.floor(arr[ind].x/100),Math.floor(arr[ind].y/100))
+									if (zombInWave.includes(arr[ind].id)) {
+										WaveHealth += Zombies.at(-1).health
+										WaveHealthO += Zombies.at(-1).health
+										zombInWave.push(Zombies.at(-1).id)
+									}
+									Zombies[Zombies.length-1].x += 25*i
 								}
 								break;
 						}
@@ -3264,6 +3313,18 @@ if (e.spec.pen == undefined) {
 					} else if (e.spec.ice > 0) {
 						e.vx = 0
 						e.spec.ice -= 100
+						if (e.spec.linked != undefined) {
+							let z = Zombies.find((ee) => ee.id === e.spec.linked)
+							if (z) {
+								let spd = z.spec
+								if (spd.groupSpd < 0) {
+									spd.groupSpd = 0
+								}
+							}
+						}
+					} else if (e.spec.stun > 0) {
+						e.vx = 0
+						e.spec.stun -= 100
 						if (e.spec.linked != undefined) {
 							let z = Zombies.find((ee) => ee.id === e.spec.linked)
 							if (z) {
@@ -3471,7 +3532,7 @@ if (e.spec.pen == undefined) {
 								}
 							}
 						}
-						if (!e.spec.butter > 0 && !e.spec.ice > 0 && e.spec.ammo != 0) {
+						if (!e.spec.butter > 0 && !e.spec.ice > 0 && !e.spec.stun > 0 && e.spec.ammo != 0) {
 						if (e.spec.cool <= 0) {
 					if (e.type == 21 && e.x <= 850) {
 						const targets = Lawn.filter(l => l.row == Math.floor(e.y/100))
@@ -3496,7 +3557,7 @@ if (e.spec.pen == undefined) {
 					}
 					}
 					if (e.spec.cool) e.spec.cool -= (e.spec.snow > 0 ? 0.05 : 0.1)/(e.spec.slow > 0 ? 2 : 1)
-					if ((e.spec.ice ?? 0) <= 0 && (e.spec.butter ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
+					if ((e.spec.ice ?? 0) <= 0 && (e.spec.butter ?? 0) <= 0 && (e.spec.stun ?? 0) <= 0 && (e.stun ?? 0) <= 0) {
 						if (e.spec.hide) e.hidden = (!isbeach || e.x > beachA[Level%10]*100)
 						if (e.spec.noColl) e.hidden = true
 						if (!e.spec.noColl) {
