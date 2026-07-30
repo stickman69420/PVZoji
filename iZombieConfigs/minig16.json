@@ -1,0 +1,1202 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 20
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 1,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 30
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 2,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 37
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 3,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 34
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 4,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 21
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 5,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 33
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 6,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 41
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 7,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 26
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 8,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 22
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 9,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 24
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 10,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 31
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 11,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 35
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 12,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 38
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 13,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 23
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 14,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 25
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 15,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 32
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 16,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 40
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 17,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 39
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 18,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 27
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 19,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 42
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 20,
+			"cost": 50,
+			"projImg": "magic spore",
+			"img": "magic shroom",
+			"spec": {
+				"proj": true,
+				"night": true,
+				"pult": true,
+				"goto": true,
+				"range": 9,
+				"negRange": 9,
+				"vRange": 18,
+				"short": true
+			},
+			"plant": 53,
+			"row": 0,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "magic shroom"
+		},
+		{
+			"id": 21,
+			"cost": 50,
+			"projImg": "magic spore",
+			"img": "magic shroom",
+			"spec": {
+				"proj": true,
+				"night": true,
+				"pult": true,
+				"goto": true,
+				"range": 9,
+				"negRange": 9,
+				"vRange": 18,
+				"short": true
+			},
+			"plant": 53,
+			"row": 1,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "magic shroom"
+		},
+		{
+			"id": 22,
+			"cost": 50,
+			"projImg": "magic spore",
+			"img": "magic shroom",
+			"spec": {
+				"proj": true,
+				"night": true,
+				"pult": true,
+				"goto": true,
+				"range": 9,
+				"negRange": 9,
+				"vRange": 18,
+				"short": true
+			},
+			"plant": 53,
+			"row": 2,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "magic shroom"
+		},
+		{
+			"id": 23,
+			"cost": 50,
+			"projImg": "magic spore",
+			"img": "magic shroom",
+			"spec": {
+				"proj": true,
+				"night": true,
+				"pult": true,
+				"goto": true,
+				"range": 9,
+				"negRange": 9,
+				"vRange": 18,
+				"short": true
+			},
+			"plant": 53,
+			"row": 4,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "magic shroom"
+		},
+		{
+			"id": 24,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 3,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 25,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 4,
+			"col": 2,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 26,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 2,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 27,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 1,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 30,
+			"cost": 25,
+			"projImg": "sun",
+			"img": "sun shroom big",
+			"spec": {
+				"sun": true,
+				"night": true,
+				"range": -1,
+				"lifespan": 0,
+				"Threshold": -600,
+				"short": true,
+				"transform": {
+					"count": 0,
+					"value": 25,
+					"img": "sun shroom big",
+					"projSize": 100
+				}
+			},
+			"plant": 9,
+			"row": 0,
+			"col": 1,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sun shroom big",
+			"restore": true,
+			"value": 25,
+			"projSize": 100
+		},
+		{
+			"id": 31,
+			"cost": 75,
+			"projImg": "fist",
+			"img": "pummel shroom",
+			"spec": {
+				"proj": true,
+				"range": 2,
+				"night": true,
+				"lifespan": 0,
+				"Threshold": -6,
+				"count": 5,
+				"InDelay": 50,
+				"roof": true
+			},
+			"plant": 50,
+			"row": 3,
+			"col": 1,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "pummel shroom"
+		},
+		{
+			"id": 32,
+			"cost": 75,
+			"projImg": "fist",
+			"img": "pummel shroom",
+			"spec": {
+				"proj": true,
+				"range": 2,
+				"night": true,
+				"lifespan": 0,
+				"Threshold": -6,
+				"count": 5,
+				"InDelay": 50,
+				"roof": true
+			},
+			"plant": 50,
+			"row": 4,
+			"col": 3,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "pummel shroom"
+		},
+		{
+			"id": 33,
+			"cost": 75,
+			"projImg": "fist",
+			"img": "pummel shroom",
+			"spec": {
+				"proj": true,
+				"range": 2,
+				"night": true,
+				"lifespan": 0,
+				"Threshold": -6,
+				"count": 5,
+				"InDelay": 50,
+				"roof": true
+			},
+			"plant": 50,
+			"row": 1,
+			"col": 2,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "pummel shroom"
+		},
+		{
+			"id": 34,
+			"cost": 75,
+			"projImg": "fist",
+			"img": "pummel shroom",
+			"spec": {
+				"proj": true,
+				"range": 2,
+				"night": true,
+				"lifespan": 0,
+				"Threshold": -6,
+				"count": 5,
+				"InDelay": 50,
+				"roof": true
+			},
+			"plant": 50,
+			"row": 1,
+			"col": 0,
+			"cool":0,
+			"health": 600,
+			"size": 100,
+			"Img": {},
+			"previmg": "pummel shroom"
+		},
+		{
+			"id": 35,
+			"cost": 150,
+			"projImg": " snow",
+			"img": "absorb shroom snow",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 49,
+			"row": 3,
+			"col": 2,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "absorb shroom snow"
+		},
+		{
+			"id": 37,
+			"cost": 150,
+			"projImg": " elec",
+			"img": "absorb shroom elec",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"pen": -1,
+				"pult": true,
+				"hitSnork": true,
+				"damageOnce": true,
+				"fireRate": 1,
+				"freezeImm": true
+			},
+			"plant": 49,
+			"row": 0,
+			"col": 2,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "absorb shroom elec",
+			"value": 15
+		},
+		{
+			"id": 38,
+			"cost": 150,
+			"projImg": " elec",
+			"img": "absorb shroom elec",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"pen": -1,
+				"pult": true,
+				"hitSnork": true,
+				"damageOnce": true,
+				"fireRate": 1,
+				"freezeImm": true
+			},
+			"plant": 49,
+			"row": 4,
+			"col": 0,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "absorb shroom elec",
+			"value": 15
+		},
+		{
+			"id": 39,
+			"cost": 150,
+			"projImg": " snow",
+			"img": "absorb shroom snow",
+			"spec": {
+				"UpgType": [],
+				"night": true,
+				"freezeImm": true,
+				"snow": 4500,
+				"ice": {
+					"chance": 0.1,
+					"dur": 3250
+				}
+			},
+			"plant": 49,
+			"row": 2,
+			"col": 3,
+			"cool":0,
+			"health": 2000,
+			"size": 100,
+			"Img": {},
+			"previmg": "absorb shroom snow"
+		},
+		{
+			"id": 40,
+			"cost": 0,
+			"projImg": "spore",
+			"img": "pult shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"short": true,
+				"pult": true
+			},
+			"plant": 48,
+			"row": 3,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pult shroom"
+		},
+		{
+			"id": 41,
+			"cost": 0,
+			"projImg": "spore",
+			"img": "pult shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"short": true,
+				"pult": true
+			},
+			"plant": 48,
+			"row": 2,
+			"col": 0,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pult shroom"
+		},
+		{
+			"id": 42,
+			"cost": 0,
+			"projImg": "spore",
+			"img": "pult shroom",
+			"spec": {
+				"proj": true,
+				"range": 4,
+				"night": true,
+				"short": true,
+				"pult": true
+			},
+			"plant": 48,
+			"row": 0,
+			"col": 3,
+			"cool":0,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pult shroom"
+		},
+		{
+			"id": 48,
+			"cost": 75,
+			"projImg": "ghost",
+			"img": "ghost pepper",
+			"spec": {
+				"proj": true,
+				"range": 2.5,
+				"pult": true,
+				"negRange": 1.5,
+				"lifespan": 0,
+				"Threshold": -15,
+				"pen": -1,
+				"damageOnce": true,
+				"noColl": true,
+				"roof": true,
+				"water": 1,
+				"hitSnork": true,
+				"hitFly": true,
+				"selfD": 30001,
+				"freezeImm": true,
+				"transform": {
+					"reqTar": true,
+					"count": 1
+				},
+				"transformSpec": {
+					"range": -1,
+					"transform": {
+						"count": 29,
+						"value": 900,
+						"projSize": 300,
+						"projImg": "ghost exp"
+					},
+					"transformSpec": {
+						"CollBox": [
+							300,
+							300
+						]
+					}
+				}
+			},
+			"plant": 55,
+			"row": 4,
+			"col": 8,
+			"cool":0,
+			"health": 930031,
+			"size": 100,
+			"Img": {},
+			"previmg": "ghost pepper"
+		},
+		{
+			"id": 49,
+			"cost": 75,
+			"projImg": "ghost",
+			"img": "ghost pepper",
+			"spec": {
+				"proj": true,
+				"range": 2.5,
+				"pult": true,
+				"negRange": 1.5,
+				"lifespan": 0,
+				"Threshold": -15,
+				"pen": -1,
+				"damageOnce": true,
+				"noColl": true,
+				"roof": true,
+				"water": 1,
+				"hitSnork": true,
+				"hitFly": true,
+				"selfD": 30001,
+				"freezeImm": true,
+				"transform": {
+					"reqTar": true,
+					"count": 1
+				},
+				"transformSpec": {
+					"range": -1,
+					"transform": {
+						"count": 29,
+						"value": 900,
+						"projSize": 300,
+						"projImg": "ghost exp"
+					},
+					"transformSpec": {
+						"CollBox": [
+							300,
+							300
+						]
+					}
+				}
+			},
+			"plant": 55,
+			"row": 3,
+			"col": 8,
+			"cool":0,
+			"health": 930031,
+			"size": 100,
+			"Img": {},
+			"previmg": "ghost pepper"
+		},
+		{
+			"id": 50,
+			"cost": 75,
+			"projImg": "ghost",
+			"img": "ghost pepper",
+			"spec": {
+				"proj": true,
+				"range": 2.5,
+				"pult": true,
+				"negRange": 1.5,
+				"lifespan": 0,
+				"Threshold": -15,
+				"pen": -1,
+				"damageOnce": true,
+				"noColl": true,
+				"roof": true,
+				"water": 1,
+				"hitSnork": true,
+				"hitFly": true,
+				"selfD": 30001,
+				"freezeImm": true,
+				"transform": {
+					"reqTar": true,
+					"count": 1
+				},
+				"transformSpec": {
+					"range": -1,
+					"transform": {
+						"count": 29,
+						"value": 900,
+						"projSize": 300,
+						"projImg": "ghost exp"
+					},
+					"transformSpec": {
+						"CollBox": [
+							300,
+							300
+						]
+					}
+				}
+			},
+			"plant": 55,
+			"row": 2,
+			"col": 8,
+			"cool":0,
+			"health": 930031,
+			"size": 100,
+			"Img": {},
+			"previmg": "ghost pepper"
+		},
+		{
+			"id": 51,
+			"cost": 75,
+			"projImg": "ghost",
+			"img": "ghost pepper",
+			"spec": {
+				"proj": true,
+				"range": 2.5,
+				"pult": true,
+				"negRange": 1.5,
+				"lifespan": 0,
+				"Threshold": -15,
+				"pen": -1,
+				"damageOnce": true,
+				"noColl": true,
+				"roof": true,
+				"water": 1,
+				"hitSnork": true,
+				"hitFly": true,
+				"selfD": 30001,
+				"freezeImm": true,
+				"transform": {
+					"reqTar": true,
+					"count": 1
+				},
+				"transformSpec": {
+					"range": -1,
+					"transform": {
+						"count": 29,
+						"value": 900,
+						"projSize": 300,
+						"projImg": "ghost exp"
+					},
+					"transformSpec": {
+						"CollBox": [
+							300,
+							300
+						]
+					}
+				}
+			},
+			"plant": 55,
+			"row": 1,
+			"col": 8,
+			"cool":0,
+			"health": 930031,
+			"size": 100,
+			"Img": {},
+			"previmg": "ghost pepper"
+		},
+		{
+			"id": 52,
+			"cost": 75,
+			"projImg": "ghost",
+			"img": "ghost pepper",
+			"spec": {
+				"proj": true,
+				"range": 2.5,
+				"pult": true,
+				"negRange": 1.5,
+				"lifespan": 0,
+				"Threshold": -15,
+				"pen": -1,
+				"damageOnce": true,
+				"noColl": true,
+				"roof": true,
+				"water": 1,
+				"hitSnork": true,
+				"hitFly": true,
+				"selfD": 30001,
+				"freezeImm": true,
+				"transform": {
+					"reqTar": true,
+					"count": 1
+				},
+				"transformSpec": {
+					"range": -1,
+					"transform": {
+						"count": 29,
+						"value": 900,
+						"projSize": 300,
+						"projImg": "ghost exp"
+					},
+					"transformSpec": {
+						"CollBox": [
+							300,
+							300
+						]
+					}
+				}
+			},
+			"plant": 55,
+			"row": 0,
+			"col": 8,
+			"cool":0,
+			"health": 930031,
+			"size": 100,
+			"Img": {},
+			"previmg": "ghost pepper"
+		}
+	]
+}

@@ -1,0 +1,890 @@
+{
+	"Lawn": [
+		{
+			"id": 0,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 37
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 0,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 1,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 30
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 1,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 2,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 25
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 2,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 3,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 29
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 0,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 4,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 22
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 1,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 5,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 21
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 2,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 6,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 35
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 0,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 7,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 23
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 1,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 8,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 31
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 2,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 9,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 20
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 0,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 10,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 48
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 1,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 11,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 49
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 2,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 12,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 33
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 0,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 13,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 34
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 1,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 14,
+			"projImg": "",
+			"cost": 0,
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 28
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 2,
+			"cool": -85.53600000000192,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 15,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 24
+			},
+			"plant": 33,
+			"row": 4,
+			"col": 3,
+			"cool": -79.08799999999977,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 16,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 44
+			},
+			"plant": 33,
+			"row": 3,
+			"col": 3,
+			"cool": -78.8959999999997,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 17,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 26
+			},
+			"plant": 33,
+			"row": 0,
+			"col": 3,
+			"cool": -78.06399999999942,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 18,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 27
+			},
+			"plant": 33,
+			"row": 1,
+			"col": 3,
+			"cool": -77.75999999999932,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 19,
+			"cost": 25,
+			"projImg": "",
+			"img": "pot",
+			"spec": {
+				"roof": true,
+				"under": true,
+				"UpgType": [
+					7
+				],
+				"above": 36
+			},
+			"plant": 33,
+			"row": 2,
+			"col": 3,
+			"cool": -77.51999999999924,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "pot"
+		},
+		{
+			"id": 20,
+			"cost": 300,
+			"projImg": "melon",
+			"img": "melon pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					2,
+					{},
+					75
+				],
+				"UpgType": [
+					6
+				]
+			},
+			"plant": 39,
+			"row": 3,
+			"col": 0,
+			"cool": -72.48799999999757,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "melon pult"
+		},
+		{
+			"id": 21,
+			"cost": 300,
+			"projImg": "melon",
+			"img": "melon pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					2,
+					{},
+					75
+				],
+				"UpgType": [
+					6
+				]
+			},
+			"plant": 39,
+			"row": 1,
+			"col": 2,
+			"cool": -72.10399999999744,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "melon pult"
+		},
+		{
+			"id": 22,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 1,
+			"col": 1,
+			"cool": 4.640000000000871,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 23,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 2,
+			"col": 1,
+			"cool": 4.944000000000871,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 24,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 4,
+			"col": 3,
+			"cool": 5.840000000000872,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 25,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 0,
+			"col": 2,
+			"cool": 6.560000000000873,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower",
+			"restore": true
+		},
+		{
+			"id": 26,
+			"cost": 50,
+			"projImg": "",
+			"img": "garlic",
+			"spec": {},
+			"plant": 36,
+			"row": 0,
+			"col": 3,
+			"cool": 930.5920000001618,
+			"health": 210,
+			"size": 100,
+			"Img": {},
+			"previmg": "garlic"
+		},
+		{
+			"id": 27,
+			"cost": 50,
+			"projImg": "",
+			"img": "garlic",
+			"spec": {},
+			"plant": 36,
+			"row": 1,
+			"col": 3,
+			"cool": 931.5040000001596,
+			"health": 210,
+			"size": 100,
+			"Img": {},
+			"previmg": "garlic"
+		},
+		{
+			"id": 28,
+			"cost": 300,
+			"projImg": "melon",
+			"img": "melon pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"explode": [
+					100,
+					300,
+					58,
+					2,
+					{},
+					75
+				],
+				"UpgType": [
+					6
+				]
+			},
+			"plant": 39,
+			"row": 4,
+			"col": 2,
+			"cool": -62.37599999999491,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "melon pult"
+		},
+		{
+			"id": 29,
+			"cost": 100,
+			"projImg": "kernel",
+			"img": "kernel pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"butter": {
+					"chance": 0.25,
+					"dur": 5000
+				}
+			},
+			"plant": 34,
+			"row": 1,
+			"col": 0,
+			"cool": -61.543999999995,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kernel pult"
+		},
+		{
+			"id": 30,
+			"cost": 100,
+			"projImg": "kernel",
+			"img": "kernel pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"butter": {
+					"chance": 0.25,
+					"dur": 5000
+				}
+			},
+			"plant": 34,
+			"row": 0,
+			"col": 1,
+			"cool": -60.95199999999507,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kernel pult"
+		},
+		{
+			"id": 31,
+			"cost": 100,
+			"projImg": "kernel",
+			"img": "kernel pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"butter": {
+					"chance": 0.25,
+					"dur": 5000
+				}
+			},
+			"plant": 34,
+			"row": 2,
+			"col": 2,
+			"cool": -29.351999999998544,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kernel pult",
+			"restore": true
+		},
+		{
+			"id": 33,
+			"cost": 100,
+			"projImg": "kernel",
+			"img": "kernel pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"butter": {
+					"chance": 0.25,
+					"dur": 5000
+				}
+			},
+			"plant": 34,
+			"row": 4,
+			"col": 0,
+			"cool": -59.49599999999523,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kernel pult"
+		},
+		{
+			"id": 34,
+			"cost": 100,
+			"projImg": "",
+			"img": "umbrella leaf",
+			"spec": {},
+			"plant": 37,
+			"row": 4,
+			"col": 1,
+			"cool": 940.1440000001395,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "umbrella leaf"
+		},
+		{
+			"id": 35,
+			"cost": 100,
+			"projImg": "",
+			"img": "umbrella leaf",
+			"spec": {},
+			"plant": 37,
+			"row": 2,
+			"col": 0,
+			"cool": 940.9920000001375,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "umbrella leaf"
+		},
+		{
+			"id": 36,
+			"cost": 100,
+			"projImg": "",
+			"img": "umbrella leaf",
+			"spec": {},
+			"plant": 37,
+			"row": 2,
+			"col": 3,
+			"cool": 941.4720000001364,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "umbrella leaf"
+		},
+		{
+			"id": 37,
+			"cost": 75,
+			"projImg": "",
+			"img": "hypno shroom",
+			"spec": {
+				"hypno": true,
+				"night": false,
+				"dayHealth": 300
+			},
+			"plant": 12,
+			"row": 0,
+			"col": 0,
+			"cool": 946.3040000001251,
+			"health": 25,
+			"size": 100,
+			"Img": {},
+			"previmg": "hypno shroom"
+		},
+		{
+			"id": 44,
+			"cost": 100,
+			"projImg": "kernel",
+			"img": "kernel pult",
+			"spec": {
+				"range": 10,
+				"proj": true,
+				"pult": true,
+				"hitSnork": true,
+				"butter": {
+					"chance": 0.25,
+					"dur": 5000
+				}
+			},
+			"plant": 34,
+			"row": 3,
+			"col": 3,
+			"cool": -4.968000000000006,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "kernel pult"
+		},
+		{
+			"id": 48,
+			"cost": 75,
+			"projImg": "",
+			"img": "hypno shroom",
+			"spec": {
+				"hypno": true,
+				"night": false,
+				"dayHealth": 300
+			},
+			"plant": 12,
+			"row": 3,
+			"col": 1,
+			"cool": 999.0720000000022,
+			"health": 25,
+			"size": 100,
+			"Img": {},
+			"previmg": "hypno shroom"
+		},
+		{
+			"id": 49,
+			"cost": 50,
+			"projImg": "sun",
+			"img": "sunflower",
+			"spec": {
+				"UpgType": [
+					2
+				],
+				"range": -1,
+				"sun": true,
+				"lifespan": 0,
+				"Threshold": -600
+			},
+			"plant": 1,
+			"row": 3,
+			"col": 2,
+			"cool": 4.935999999999998,
+			"health": 300,
+			"size": 100,
+			"Img": {},
+			"previmg": "sunflower"
+		}
+	]
+}
