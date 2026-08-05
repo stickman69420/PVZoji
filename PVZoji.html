@@ -85,7 +85,7 @@
 		<canvas style="background-color:#976B42;" id="canvas" width="900" height="600"></canvas>
 		<div style="position: relative;height: 83px;" id="seeds"></div>
 		<e id="alarm" style="color:red;font-size:35px;position:absolute;top:300px;left:15px;"></e>
-		<e style="line-height:20px;font-size:10px;" id="Debug"></e><br>
+		<e style="line-height:10px;font-size:10px;" id="Debug"></e><br>
 		<input placeholder="just do stuff" id="cons" onchange="subcons()">
 		<button id="sand" onclick="sand()">Sandbox Mode</button><button id="nextw" onclick="WaveTime = 0">Next Wave</button><button id="nomore" onclick="WaveTime = Infinity;WaveHealthO = -10">No Waves</button>
 		<input placeholder="plant id, column, row" id="spz" onchange='Lawn.push({"id":Lid,"projImg":ProjImg[spz.value.split(",")[0]],"cost":0,"img":plants[spz.value.split(",")[0]],"spec":JSON.parse(JSON.stringify(special[spz.value.split(",")[0]])),"plant":spz.value.split(",")[0],"row":spz.value.split(",")[2],"col":spz.value.split(",")[1],"cool":fireRate[spz.value.split(",")[0]]-fireOff[spz.value.split(",")[0]],"health": plantHealth[spz.value.split(",")[0]]});Lid++'>
@@ -771,7 +771,7 @@ function detectMatches(grid_size) {
 						if (!saveloaded) {
 							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":0,"y":200,"type":-1,"vx":0,"vy":0,"size":100,"img":preloadedImg[36],"spec":{"dir":Math.PI/2},"value":0})
 							Pid++
-							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":200,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[26],"spec":{"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},"value":200})
+							Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":200,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[26],"spec":{"proj":true,"CollBox":[50,50],"bb":true,"redamage":true,"sideBounce":true,"pen":-1,"damageOnce":true},"value":200})
 							Pid++
 						}
 						break;
@@ -920,6 +920,23 @@ function detectMatches(grid_size) {
 					},(e.spec.delay ?? 0)+i*(e.spec.InDelay ?? 0),e,(e.spec.goto && tar),i,tar)
 				}
 				if (!e.spec.double) e.restore = true
+				if (e.plant == 95) {
+					setTimeout(() => {
+						let avail = []
+						for (let i=-1;i<2;i++) {
+							for (let j=-1;j<2;j++) {
+								avail.push(e.col+i < 0 || e.row+j < 0 || e.col+i >= 9 || e.row+j >= rows || Lawn.find(l => l.col==e.col+i && l.row==e.row+j))
+							}
+						}
+						//alert(avail)
+						const avreal = avail.map((a,aa) => [a,aa]).filter(a => !a[0])
+						if (avreal.length > 0) {
+							const tar = avreal[Math.floor(Math.random()*avreal.length)][1]
+							e.row+=tar%3-1
+							e.col+=Math.floor(tar/3)-1
+						}
+					},250)
+				}
 			}
 			reloadSeed()
 			function reloadSeed() {
@@ -1352,6 +1369,15 @@ function detectMatches(grid_size) {
 										ee.img += " meta"
 										ee.projImg += " meta"
 										break;
+									case (94):
+										ee.spec.fireOff = [0,[-37.5,-12.5,12.5,37.5]]
+										ee.value = 0
+										ee.spec.fireRate = 0.1
+										ee.spec.maxHealth = 16000
+										ee.spec.damageOnce = true
+										ee.img += " sulp"
+										ee.projImg += " sulp"
+										break;
 								}
 								if (Level != 74 && Level != 84) recharge[select2] = (special[selled].UpgradeRecharge ?? Recharges[selled])
 								ee.cost += cost[selled]+(special[selled].extra ?? 0)
@@ -1581,7 +1607,7 @@ function detectMatches(grid_size) {
 					}
 					if (Level == 74) sun += 1200
 					if (Level == 94) {
-						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":Proj[0].y,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[[31,32,37][Proj.filter(p => p.spec.proj).length-1]],"spec":Object.assign({"proj":true,"CollBox":[50,50],"bb":true,"sideBounce":true,"pen":-1,"damageOnce":true},[{"ice":{"chance":1,"dur":1000},"snow":5000},{"explode":[100,100,150,1,{},0]},{"knock":1}][Proj.filter(p => p.spec.proj).length-1]),"value":Proj.filter(p => p.spec.proj).length == 2 ? 250 : 200})
+						Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":50,"y":Proj[0].y,"type":-1,"vx":6,"vy":0,"size":50,"img":preloadedImg[[31,32,37][Proj.filter(p => p.spec.proj).length-1]],"spec":Object.assign({"proj":true,"CollBox":[50,50],"bb":true,"redamage":true,"sideBounce":true,"pen":-1,"damageOnce":true},[{"ice":{"chance":1,"dur":1000},"snow":5000},{"explode":[100,100,150,1,{},0]},{"knock":1}][Proj.filter(p => p.spec.proj).length-1]),"value":Proj.filter(p => p.spec.proj).length == 2 ? 250 : 200})
 						Pid++
 					}
 					if (isice && guaranteed.includes(58)) {
@@ -2460,6 +2486,8 @@ if (e.spec.bb) {
 								}
 							}
 						}
+					}
+					if (e.spec.redamage) {
 						e.damaged.toReversed().forEach((r,rr) => {
 							const other = Zombies.find(z => z.id == r)
 							if (!other || Math.abs(e.x-other.x-(other.spec.coll ?? [75,75,75])[2]/2-(other.spec.coll ?? [0])[0]) > (e.spec.CollBox ?? CollBox[e.type])[0]/2+(other.spec.coll ?? [75,75,75])[2]/2 || (Math.abs(other.y+(other.spec.coll ?? [75,75,75,75])[3]/2-e.y)+(other.spec.coll ?? [0,0])[1] >= (e.spec.CollBox ?? CollBox[e.type])[1]/2+(other.spec.coll ?? [75,75,75,75])[3]/2 && Math.floor(e.y/100) != Math.floor(other.y/100))) e.damaged.splice(e.damaged.indexOf(r),1)
@@ -2579,7 +2607,7 @@ if (e.spec.bb) {
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4,42][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.front -= e.value
@@ -2629,7 +2657,7 @@ if (e.spec.bb) {
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4,42][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														ee.spec.shields.top -= e.value
@@ -2661,7 +2689,7 @@ if (e.spec.bb) {
 													}												
 												}
 														if (e.spec.explode) {
-															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
+															Proj.push({"id":Pid,"damaged":[],"damaged2":[],"x":(e.spec.explode[6] ? ee : e).x+e.spec.explode[5],"y":(e.spec.explode[6] ? ee : e).y,"type":-1,"vx":0,"vy":0,"size":(e.spec.explode[0]+e.spec.explode[1])/2,"img":preloadedImg[[2,11,16,17,24,25,35,4,42][e.spec.explode[3]]],"spec":{"proj":true,"lifespan":0,"Threshold":-6,"pen":-1,"damageOnce":true,"CollBox":[e.spec.explode[0],e.spec.explode[1]],...e.spec.explode[4]},"value":e.spec.explode[2]})
 															Pid++
 														}
 														if (zombInWave.includes(ee.id)) {
@@ -2675,6 +2703,18 @@ if (e.spec.bb) {
 														if (e.spec.stun != undefined) ee.spec.stun = e.spec.stun
 														if (e.spec.slow != undefined) ee.spec.slow = e.spec.slow
 														if (e.spec.poison != undefined) ee.spec.poison = (ee.spec.poison ?? 0)+e.spec.poison
+														if (e.spec.slane != undefined && (e.spec.slane == true || Math.random() < e.spec.slane)) {
+															ee.stun = 1
+															setTimeout((e2,ee2) => {
+																vrow = []
+																if (ispool && Math.abs(2.5-e2.y/100+1) <= 0.5 && e2.spec.pool && e2.y/100+1 < rows) vrow.push(100)
+																if (!(ispool && Math.abs(2.5-e2.y/100+1) <= 0.5) && e2.spec.pool != 2 && e2.y/100+1 < rows) vrow.push(100)
+																if (ispool && Math.abs(2.5-e2.y/100-1) <= 0.5 && e2.spec.pool && e2.y/100 > 0) vrow.push(-100)
+																if (!(ispool && Math.abs(2.5-e2.y/100-1) <= 0.5) && e2.spec.pool != 2 && e2.y/100 > 0) vrow.push(-100)
+																e2.y += vrow[Math.floor(Math.random()*vrow.length)]
+																e2.x -= 10
+															},1000,ee,e)
+														}
 														if (Math.random() <= (e.spec.ice ?? {"chance":-1}).chance) ee.spec.ice = Math.max(e.spec.ice.dur,ee.spec.ice ?? 0)
 														if (Math.random() <= (e.spec.butter ?? {"chance":-1}).chance) {
 															ee.spec.butter = e.spec.butter.dur
@@ -3887,7 +3927,7 @@ if (e.spec.pen == undefined) {
 				if (WaveHealth == 0 && Level == 14 && WaveTime > 1) {
 					WaveTime = Math.random()
 				}
-				const winmini = (MinigameA == 1 && MinigameB ==1 && sun >= 2000) || (MinigameA == 1 && (MinigameB ==5 || MinigameB ==6) && matchesc >= 75)
+				const winmini = (MinigameA == 1 && MinigameB == 1 && sun >= 2000) || (MinigameA == 1 && (MinigameB == 5 || MinigameB ==6) && matchesc >= 75)
 				if (isZombie) {
 					if (!Mowers.includes(true)) {
 						if (next == undefined) winfn()
