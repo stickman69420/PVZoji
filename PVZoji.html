@@ -431,7 +431,7 @@ function detectMatches(grid_size) {
 				const stron = SurvivalA == 4 && Level+10 >= 10*AreaBg.length
 				localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
 				localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
-				alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically"+(stron ? "\nZombies are getting stronger" : "")+(!LevsUnlocked.includes(Number(Level)+1) && [34,40,41,44,54,61,81,84,94].includes(Number(Level)) ? "Something new is in the shop" : ""))
+				alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically"+(stron ? "\nZombies are getting stronger" : "")+(!LevsUnlocked.includes(Number(Level)+1) && [34,40,41,44,54,61,64,74,81,84,89,94].includes(Number(Level)) ? "Something new is in the shop" : ""))
 				if (stron) {
 					ZombAllowed.push(22,28)
 					zlvl += 0.1
