@@ -64,10 +64,16 @@
 		})*/
 		let slect = -1
 		let mov
+		let page = 0
 		let mGhosts = []
-		const zGard = ["ui/water drop","ui/"+(shop.dcan ? "diamond water verb" : (shop.gcan ? "golden water verb" : "water verb")),"ui/"+(shop.dfert ? "diamond fertiliser" : (shop.gfert ? "golden fertiliser" : "fertiliser")),"","","ui/sell","ui/glove","ui/sellAll"]
-		let btns = [1,2,3,4,5,6]
-		if (shop.sellAll) btns.push(7)
+		const zGard = ["ui/water drop","ui/"+(shop.ucan ? "uranium water verb" : (shop.dcan ? "diamond water verb" : (shop.gcan ? "golden water verb" : "water verb"))),"ui/"+(shop.ufert ? "uranium fertiliser" : (shop.dfert ? "diamond fertiliser" : (shop.gfert ? "golden fertiliser" : "fertiliser"))),"","","ui/sell","ui/glove","ui/sellAll","ui/larrow","ui/rarrow"]
+		let btns = [1,2,3,4,5,6,8,9]
+		let bmap = [0,1,2,3,4,5,7,8]
+		let req = [true,true,true,true,true,true,false,false,false]
+		if (shop.sellAll) {
+			btns.push(7)
+			bmap.push(6)
+		}
 		let zGardImg = []
 		zGard.forEach((e) => {
 			zGardImg.push(new Image())
@@ -82,74 +88,91 @@
 			const offset = [e.offsetX/canvas.offsetWidth*1920,e.offsetY/canvas.offsetHeight*1180]
 			//alert(JSON.stringify(offset))
 			if (offset[1] >= 1010) {
-				if (slect != -2) slect = Math.floor(offset[0]/170)
+				const tsl = Math.floor(offset[0]/170)
+				if (req[bmap[tsl]] && slect != -2) slect = tsl
+				if (!req[bmap[tsl]]) {
+					switch (bmap[tsl]) {
+						case (6):
+							for (let i=0;i<16;i++) {
+								for (let j=0;j<64;j++) {
+									if ((Zengg[[i,j]] ?? [,0])[1] == 3) {
+										incMon(8000,[i*100+150,j*100+150])
+										Zengg[[i,j]] = undefined
+									}
+								}
+							}
+							save()
+							break;
+						case (7):
+							page = Math.max(page-1,0)
+							break;
+						case (8):
+							page = Math.min(page+1,7)
+							break;
+					}
+				}
 			} else {
 				if (offset[0]%121 <= 100 && offset[1]%130 <= 100) {
-					const pnt = [Math.floor(offset[0]/121),Math.floor(offset[1]/130)]
+					const pnt = [Math.floor(offset[0]/121),Math.floor(offset[1]/130)+page*8]
 					//alert(JSON.stringify(pnt))
 					if ((Zengg[pnt] && slect != -2) || (!Zengg[pnt] && slect == -2)) {
-						switch (slect) {
-							case (-2):
-								Zengg[pnt] = JSON.parse(mov)
-								mov = undefined
-								slect = -1
-								save()
-								break;
-							case (0):
-								const canSize = shop.dcan ? 5 : (shop.gcan ? 3 : 1)
-								for (let i=Math.ceil(canSize/-2);i<=Math.floor(canSize/2);i++) {
-									for (let j=Math.ceil(canSize/-2);j<=Math.floor(canSize/2);j++) {
-										const pnt2 = [pnt[0]+i,pnt[1]+j]
-										if (Zengg[pnt2] && Zengg[pnt2][3] < Zengg[pnt2][4] && Zengg[pnt2][2] < new Date()) {
-											Zengg[pnt2][2] = Number(new Date())+Math.random()*5000+2000
-											Zengg[pnt2][3]++
-											incMon(10,[offset[0]+i*121,offset[1]+j*130])
+						if (slect == -2) {
+							Zengg[pnt] = JSON.parse(mov)
+							mov = undefined
+							slect = -1
+							save()
+						} else {
+							switch (bmap[slect]) {
+								case (0):
+									const canSize = shop.dcan ? 5 : (shop.gcan ? 3 : 1)
+									const canSize2 = shop.ucan ? 5 : 1
+									for (let k=Math.ceil(canSize2/-2);k<=Math.floor(canSize2/2);k++) {
+										for (let i=Math.ceil(canSize/-2);i<=Math.floor(canSize/2);i++) {
+											for (let j=Math.ceil(canSize/-2);j<=Math.floor(canSize/2);j++) {
+												const pnt2 = [pnt[0]+i,pnt[1]+j+k*8]
+												if (Zengg[pnt2] && Zengg[pnt2][3] < Zengg[pnt2][4] && Zengg[pnt2][2] < new Date()) {
+													Zengg[pnt2][2] = Number(new Date())+Math.random()*5000+2000
+													Zengg[pnt2][3]++
+													incMon(10,[offset[0]+i*121,offset[1]+j*130])
+												}
+											}
 										}
 									}
-								}
-								save()
-								slect = -1
-								break;
-							case (1):
-								const fSize = shop.dfert ? 5 : (shop.gfert ? 3 : 1)
-								for (let i=Math.ceil(fSize/-2);i<=Math.floor(fSize/2);i++) {
-									for (let j=Math.ceil(fSize/-2);j<=Math.floor(fSize/2);j++) {
-										const pnt2 = [pnt[0]+i,pnt[1]+j]
-										if (Zengg[pnt2] && Zengg[pnt2][3] == Zengg[pnt2][4] && Zengg[pnt2][2] < new Date() && Zengg[pnt2][1] < 3) {
-											incMon([200,500,2000][Zengg[pnt2][1]],[offset[0]+i*121,offset[1]+j*130])
-											Zengg[pnt2][2] = Number(new Date())+Math.random()*30000+1800000
-											Zengg[pnt2][1]++
-											Zengg[pnt2][3] = 0
-											Zengg[pnt2][4] = Math.floor(Math.random()*3+3)
+									save()
+									slect = -1
+									break;
+								case (1):
+									const fSize = shop.dfert ? 5 : (shop.gfert ? 3 : 1)
+									const fSize2 = shop.ufert ? 5 : 1
+									for (let k=Math.ceil(fSize2/-2);k<=Math.floor(fSize2/2);k++) {
+										for (let i=Math.ceil(fSize/-2);i<=Math.floor(fSize/2);i++) {
+											for (let j=Math.ceil(fSize/-2);j<=Math.floor(fSize/2);j++) {
+												const pnt2 = [pnt[0]+i,pnt[1]+j+k*8]
+												if (Zengg[pnt2] && Zengg[pnt2][3] == Zengg[pnt2][4] && Zengg[pnt2][2] < new Date() && Zengg[pnt2][1] < 3) {
+													incMon([200,500,2000][Zengg[pnt2][1]],[offset[0]+i*121,offset[1]+j*130])
+													Zengg[pnt2][2] = Number(new Date())+Math.random()*30000+1800000
+													Zengg[pnt2][1]++
+													Zengg[pnt2][3] = 0
+													Zengg[pnt2][4] = Math.floor(Math.random()*3+3)
+												}
+											}
 										}
 									}
-								}
-								save()
-								slect = -1
-								break;
-							case (4):
-								incMon([500,1000,3000,8000][Zengg[pnt][1]],offset)
-								Zengg[pnt] = undefined
-								save()
-								slect = -1
-								break;
-							case (5):
-								mov = JSON.stringify(Zengg[pnt])
-								Zengg[pnt] = undefined
-								slect = -2
-								break;
-							case (6):
-								for (let i=0;i<16;i++) {
-									for (let j=0;j<8;j++) {
-										if ((Zengg[[i,j]] ?? [,0])[1] == 3) {
-											incMon(8000,[i*100+150,j*100+150])
-											Zengg[[i,j]] = undefined
-										}
-									}
-								}
-								save()
-								slect = -1
-								break;
+									save()
+									slect = -1
+									break;
+								case (4):
+									incMon([500,1000,3000,8000][Zengg[pnt][1]],offset)
+									Zengg[pnt] = undefined
+									save()
+									slect = -1
+									break;
+								case (5):
+									mov = JSON.stringify(Zengg[pnt])
+									Zengg[pnt] = undefined
+									slect = -2
+									break;
+							}
 						}
 					}
 				}
@@ -158,19 +181,20 @@
 		})
 		let storedzimgs = {}
 		setInterval(() => {
-			mney.innerHTML = "$"+localStorage.getItem("money")
+			mney.innerHTML = "$"+localStorage.getItem("money")+" - Page "+(page+1)
 			canvas.context.clearRect(0,0,1920,1180)
 			canvas.context.fillStyle = "#F8DE8F"
 			canvas.context.lineWidth = 5
 			for (let i=0;i<16;i++) {
-				for (let j=0;j<8;j++) {
-					canvas.context.fillRect(i*121,j*130,100,100)
+				for (let j=page*8;j<page*8+8;j++) {
+					const k = j-page*8
+					canvas.context.fillRect(i*121,k*130,100,100)
 					if ((Zengg[[i,j]] ?? [-1])[0] != -1 && Zengg[[i,j]][1] == 3) canvas.context.strokeStyle = "#61A80B"
 					else canvas.context.strokeStyle = "#94752E"
-					canvas.context.strokeRect(i*121,j*130,100,100)
+					canvas.context.strokeRect(i*121,k*130,100,100)
 					if ((Zengg[[i,j]] ?? [-1])[0] != -1) {
-						if (Zengg[[i,j]][3] < Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date()) canvas.context.drawImage(zGardImg[0],i*121+75,j*130+75,25,25)
-						if (Zengg[[i,j]][3] == Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date() && Zengg[[i,j]][1] < 3) canvas.context.drawImage(zGardImg[2],i*121+75,j*130+75,25,25)
+						if (Zengg[[i,j]][3] < Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date()) canvas.context.drawImage(zGardImg[0],i*121+75,k*130+75,25,25)
+						if (Zengg[[i,j]][3] == Zengg[[i,j]][4] && Zengg[[i,j]][2] < new Date() && Zengg[[i,j]][1] < 3) canvas.context.drawImage(zGardImg[2],i*121+75,k*130+75,25,25)
 						let img
 						if (storedzimgs[plants[Zengg[[i,j]][0]]]) {
 							img = storedzimgs[plants[Zengg[[i,j]][0]]]
@@ -180,7 +204,7 @@
 							storedzimgs[plants[Zengg[[i,j]][0]]] = img
 						}
 						const size = (Zengg[[i,j]][1]+1)*25
-						canvas.context.drawImage(img,i*121+50-size/2,j*130+50-size/2,size,size)
+						canvas.context.drawImage(img,i*121+50-size/2,k*130+50-size/2,size,size)
 					}
 				}
 			}

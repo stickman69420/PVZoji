@@ -103,6 +103,28 @@
 			function subcons() {
 				eval(cons.value)
 			}
+			function zengEmpt(zeng) { //inputs are only used for bulk
+				let Zengg = zeng ?? (JSON.parse(localStorage.getItem("ZenGarden")) ?? {})
+				let empt = []
+				for (let i=0;i<16;i++) {
+					for (let j=0;j<64;j++) {
+						if ((Zengg[[i,j]] ?? -1) == -1) empt.push([i,j])
+					}
+				}
+				return empt
+			}
+			function newZeng(zeng,empt) { //inputs are only used for bulk
+				let Zengg = zeng ?? (JSON.parse(localStorage.getItem("ZenGarden")) ?? {})
+				let emp = empt ?? zengEmpt(zeng)
+				const pages = emp.map(e => Math.floor(e[1]/8)) //collect my pages
+				const fpage = Math.min(...pages)
+				const onpage = emp.filter((e,ee) => pages[ee] == fpage)
+				const occ = onpage[Math.floor(Math.random()*onpage.length)]
+				if (zeng) emp.splice(emp.findIndex(v => v[0]==occ[0] && v[1]==occ[1]))
+				Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+				if (!zeng) localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+				return emp //for bulk
+			}
 			let lose = true
 			const rech = isZombie ? zRech : Recharges
 			let lning = 0
@@ -406,7 +428,7 @@ function detectMatches(grid_size) {
 							localStorage.removeItem("end"+Endless+e)
 						})
 					}
-					window.location = "./LevelSelect.html"
+					window.location = MinigameA+1 ? "Minigame.html" : "./LevelSelect.html"
 				}
 			}
 			function winfn() {
@@ -415,23 +437,20 @@ function detectMatches(grid_size) {
 				zSpawn = false
 				let monCol = 0
 				let zgard = 0
-				let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+				let Zenggg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+				let em = zengEmpt(Zenggg)
 				Proj.forEach((e) => {
 					if (e.spec.money) monCol += e.value
 					if (e.spec.gift) {
-						let occ
-						do {
-							occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
-						} while ((Zengg[occ] ?? -1) != -1)
-						Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+						newZeng(Zenggg,em)
 						zgard++
 					}
 				})
 				
 				const stron = SurvivalA == 4 && Level+10 >= 10*AreaBg.length
-				localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+				localStorage.setItem("ZenGarden",JSON.stringify(Zenggg))
 				localStorage.setItem("money",Number(localStorage.getItem("money"))+monCol)
-				alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically"+(stron ? "\nZombies are getting stronger" : "")+(!LevsUnlocked.includes(Number(Level)+1) && [34,40,41,44,54,61,64,74,81,84,89,94].includes(Number(Level)) ? "Something new is in the shop" : ""))
+				alert("🏆\n"+monCol+" dropped money was collected automatically\n"+zgard+" zen garden plants were collected automatically"+(stron ? "\nZombies are getting stronger" : "")+(SurvivalA == -1 && !LevsUnlocked.includes(Number(Level)+1) && [34,40,41,44,54,61,64,74,81,84,89,94].includes(Number(Level)) ? "\nSomething new is in the shop" : ""))
 				if (stron) {
 					ZombAllowed.push(22,28)
 					zlvl += 0.1
@@ -481,7 +500,7 @@ function detectMatches(grid_size) {
 							localStorage.removeItem("survival"+SurvivalA+","+SurvivalB+e)
 						})
 					}
-					window.location= "./LevelSelect.html"
+					window.location = MinigameA+1 ? "Minigame.html" : "./LevelSelect.html"
 				} else {
 					if (SurvivalA == 4) {
 						Level = (Level+10)%(10*AreaBg.length)
@@ -1469,13 +1488,7 @@ function detectMatches(grid_size) {
 							}
 						} else if (ee.spec.gift) {
 							if (!isDead("Proj",ee.id)) {
-								let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
-								let occ
-								do {
-									occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
-								} while ((Zengg[occ] ?? -1) != -1)
-								Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
-								localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+								newZeng()
 								notcollecting = false
 								Dead.push(["Proj",ee.id])
 							}
@@ -2213,13 +2226,13 @@ function detectMatches(grid_size) {
 							canvas.context.fillStyle = "#00FF00"
 							canvas.context.fillRect(e.col*100,e.row*100,100*(e.health/(e.spec.maxHealth ?? plantHealth[e.plant])),10)
 							const perc = Math.max((e.cool/(e.spec.fireRate ?? fireRate[e.plant])),0)
-							canvas.context.fillStyle = "#000000AA"
+							canvas.context.fillStyle = "#00000077"
 							canvas.context.fillRect(e.col*100+100*(perc%1),e.row*100+10,100*(1-perc%1),10)
 							for (let i=0;i<perc-1;i++) {
-								canvas.context.fillStyle = "#FFFFFFAA"
+								canvas.context.fillStyle = "#FFFFFF77"
 								canvas.context.fillRect(e.col*100,e.row*100+10,100,10)
 							}
-							canvas.context.fillStyle = "#FFFFFFAA"
+							canvas.context.fillStyle = "#FFFFFF77"
 							canvas.context.fillRect(e.col*100,e.row*100+10,100*(perc%1),10)
 						}
 						if (e.spec.ladder) canvas.context.drawImage(preloadedImg[15],e.col*100+25,e.row*100,100,100)
@@ -2345,16 +2358,13 @@ function detectMatches(grid_size) {
 												Dead.push(["Proj",e.id])
 											})
 											localStorage.setItem("money",Number(localStorage.getItem("money"))+moncol)
-											let Zengg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+											let Zenggg = JSON.parse(localStorage.getItem("ZenGarden")) ?? {}
+											let em = zengEmpt(Zenggg)
 											Proj.filter((p) => p.spec.gift).forEach((e) => {
-												let occ
-												do {
-													occ = [Math.floor(Math.random()*16),Math.floor(Math.random()*8)]
-												} while ((Zengg[occ] ?? -1) != -1)
-												Zengg[occ] = [Math.floor(Math.random()*plants.length),0,0,0,Math.floor(Math.random()*2+2)]
+												newZeng(Zenggg,em)
 												Dead.push(["Proj",e.id])
 											})
-											localStorage.setItem("ZenGarden",JSON.stringify(Zengg))
+											localStorage.setItem("ZenGarden",JSON.stringify(Zenggg))
 										} else {
 											e.img = "magnet shroom wait"
 											let t = tar
@@ -3247,7 +3257,7 @@ if (e.spec.pen == undefined) {
 								//diamond
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[10],"spec":{"money":true,"lifespan":0,"Threshold":-900},"value":1000})
 									Pid++
-							} else if (LevsUnlocked.includes(44) && Math.random()<0.1 && Object.keys((JSON.parse(localStorage.getItem("ZenGarden")) ?? {})).length < 128) {
+							} else if (LevsUnlocked.includes(44) && Math.random()<0.1 && Object.keys((JSON.parse(localStorage.getItem("ZenGarden")) ?? {})).length < 128*8) {
 								//giftbox
 									Proj.push({"id":Pid,"x":arr[ind].x,"y":arr[ind].y,"type":-1,"vx":0,"vy":0,"size":50,"img":preloadedImg[20],"spec":{"gift":true,"lifespan":0,"Threshold":-900},"value":1})
 									Pid++
@@ -3354,8 +3364,8 @@ if (e.spec.pen == undefined) {
 						Pid++
 					}
 				}
-				if (Level%20 > 9 && isice && nextSun > prevSun+60000) {
-					prevSun += 60000
+				if (Level%20 > 9 && isice && nextSun > prevSun+6000) {
+					prevSun += 6000
 					Lawn.forEach((e) => {
 						if (!e.spec.freezeImm) e.spec.frozen = Math.min((e.spec.frozen ?? 0),2)+1
 					})
@@ -3744,6 +3754,18 @@ if (e.spec.pen == undefined) {
 															break;
 														case ("absorb shroom alloy"):
 															ee.health += ((e.spec.snow > 0 ? (e.spec.eat ?? 10)/2 : (e.spec.eat ?? 10))*(Level == 24 ? 2 : 1)/(e.small ? 2 : 1)/(e.spec.slow > 0 ? 2 : 1))/2
+															break;
+														case ("absorb shroom sulp"):
+															e.stun = 1
+															setTimeout((e2,ee2) => {
+																vrow = []
+																if (ispool && Math.abs(2.5-e2.y/100+1) <= 0.5 && e2.spec.pool && e2.y/100+1 < rows) vrow.push(100)
+																if (!(ispool && Math.abs(2.5-e2.y/100+1) <= 0.5) && e2.spec.pool != 2 && e2.y/100+1 < rows) vrow.push(100)
+																if (ispool && Math.abs(2.5-e2.y/100-1) <= 0.5 && e2.spec.pool && e2.y/100 > 0) vrow.push(-100)
+																if (!(ispool && Math.abs(2.5-e2.y/100-1) <= 0.5) && e2.spec.pool != 2 && e2.y/100 > 0) vrow.push(-100)
+																e2.y += vrow[Math.floor(Math.random()*vrow.length)]
+																e2.x -= 10
+															},1000,e,ee)
 															break;
 													}
 												}
